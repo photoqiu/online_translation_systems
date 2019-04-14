@@ -1,0 +1,85 @@
+body.native .tabbar {
+  display: none;
+}
+.tabbar {
+  height: 49px;
+  width: 16rem;
+}
+.tabbar .com-tips {
+  z-index: 10000;
+  position: fixed;
+  bottom: 70px;
+  left: 8rem;
+  margin-left: -66px;
+}
+.tabbar .com-tips .msg {
+  width: 100px;
+  text-align: center;
+  padding: 10px 10px 10px 20px;
+}
+.tabbar .com-tips .container {
+  position: absolute;
+  height: 15px;
+  width: 30px;
+  bottom: -15px;
+  overflow: hidden;
+  right: 50px;
+}
+.tabbar-wrapper {
+  border-top: 1px solid #ccc;
+  height: 49px;
+  width: 16rem;
+  position: fixed;
+  bottom: 0;
+  background-color: #fafafa;
+  z-index: 999;
+}
+.tabbar-wrapper .tabbar-item {
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  text-align: center;
+  height: 49px;
+  line-height: 49px;
+  width: 20%;
+  position: relative;
+  float: left;
+}
+.tabbar-wrapper .tabbar-item a {
+  text-decoration: none;
+  display: block;
+  color: rgba(255, 255, 255, 0);
+  background-size: 37px auto;
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 100%;
+  height: 100%;
+}
+.tabbar-wrapper .tabbar-item:nth-child(1) a {
+  background-image: url(../../image/component/tabbar/home.png);
+}
+.tabbar-wrapper .tabbar-item:nth-child(2) a {
+  background-image: url(../../image/component/tabbar/adviser.png);
+}
+.tabbar-wrapper .tabbar-item:nth-child(3) a {
+  background-image: url(../../image/component/tabbar/class.png);
+}
+.tabbar-wrapper .tabbar-item:nth-child(4) a {
+  background-image: url(../../image/component/tabbar/service.png);
+}
+.tabbar-wrapper .tabbar-item:nth-child(5) a {
+  background-image: url(../../image/component/tabbar/profile.png);
+}
+.tabbar-wrapper .tabbar-item:nth-child(1) a.active {
+  background-image: url(../../image/component/tabbar/home_active.png);
+}
+.tabbar-wrapper .tabbar-item:nth-child(2) a.active {
+  background-image: url(../../image/component/tabbar/adviser_active.png);
+}
+.tabbar-wrapper .tabbar-item:nth-child(3) a.active {
+  background-image: url(../../image/component/tabbar/class_active.png);
+}
+.tabbar-wrapper .tabbar-item:nth-child(4) a.active {
+  background-image: url(../../image/component/tabbar/service_active.png);
+}
+.tabbar-wrapper .tabbar-item:nth-child(5) a.active {
+  background-image: url(../../image/component/tabbar/profile_active.png);
+}

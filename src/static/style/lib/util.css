@@ -1,0 +1,37 @@
+.clearfix {
+  zoom: 1;
+  overflow: auto;
+}
+.mask {
+  background-color: rgba(0, 0, 0, 0.6);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2000;
+}
+.mask.share-tip {
+  background-image: url(../../image/lib/share/tip.png);
+  background-repeat: no-repeat;
+  background-size: 10rem auto;
+  background-position: 5.5rem 1rem;
+}
+.scroll-x {
+  overflow-x: scroll;
+}
+.scroll-y {
+  overflow-y: scroll;
+}
+.scroll-x,
+.scroll-y {
+  -webkit-overflow-scrolling: touch;
+}
+.flex > .flex-grow {
+  -webkit-box-flex: 1;
+  -webkit-flex: auto;
+  flex: auto;
+  min-width: 0;
+  min-height: 0;
+}
+.justify{text-align: justify;}
