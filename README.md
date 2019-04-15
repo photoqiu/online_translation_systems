@@ -83,3 +83,15 @@
 ​	
 
 ## 2、技术架构说明：
+
+​	使用VUE+VUEX+VUE-ROUTER完成。整个前端的架构。保证chrome version 72 + 版本，无问题。
+
+​        技术难点与重点分析：
+
+​		1、UBB代码解析。用于存储和展现页面与word等文档的格式。
+
+​		2、使用Echart做图表分析工具
+
+​		3、使用drawTable的技术方式，实现table内容的展示与编辑
+
+​                4、架构说明图，详见translation_systems_mind.xmind

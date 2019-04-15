@@ -271,7 +271,7 @@ module.exports = {
         enforceExtension: false
     },
     plugins: [
-        // new CleanWebpackPlugin([pathResolve('./dist/')]),
+        new CleanWebpackPlugin(),
         new webpack.DefinePlugin({ // 定义环境变量
             "process.env": JSON.stringify(process.env.NODE_ENV)
         }),
