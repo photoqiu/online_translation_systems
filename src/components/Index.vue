@@ -28,27 +28,97 @@
         padding: 10px 0;
         background-color: #f9fafc;
     }
+    .el-select {
+        float:left;
+        width:100%;
+    }
+    .el-table th {
+        max-height:30px;
+    }
 }
 </style>
 <template>
 <div class="container">
     <el-row :gutter="20">
-        <el-col :span="8">
-            <div class="grid-content bg-purple">
-                <el-form-item label="项目名称：">
-                    <el-input
-                        placeholder="请输入内容"
-                        prefix-icon="el-icon-search"
-                        v-model="input21">
-                    </el-input>    
-                </el-form-item>
+        <el-col :span="12">
+            <div class="grid-content">
+                <el-form ref="form" :model="form" label-width="80px">
+                    <el-form-item label="项目名称:">
+                        <el-input placeholder="请输入内容" prefix-icon="el-icon-search" v-model="form.search_text"></el-input>    
+                    </el-form-item>
+                    <el-form-item label="项目经理:">
+                        <el-select v-model="form.region_users" placeholder="请选择项目经理">
+                            <el-option label="张三" value="shanghai"></el-option>
+                            <el-option label="李四" value="beijing"></el-option>
+                            <el-option label="王五" value="beijing"></el-option>
+                        </el-select>
+                    </el-form-item>
+
+                    <el-form-item label="状态:">
+                        <el-select v-model="form.status" placeholder="请选择项目状态">
+                            <el-option label="未进行" value="shanghai"></el-option>
+                            <el-option label="进行中" value="beijing"></el-option>
+                            <el-option label="审核校对" value="beijing"></el-option>
+                            <el-option label="已完成" value="beijing"></el-option>
+                        </el-select>
+                    </el-form-item>
+                </el-form>
             </div>
         </el-col>
         <el-col :span="8"><div class="grid-content bg-purple"></div></el-col>
         <el-col :span="4"><div class="grid-content bg-purple"></div></el-col>
-        <el-col :span="4"><div class="grid-content bg-purple"></div></el-col>
     </el-row>
-    
+    <el-table
+        :data="tableData"
+        border
+        style="width: 100%"
+        max-height="250">
+        <el-table-column
+          fixed
+          prop="projectname"
+          label="项目名称"
+          width="120">
+        </el-table-column>
+        <el-table-column
+          prop="qkname"
+          label="区块名称"
+          width="120">
+        </el-table-column>
+        <el-table-column
+          prop="language"
+          label="语言"
+          width="120">
+        </el-table-column>
+        <el-table-column
+          prop="wordnumbers"
+          label="字数"
+          width="120">
+        </el-table-column>
+        <el-table-column
+          prop="date"
+          label="区块起止时间"
+          width="240">
+        </el-table-column>
+        <el-table-column
+          prop="process"
+          label="完成进度"
+          width="120">
+        </el-table-column>
+        <el-table-column
+          fixed="pmname"
+          label="项目经理"
+          width="120">
+        </el-table-column>
+        <el-table-column
+          fixed="right"
+          label="操作"
+          width="120">
+          <template slot-scope="scope">
+            <el-button @click="handleClick(scope.row)" type="text" size="small">去翻译</el-button>
+            <el-button type="text" size="small">审校</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
 </div>
 </template>
 
@@ -73,7 +143,48 @@
         },
         data() {
             return {
-                isCollapse: true
+                form : {
+                    search_text: "",
+                    region_users: "",
+                    status:""
+                },
+                tableData: [{
+                    date: '2016-05-07~2016-05-11',
+                    name: '王小虎',
+                    pmname: '张三',
+                    projectname : "国际贸易合同翻译",
+                    qkname : "合同翻译",
+                    language : "英->中",
+                    wordnumbers: "22324",
+                    process: "40%"
+                },{
+                    date: '2016-05-07~2016-05-11',
+                    name: '王小虎',
+                    pmname: '张三',
+                    projectname : "国际贸易合同翻译",
+                    qkname : "合同翻译",
+                    language : "英->中",
+                    wordnumbers: "22324",
+                    process: "40%"
+                },{
+                    date: '2016-05-07~2016-05-11',
+                    name: '王小虎',
+                    pmname: '张三',
+                    projectname : "国际贸易合同翻译",
+                    qkname : "合同翻译",
+                    language : "英->中",
+                    wordnumbers: "22324",
+                    process: "40%"
+                },{
+                    date: '2016-05-07~2016-05-11',
+                    name: '王小虎',
+                    pmname: '张三',
+                    projectname : "国际贸易合同翻译",
+                    qkname : "合同翻译",
+                    language : "英->中",
+                    wordnumbers: "22324",
+                    process: "40%"
+                }]
             }
         },
         watch: {
