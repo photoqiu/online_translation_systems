@@ -35,6 +35,10 @@
     .el-table th {
         max-height:30px;
     }
+    .el-table {
+        width:1430px;
+        line-height:20px;
+    }
 }
 </style>
 <template>
@@ -44,7 +48,7 @@
             <div class="grid-content">
                 <el-form ref="form" :model="form" label-width="80px">
                     <el-form-item label="项目名称:">
-                        <el-input placeholder="请输入内容" prefix-icon="el-icon-search" v-model="form.search_text"></el-input>    
+                        <el-input placeholder="请输入内容" prefix-icon="el-icon-search" v-model="form.search_text"></el-input>
                     </el-form-item>
                     <el-form-item label="项目经理:">
                         <el-select v-model="form.region_users" placeholder="请选择项目经理">
@@ -65,24 +69,22 @@
                 </el-form>
             </div>
         </el-col>
-        <el-col :span="8"><div class="grid-content bg-purple"></div></el-col>
-        <el-col :span="4"><div class="grid-content bg-purple"></div></el-col>
     </el-row>
     <el-table
         :data="tableData"
         border
-        style="width: 100%"
-        max-height="250">
+        style="width:1430"
+        max-height="550">
         <el-table-column
           fixed
           prop="projectname"
           label="项目名称"
-          width="120">
+          width="420">
         </el-table-column>
         <el-table-column
           prop="qkname"
           label="区块名称"
-          width="120">
+          width="220">
         </el-table-column>
         <el-table-column
           prop="language"
@@ -92,7 +94,7 @@
         <el-table-column
           prop="wordnumbers"
           label="字数"
-          width="120">
+          width="220">
         </el-table-column>
         <el-table-column
           prop="date"
@@ -119,6 +121,14 @@
           </template>
         </el-table-column>
       </el-table>
+
+    <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        background
+        layout="prev, pager, next"
+        :total="1000">
+    </el-pagination>
 </div>
 </template>
 
@@ -210,6 +220,12 @@
         methods: {
             handleOpen(key, keyPath) {
                 console.log(key, keyPath);
+            },
+            handleSizeChange(val) {
+                console.log(`每页 ${val} 条`);
+            },
+            handleCurrentChange(val) {
+                console.log(`当前页: ${val}`);
             },
             handleClose(key, keyPath) {
                 console.log(key, keyPath);
