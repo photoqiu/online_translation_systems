@@ -39,6 +39,10 @@
         width:1430px;
         line-height:20px;
     }
+    .el-pagination {
+        margin:20px 0 0 0;
+        float:right;
+    }
 }
 </style>
 <template>
@@ -137,20 +141,9 @@
     import * as localForage from 'localforage'
     import moment from 'moment'
     import {mapGetters} from 'vuex'
-    import InfiniteLoading from 'vue-infinite-loading'
 
     export default {
         name: "Index",
-        computed: {
-            ...mapGetters({
-                error_datas: 'error_datas',
-                recommend_data: 'recommend_data',
-                bananer_data: 'bananer_data'
-            })
-        },
-        components: {
-            InfiniteLoading:InfiniteLoading
-        },
         data() {
             return {
                 form : {
@@ -195,17 +188,6 @@
                     wordnumbers: "22324",
                     process: "40%"
                 }]
-            }
-        },
-        watch: {
-            error_datas: function () {
-                console.log("user_error_datas:", this.error_datas)
-            },
-            bananer_data: function() {
-
-            },
-            recommend_data: function () {
-                
             }
         },
         mounted() {

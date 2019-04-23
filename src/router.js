@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import UserGuide from './components/UserGuide.vue'
 import Index from './components/Index.vue'
+import Statistics from './components/Statistics.vue'
 import NotFound from './components/NotFound.vue'
 
 Vue.use(VueRouter)
@@ -19,6 +20,10 @@ const router = new VueRouter({
             path: '/',
             name: 'index',
             component: Index
+        }, {
+            path: '/statistics',
+            name: 'statistics',
+            component: Statistics
         }
     ]
 })

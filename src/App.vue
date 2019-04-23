@@ -54,27 +54,32 @@ body > .el-container {
         <el-container>
             <el-header>Header</el-header>
             <el-container>
-                <el-menu default-active="1-4-1" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="isCollapse">
+                <el-menu default-active="1-4-1" class="el-menu-vertical-demo" :default-active="$route.path" @open="handleOpen" @close="handleClose" :collapse="isCollapse">
                     <el-submenu index="1">
                         <template slot="title">
                             <i class="el-icon-location"></i>
-                            <span slot="title">项目列表</span>
+                            <span slot="title">项目</span>
                         </template>
                         <el-menu-item-group>
                             <span slot="title">初审</span>
                             <el-menu-item index="1-1">初审审校</el-menu-item>
-                            <el-menu-item index="1-2">稿件分析报告</el-menu-item>
+                            <el-menu-item index="/statistics">
+                                稿件分析报告
+                            </el-menu-item>
                         </el-menu-item-group>
                         <el-menu-item-group title="创建项目">
                             <el-menu-item index="1-3">基本信息</el-menu-item>
-                            <el-menu-item index="1-3">稿件分析报告</el-menu-item>
-                            <el-menu-item index="1-3">项目详情</el-menu-item>
-                            <el-menu-item index="1-3">稿件分配</el-menu-item>
+                            <el-menu-item index="1-4">稿件分析报告</el-menu-item>
+                            <el-menu-item index="1-5">项目详情</el-menu-item>
+                            <el-menu-item index="1-6">稿件分配</el-menu-item>
                         </el-menu-item-group>
-                        <el-submenu index="1-4">
-                            <span slot="title">选项4</span>
+                        <el-submenu index="1-7">
+                            <span slot="title">项目列表</span>
                             <el-menu-item index="1-4-1">
-                                <router-link :to="{path:'/', activeClass: 'active'}">编辑翻译字典</router-link>
+                                <router-link :to="{path:'/', activeClass: 'active'}">项目列表</router-link>
+                            </el-menu-item>
+                            <el-menu-item index="1-4-2">
+                                编辑翻译字典
                             </el-menu-item>
                         </el-submenu>
                     </el-submenu>
