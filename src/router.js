@@ -3,6 +3,9 @@ import VueRouter from 'vue-router'
 import UserGuide from './components/UserGuide.vue'
 import Index from './components/Index.vue'
 import Statistics from './components/Statistics.vue'
+import ProjectDetail from './components/ProjectDetail.vue'
+import CreateProjectBase from './components/CreateProjectBase.vue'
+import Translation from './components/Translation.vue'
 import NotFound from './components/NotFound.vue'
 
 Vue.use(VueRouter)
@@ -24,6 +27,18 @@ const router = new VueRouter({
             path: '/statistics',
             name: 'statistics',
             component: Statistics
+        }, {
+            path: '/projectdetail',
+            name: 'projectdetail',
+            component: ProjectDetail
+        }, {
+            path: '/createbase',
+            name: 'createbase',
+            component: CreateProjectBase
+        }, {
+            path: '/translation',
+            name: 'translation',
+            component: Translation
         }
     ]
 })

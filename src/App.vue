@@ -48,6 +48,9 @@ body > .el-container {
     color:#409ECC;
     text-decoration: none;
 }
+.el-form-item__content div.el-progress:last-child {
+    margin: 8px 0 0 0;
+}
 </style>
 <template>
     <div class="container-fluid">
@@ -62,8 +65,11 @@ body > .el-container {
                         </template>
                         <el-menu-item-group>
                             <span slot="title">初审</span>
-                            <el-menu-item index="1-1">初审审校</el-menu-item>
-                            <el-menu-item index="/statistics">
+                            <el-menu-item index="1-1" :route="{path: '/', activeClass: 'active'}">
+                                项目列表
+                            </el-menu-item>
+                            <el-menu-item index="1-2">初审审校</el-menu-item>
+                            <el-menu-item index="1-3" :route="{path: '/statistics', activeClass: 'active'}">
                                 稿件分析报告
                             </el-menu-item>
                         </el-menu-item-group>
@@ -74,12 +80,15 @@ body > .el-container {
                             <el-menu-item index="1-6">稿件分配</el-menu-item>
                         </el-menu-item-group>
                         <el-submenu index="1-7">
-                            <span slot="title">项目列表</span>
+                            <span slot="title">翻译字典</span>
                             <el-menu-item index="1-4-1">
-                                <router-link :to="{path:'/', activeClass: 'active'}">项目列表</router-link>
+                                新建翻译字典
                             </el-menu-item>
                             <el-menu-item index="1-4-2">
                                 编辑翻译字典
+                            </el-menu-item>
+                            <el-menu-item index="1-4-3">
+                                查看翻译字典
                             </el-menu-item>
                         </el-submenu>
                     </el-submenu>

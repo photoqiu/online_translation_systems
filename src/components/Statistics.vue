@@ -1,76 +1,93 @@
 <style lang="less" scoped>
-.container {
+.container_bd {
     height:100%;
     display:block;
-    .el-row {
-        margin-bottom: 20px;
-        &:last-child {
-          margin-bottom: 0;
+    h1 {
+        font-weight:bold;
+        border-bottom:1px soild #ccc;
+    }
+    .bd {
+        margin:0;
+        padding:0;
+        .row {
+            .alert {
+                width:100%;
+                height:60px;
+                line-height:38px;
+                text-align:left;
+            }
+            .table td, .table th {
+                padding:0;
+                height:32px;
+                line-height:32px;
+            }
+            
         }
-    }
-    .el-table th {
-        max-height:30px;
-    }
-    .el-table {
-        width:1430px;
-        line-height:20px;
     }
 }
 </style>
 
 <template>
-<div class="container">
-    <el-table
-        :data="tableData"
-        border
-        style="width:1430"
-        max-height="550">
-        <el-table-column
-            fixed
-            prop="projectname"
-            label="项目名称"
-            width="420">
-        </el-table-column>
-        <el-table-column
-            prop="qkname"
-            label="区块名称"
-            width="220">
-        </el-table-column>
-        <el-table-column
-            prop="language"
-            label="语言"
-            width="120">
-        </el-table-column>
-        <el-table-column
-            prop="wordnumbers"
-            label="字数"
-            width="220">
-        </el-table-column>
-        <el-table-column
-            prop="date"
-            label="区块起止时间"
-            width="240">
-        </el-table-column>
-        <el-table-column
-            prop="process"
-            label="完成进度"
-            width="120">
-        </el-table-column>
-        <el-table-column
-            fixed="pmname"
-            label="项目经理"
-            width="120">
-        </el-table-column>
-        <el-table-column
-            fixed="right"
-            label="操作"
-            width="120">
-            <template slot-scope="scope">
-                <el-button @click="handleClick(scope.row)" type="text" size="small">去翻译</el-button>
-                <el-button type="text" size="small">审校</el-button>
-            </template>
-        </el-table-column>
-      </el-table>
+<div class="container_bd">
+    <h1>项目分析报告</h1>
+    <div class="bd">
+        <div class="row">
+            <div class="alert alert-primary" role="alert">
+                <b>文件名称:</b> 世界人口状况报告
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <table class="table table-hover table-bordered">
+                <thead>
+                    <tr>
+                        <th scope="col">重复率</th>
+                        <th scope="col">字符数(不计空格)</th>
+                        <th scope="col">字数</th>
+                        <th scope="col">句段数</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>100%</td>
+                        <td>15010</td>
+                        <td>2183</td>
+                        <td>112</td>
+                    </tr>
+                    <tr>
+                        <td>95%-99%</td>
+                        <td>50000</td>
+                        <td>9000</td>
+                        <td>400</td>
+                    </tr>
+                    <tr>
+                        <td>85%-94%</td>
+                        <td>50000</td>
+                        <td>9000</td>
+                        <td>400</td>
+                    </tr>
+                    <tr>
+                        <td>75%-84%</td>
+                        <td>50000</td>
+                        <td>9000</td>
+                        <td>400</td>
+                    </tr>
+                    <tr>
+                        <td>50%-74%</td>
+                        <td>50000</td>
+                        <td>9000</td>
+                        <td>400</td>
+                    </tr>
+                    <tr>
+                        <td>0%-49%</td>
+                        <td>50000</td>
+                        <td>9000</td>
+                        <td>400</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 </template>
 

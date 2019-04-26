@@ -1,5 +1,5 @@
 <style lang="less" scoped>
-.container {
+.container_bd {
     height:100%;
     display:block;
     .el-row {
@@ -46,7 +46,7 @@
 }
 </style>
 <template>
-<div class="container">
+<div class="container_bd">
     <el-row :gutter="20">
         <el-col :span="12">
             <div class="grid-content">
