@@ -47,6 +47,10 @@ let fontAwesomePath = path.join(
     __dirname,
     './node_modules/font-awesome/css/font-awesome.css'
 );
+let canvasDatagridPath = path.join(
+    __dirname,
+    './node_modules/canvas-datagrid/dist/canvas-datagrid.debug.js'
+);
 let fetchPath = path.join(
     __dirname,
     './node_modules/whatwg-fetch/fetch.js'
@@ -264,6 +268,7 @@ module.exports = {
             jQuery: jqueryPath,
             fetch: fetchPath,
             fetchJsonp: fetchJsonpPath,
+            canvasDatagrid:canvasDatagridPath,
             moment: momentPath,
             fontAwesome: fontAwesomePath,
             localforage: localforagePath

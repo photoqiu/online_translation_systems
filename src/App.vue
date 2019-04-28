@@ -61,7 +61,7 @@ body > .el-container {
                     <el-submenu index="1">
                         <template slot="title">
                             <i class="el-icon-location"></i>
-                            <span slot="title">项目</span>
+                            <span slot="title">翻译项目功能列表</span>
                         </template>
                         <el-menu-item-group>
                             <span slot="title">初审</span>
@@ -88,7 +88,25 @@ body > .el-container {
                                 编辑翻译字典
                             </el-menu-item>
                             <el-menu-item index="1-4-3">
+                                导入翻译字典
+                            </el-menu-item>
+                            <el-menu-item index="1-4-3">
                                 查看翻译字典
+                            </el-menu-item>
+                        </el-submenu>
+                        <el-submenu index="1-8">
+                            <span slot="title">术语库</span>
+                            <el-menu-item index="1-5-1">
+                                新建术语库
+                            </el-menu-item>
+                            <el-menu-item index="1-5-2">
+                                编辑术语库
+                            </el-menu-item>
+                            <el-menu-item index="1-5-2">
+                                导入术语库
+                            </el-menu-item>
+                            <el-menu-item index="1-5-3">
+                                查看术语库
                             </el-menu-item>
                         </el-submenu>
                     </el-submenu>

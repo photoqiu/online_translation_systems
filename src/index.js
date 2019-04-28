@@ -7,6 +7,7 @@ import VueI18n from 'vue-i18n'
 import VueLogger from 'vuejs-logger'
 import VueTimeago from 'vue-timeago'
 import moment from 'moment'
+import canvasDatagrid from 'canvasDatagrid'
 import VueWorker from 'vue-worker'
 import router from './router.js'
 import store from './vuex/store.js'
@@ -16,6 +17,7 @@ import VueAgile from 'vue-agile'
 import App from './App.vue'
 
 Vue.config.debug = Constant.debug
+Vue.config.ignoredElements = ['canvas-datagrid'];
 const options = {
     // optional : defaults to true if not specified
     isEnabled: true,
@@ -45,6 +47,7 @@ Vue.use(VueTimeago, {
     'ja': require('date-fns/locale/ja'),
   }
 })
+Vue.use(canvasDatagrid)
 Vue.use(ElementUI)
 
 sync(store, router)

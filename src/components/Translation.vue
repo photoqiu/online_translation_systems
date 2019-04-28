@@ -2,226 +2,317 @@
 .container_bd {
     height:100%;
     display:block;
-    .hd {
-        width:100%;
-        text-align:left;
-        h1 {
-            font-weight:bold;
-            border-bottom:1px soild #ccc;
-        }
-        .el-form-item {
-            width:50%;
-        }
-    }
     .bd {
-        margin:0;
-        padding:0;
+        width:100%;
+        height:100%;
         .row {
-            .table td, .table th {
-                padding:0;
-                height:42px;
-                line-height:42px;
+            width:100%;
+            height:100%;
+            position:relative;
+            h3 {
+                width:100%;
+                margin: 20px 0 10px 0;
+                padding: 0 0 10px 0;
+                border-bottom:1px solid #ccc;
+                text-align:center;
             }
-            .table td div {
-                margin:12px auto 0;
+            .btn-group {
+                float:left;
+                width:420px;
+                position:absolute;
+                top:10px;
+                right:10px;
             }
-            .el-pagination {
-                margin:20px 0 0 0;
+            .table_wapper {
+                width:100%;
+                height:100%;
+                .datagrid {
+                    width:100%;
+                    height:70%;
+                }
+            }
+            .popovers {
+                position: absolute;
+                right:0;
+                top:60px;
+                .card_wapper {
+                    width:1172px;
+                    height:100%;
+                    margin: 50px 0 0 0;
+                    .card {
+                        width:1172px;
+                        over-flow:hidden;
+                        .card-header {
+                            line-height:24px;
+                            text-align:left;
+                            .el-input {
+                                width:360px;
+                            }
+                        }
+                        .card-body {
+                            line-height:24px;
+                            height:260px;
+                            over-flow-y:scroll;
+                            table {
+                                tr {
+                                    td {
+                                        text-align:left;
+                                        p {
+                                            margin: 0;
+                                            padding: 0;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
     }
 }
 </style>
-
 <template>
 <div class="container_bd">
-    <div class="hd">
-        <h1>项目：世界人口状况报告</h1>
-        <el-form ref="form" :model="form" label-width="140px">
-            <el-form-item label="状态：">
-                <b>进行中...</b>
-            </el-form-item>
-            <el-form-item label="项目进度：">
-                <el-progress :text-inside="true" :stroke-width="18" :percentage="70"></el-progress>
-                <el-progress :text-inside="true" :stroke-width="18" :percentage="80" color="rgba(142, 113, 199, 0.7)"></el-progress>
-            </el-form-item>
-            <el-form-item label="起止时间：">
-                <el-date-picker
-                    v-model="value2"
-                    type="daterange"
-                    align="right"
-                    unlink-panels
-                    range-separator="至"
-                    start-placeholder="开始日期"
-                    end-placeholder="结束日期"
-                    :picker-options="pickerOptions">
-                </el-date-picker>
-            </el-form-item>
-            <el-form-item label="上传文件：">
-                <el-upload
-                    class="upload-demo"
-                    action="https://jsonplaceholder.typicode.com/posts/"
-                    :on-preview="handlePreview"
-                    :on-remove="handleRemove"
-                    :before-remove="beforeRemove"
-                    multiple
-                    :limit="3"
-                    :on-exceed="handleExceed"
-                    :file-list="fileList">
-                    <el-button size="small" type="primary">点击上传</el-button>
-                    <div slot="tip" class="el-upload__tip">只能上传doc,pdf,docx,txt文件，且不超过20M</div>
-                </el-upload>
-            </el-form-item>
-            
-        </el-form>
-    </div>
     <div class="bd">
         <div class="row">
-            <table class="table table-hover table-bordered">
-                <thead>
-                    <tr>
-                        <th scope="col">序号</th>
-                        <th scope="col">文件名称</th>
-                        <th scope="col">进度</th>
-                        <th scope="col">译者</th>
-                        <th scope="col">操作</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <th scope="row">1</th>
-                        <td>世界人口状况报告01.doc</td>
-                        <td><el-progress :text-inside="true" :stroke-width="18" :percentage="67"></el-progress></td>
-                        <td>张三</td>
-                        <td>
-                            <button type="button" class="btn btn-link">打开</button>
-                            <button type="button" class="btn btn-link">分配</button>
-                            <el-dropdown split-button type="primary" @click="handleClick">
-                                更多操作
-                                <el-dropdown-menu slot="dropdown">
-                                    <el-dropdown-item>导出初译译文</el-dropdown-item>
-                                    <el-dropdown-item>导出审校译文</el-dropdown-item>
-                                    <el-dropdown-item>导出离线文件</el-dropdown-item>
-                                    <el-dropdown-item>导入离线文件</el-dropdown-item>
-                                    <el-dropdown-item>导出最终译文</el-dropdown-item>
-                                    <el-dropdown-item>导出原-译对照</el-dropdown-item>
-                                    <el-dropdown-item>导出译-原对照</el-dropdown-item>
-                                </el-dropdown-menu>
-                            </el-dropdown>
-                            <button type="button" class="btn btn-link">删除</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row">2</th>
-                        <td>世界人口状况报告02.doc</td>
-                        <td><el-progress :text-inside="true" :stroke-width="18" :percentage="17"></el-progress></td>
-                        <td>李四</td>
-                        <td>
-                            <button type="button" class="btn btn-link">打开</button>
-                            <button type="button" class="btn btn-link">分配</button>
-                            <el-dropdown split-button type="primary" @click="handleClick">
-                                更多操作
-                                <el-dropdown-menu slot="dropdown">
-                                    <el-dropdown-item>导出初译译文</el-dropdown-item>
-                                    <el-dropdown-item>导出审校译文</el-dropdown-item>
-                                    <el-dropdown-item>导出离线文件</el-dropdown-item>
-                                    <el-dropdown-item>导入离线文件</el-dropdown-item>
-                                    <el-dropdown-item>导出最终译文</el-dropdown-item>
-                                    <el-dropdown-item>导出原-译对照</el-dropdown-item>
-                                    <el-dropdown-item>导出译-原对照</el-dropdown-item>
-                                </el-dropdown-menu>
-                            </el-dropdown>
-                            <button type="button" class="btn btn-link">删除</button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <el-col :span="16"></el-col>
-            <el-col :span="8">
-                <el-pagination
-                    background
-                    layout="prev, pager, next"
-                    :total="1000">
-                </el-pagination>
-            </el-col>
+            <div class="table_wapper">
+                <h3>翻译操作区</h3>
+                <div class="btn-group" role="group" aria-label="Basic example">
+                    <button type="button" class="btn btn-secondary" @click="memoryClick">记忆库</button>
+                    <button type="button" class="btn btn-secondary" @click="termClick">术语库</button>
+                    <button type="button" class="btn btn-secondary"  @click="dialogTableVisible = true">翻译QA</button>
+                    <button type="button" class="btn btn-secondary" @click="fixedClick">修订记录</button>
+                </div>
+                <canvas-datagrid v-bind.prop="grid" class="datagrid"></canvas-datagrid>
+            </div>
+            <div class="popovers">
+                <div class="card_wapper">
+                    <div class="card bg-light mb-3" v-show="isMemory">
+                        <div class="card-header">记忆库
+                            <el-input
+                                placeholder="请输入内容"
+                                prefix-icon="el-icon-search"
+                                clearable
+                                v-model="input_memory">
+                            </el-input>
+                            <button type="button" class="close" data-dismiss="alert" @click="memoryClick" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-hover table-bordered table-sm">
+                                <tbody>
+                                    <tr>
+                                        <th scope="row">1</th>
+                                        <td>衷心祝愿让我们共同的事业获得成功共同努力，共创美好未来！</td>
+                                        <td>50%</td>
+                                        <td>I sincerely hope that our common cause will be successful, and I wish us a bright future!</td>
+                                        <td>
+                                            <p>来自：译者A</p>
+                                            <p>时间：2018.12.31</p>
+                                            <p>项目：世界报告</p>
+                                        </td>
+                                    </tr> 
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="card bg-light mb-3" v-show="isTerm">
+                        <div class="card-header">术语库
+                        <el-input
+                            placeholder="请输入内容"
+                            prefix-icon="el-icon-search"
+                            clearable
+                            v-model="input_term">
+                        </el-input>
+                        <button type="button" class="btn btn-link" @click="dialogFormVisible = true">添加到术语库</button>
+                        <button type="button" class="close" data-dismiss="alert" @click="termClick" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-hover table-bordered table-sm">
+                                <tbody>
+                                    <tr>
+                                        <th scope="row">1</th>
+                                        <td>共同努力</td>
+                                        <td>TB</td>
+                                        <td>work together</td>
+                                        <td>
+                                            <p>来自：Rumin</p>
+                                            <p>时间：2019.1.31</p>
+                                            <p>项目：北京报告</p>
+                                        </td>
+                                    </tr> 
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="card bg-light mb-3" v-show="isFixed">
+                        <div class="card-header">修订记录
+                            <el-input
+                                placeholder="请输入内容"
+                                prefix-icon="el-icon-search"
+                                clearable
+                                v-model="input_fixed">
+                            </el-input>
+                            <button type="button" class="close" data-dismiss="alert" @click="fixedClick" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-hover table-bordered table-sm">
+                                <tbody>
+                                    <tr>
+                                        <th scope="row">1</th>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr> 
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+    <el-dialog title="添加术语库" :visible.sync="dialogFormVisible">
+        <el-form :model="form">
+            <el-form-item label="原文" :label-width="formLabelWidth">
+                <el-input v-model="form.orgname" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="译文" :label-width="formLabelWidth">
+                <el-input v-model="form.name" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="来源" :label-width="formLabelWidth">
+                <el-select v-model="form.region" placeholder="请选择文章来源">
+                    <el-option label="文章来源1" value="shanghai"></el-option>
+                    <el-option label="文章来源2" value="beijing"></el-option>
+                </el-select>
+            </el-form-item>
+          </el-form>
+          <div slot="footer" class="dialog-footer">
+            <el-button @click="dialogFormVisible = false">取 消</el-button>
+            <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+          </div>
+    </el-dialog>
+    <el-dialog title="翻译QA" :visible.sync="dialogTableVisible">
+        <el-table :data="gridData">
+            <el-table-column property="errornumbers" label="句段" width="150"></el-table-column>
+            <el-table-column property="errorname" label="错误类型" width="200"></el-table-column>
+            <el-table-column property="errordesc" label="错误描述"></el-table-column>
+        </el-table>
+    </el-dialog>
 </div>
 </template>
-
 <script type="text/babel">    
     import $ from 'jQuery'
     import * as localForage from 'localforage'
-    import {mapGetters} from 'vuex'
+    import canvasDatagrid from 'canvasDatagrid'
     
     export default {
-        name: "ProjectDetail",
+        name: "Translation",
+        componets : {
+            canvasDatagrid:canvasDatagrid
+        },
         data() {
             return {
-                isUsedFaster:false,
-                fileList: [{name: 'food.docx', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}, {name: 'food2.doc', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}],
-                pickerOptions: {
-                    shortcuts: [{
-                        text: '最近一周',
-                        onClick(picker) {
-                          const end = new Date();
-                          const start = new Date();
-                          start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
-                          picker.$emit('pick', [start, end]);
-                        }
-                    }, {
-                        text: '最近一个月',
-                        onClick(picker) {
-                            const end = new Date();
-                            const start = new Date();
-                            start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-                            picker.$emit('pick', [start, end]);
-                        }
-                    }, {
-                        text: '最近三个月',
-                        onClick(picker) {
-                            const end = new Date();
-                            const start = new Date();
-                            start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
-                            picker.$emit('pick', [start, end]);
-                        }
-                    }]
+                grid: {
+                    data: [
+                        {'原文': 'I sincerely hope that our common cause will be successful, and I wish us a bright future!', '译文': 'a', '状态': 'a', '备注': ''},
+                        {'原文': 'foo', '译文': 'a', '状态': 'a', '备注': ''},
+                        {'原文': 'foo', '译文': 'a', '状态': 'a', '备注': ''},
+                        {'原文': 'foo', '译文': 'a', '状态': 'a', '备注': ''},
+                        {'原文': 'foo', '译文': 'a', '状态': 'a', '备注': ''},
+                        {'原文': 'foo', '译文': 'a', '状态': 'a', '备注': ''},
+                        {'原文': 'foo', '译文': 'a', '状态': 'a', '备注': ''},
+                        {'原文': 'foo', '译文': 'a', '状态': 'a', '备注': ''},
+                        {'原文': 'foo', '译文': 'a', '状态': 'a', '备注': ''},
+                        {'原文': 'foo', '译文': 'a', '状态': 'a', '备注': ''},
+                        {'原文': 'foo', '译文': 'a', '状态': 'a', '备注': ''},
+                        {'原文': 'foo', '译文': 'a', '状态': 'a', '备注': ''},
+                        {'原文': 'foo', '译文': 'a', '状态': 'a', '备注': ''},
+                        {'原文': 'foo', '译文': 'a', '状态': 'a', '备注': ''},
+                        {'原文': 'foo', '译文': 'a', '状态': 'a', '备注': ''},
+                        {'原文': 'foo', '译文': 'a', '状态': 'a', '备注': ''},
+                        {'原文': 'foo', '译文': 'a', '状态': 'a', '备注': ''},
+                        {'原文': 'foo', '译文': 'a', '状态': 'a', '备注': ''},
+                        {'原文': 'foo', '译文': 'a', '状态': 'a', '备注': ''},
+                        {'原文': 'foo', '译文': 'a', '状态': 'a', '备注': ''},
+                        {'原文': 'foo', '译文': 'a', '状态': 'a', '备注': ''},
+                        {'原文': 'foo', '译文': 'a', '状态': 'a', '备注': ''},
+                        {'原文': 'foo', '译文': 'a', '状态': 'a', '备注': ''},
+                        {'原文': 'foo', '译文': 'a', '状态': 'a', '备注': ''},
+                        {'原文': 'foo', '译文': 'a', '状态': 'a', '备注': ''},
+                        {'原文': 'foo', '译文': 'a', '状态': 'a', '备注': ''},
+                        {'原文': 'foo', '译文': 'a', '状态': 'a', '备注': ''},
+                        {'原文': 'foo', '译文': 'a', '状态': 'a', '备注': ''},
+                        {'原文': 'foo', '译文': 'a', '状态': 'a', '备注': ''},
+                        {'原文': 'foo', '译文': 'a', '状态': 'a', '备注': ''},
+                        {'原文': 'foo', '译文': 'a', '状态': 'a', '备注': ''},
+                        {'原文': 'foo', '译文': 'a', '状态': 'a', '备注': ''},
+                        {'原文': 'foo', '译文': 'a', '状态': 'a', '备注': ''},
+                        {'原文': 'foo', '译文': 'a', '状态': 'a', '备注': ''},
+                        {'原文': 'foo', '译文': 'a', '状态': 'a', '备注': ''},
+                        {'原文': 'foo', '译文': 'a', '状态': 'a', '备注': ''},
+                        {'原文': 'foo', '译文': 'a', '状态': 'a', '备注': ''},
+                        {'原文': 'foo', '译文': 'a', '状态': 'a', '备注': ''},
+                        {'原文': 'foo', '译文': 'a', '状态': 'a', '备注': ''},
+                        {'原文': 'foo', '译文': 'a', '状态': 'a', '备注': ''},
+                        {'原文': 'foo', '译文': 'a', '状态': 'a', '备注': ''}
+                    ]
                 },
-                activeName: 'second'
-            }    
+                input_memory: '',
+                input_term: '',
+                input_fixed: '',
+                isMemory:true,
+                isFixed:true,
+                dialogFormVisible:false,
+                formLabelWidth: '120px',
+                form: {
+                    orgname:'',
+                    name:'',
+                    region:'',
+                },
+                gridData: [
+                    {
+                        errornumbers: '12',
+                        errorname: '错误类型',
+                        errordesc: '错别字'
+                    }, {
+                        errornumbers: '14',
+                        errorname: '错误类型',
+                        errordesc: '错别字'
+                    }, {
+                        errornumbers: '20',
+                        errorname: '错误类型',
+                        errordesc: '错别字'
+                    }, {
+                        errornumbers: '23',
+                        errorname: '错误类型',
+                        errordesc: '多义词错误'
+                    }
+                ],
+                dialogTableVisible: false,
+                isTerm:true
+            }
+        },
+        methods : {
+            memoryClick() {
+                this.$data.isMemory = !this.$data.isMemory
+            },
+            fixedClick() {
+                this.$data.isFixed = !this.$data.isFixed
+            },
+            termClick() {
+                this.$data.isTerm = !this.$data.isTerm
+            }
         },
         mounted() {
             let _self = this
-            let userDatas = {}
-            localForage.getItem('users').then(function(value) {
-                let data = {}
-                userDatas = value
-                data.token = userDatas.token
-                _self.$store.dispatch('getServiceInfo', data)
-                _self.$store.dispatch('getServiceMenusInfo', data)
-            }).catch(function(err) {
-                console.log(err);
-            });
-        },
-        methods: {
-            handleRemove(file, fileList) {
-                console.log(file, fileList);
-            },
-            handlePreview(file) {
-                console.log(file);
-            },
-            handleExceed(files, fileList) {
-                this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
-            },
-            beforeRemove(file, fileList) {
-                return this.$confirm(`确定移除 ${ file.name }？`);
-            },
-            handleClick(event) {
-                let eles = event.target
-                let index = parseInt(eles.getAttribute("data-index"), 10)
-                let datas = [this.$data.categoryDatas, index]
-                this.$store.dispatch('changeServiceMenusInfo', datas)
-            }
         }
     }
 </script>
