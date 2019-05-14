@@ -193,7 +193,7 @@
         mounted() {
             localForage.getItem('users').then(function(value) {
                 let data = {}
-                userDatas = value
+                let userDatas = value
             }).catch(function(err) {
                 // This code runs if there were any errors
                 console.log(err);

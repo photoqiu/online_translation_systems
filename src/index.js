@@ -13,8 +13,8 @@ import router from './router.js'
 import store from './vuex/store.js'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
-import VueAgile from 'vue-agile'
 import App from './App.vue'
+
 
 Vue.config.debug = Constant.debug
 Vue.config.ignoredElements = ['canvas-datagrid'];
@@ -38,7 +38,6 @@ const options = {
 // this registers `store.state.route`
 Vue.use(VueLogger, options)
 Vue.use(VueWorker)
-Vue.use(VueAgile)
 Vue.use(VueTimeago, {
   name: 'Timeago', // Component name, `Timeago` by default
   locale: 'en', // Default locale

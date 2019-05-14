@@ -230,8 +230,6 @@
 .com-rent-price-span{float: right;color:#ff7f00;font-size: .6rem;    margin-top: 2px;}
 .com-rent-price-span em{font-size: .8rem;font-style:normal; }
 .com-rent-price-span sub{font-size: .6rem;}
-
-
 .item-list-filter-submenu{
     position: absolute;
     right: 0;

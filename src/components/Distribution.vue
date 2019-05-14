@@ -39,13 +39,15 @@
         <div class="row">
             <ul class="nav justify-content-center">
                 <li class="nav-item">
-                    <a class="nav-link active" href="#">可视化分配</a>
+                    <router-link :to="{path:'/equallydistributed', activeClass: 'active'}">
+                        可视化分配
+                    </router-link>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">
+                    <router-link :to="{path:'/distribution', activeClass: 'active'}">
                         均分
                         <span class="badge badge-light">4</span>
-                    </a>
+                    </router-link>
                 </li>
             </ul>
         </div>
@@ -100,6 +102,29 @@
         data() {
             return {
                 grid: {
+                    schema: [
+                        {
+                            name: '原文'
+                        },
+                        {
+                            name: '状态(未翻译)'
+                        },
+                        {
+                            name: '初译译员',
+                            enum: [
+                                ['a', 'a'],
+                                ['翻译员B', '翻译员B'],
+                                ['翻译员C', '翻译员C'],
+                                ['翻译员D', '翻译员D'],
+                                ['翻译员E', '翻译员E'],
+                                ['翻译员F', '翻译员F'],
+                                ['翻译员G', '翻译员G']
+                            ]
+                        },
+                        {
+                            name: '审校译员'
+                        }
+                    ],
                     data: [
                         {'原文': 'I sincerely hope that our common cause will be successful, and I wish us a bright future!', '状态(未翻译)': '', '初译译员': 'a', '审校译员': ''},
                         {'原文': 'I sincerely hope that our common cause will be successful, and I wish us a bright future!', '状态(未翻译)': '', '初译译员': 'a', '审校译员': ''},

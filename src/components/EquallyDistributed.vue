@@ -55,14 +55,14 @@
         <div class="row">
             <ul class="nav justify-content-center">
                 <li class="nav-item">
-                    <a class="nav-link active" href="#">可视化分配<span class="badge badge-light">2</span></a>
-                    
+                    <router-link :to="{path:'/equallydistributed', activeClass: 'active'}">
+                        可视化分配<span class="badge badge-light">2</span>
+                    </router-link>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">
+                    <router-link :to="{path:'/distribution', activeClass: 'active'}">
                         均分
-                        
-                    </a>
+                    </router-link>
                 </li>
             </ul>
         </div>

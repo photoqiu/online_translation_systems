@@ -94,4 +94,22 @@
 
 ​		3、使用drawTable的技术方式，实现table内容的展示与编辑
 
-​                4、架构说明图，详见translation_systems_mind.xmind
+​        4、架构说明图，详见translation_systems_mind.xmind
+
+
+
+## 3、URL说明：
+
+| URL                                                  | 页面说明               |
+| ---------------------------------------------------- | ---------------------- |
+| http://127.0.0.1/dist/index.html#/                   | 项目列表页             |
+| http://127.0.0.1/dist/index.html#/statistics         | 项目分析报告           |
+| http://127.0.0.1/dist/index.html#/projectdetail      | 项目详情               |
+| http://127.0.0.1/dist/index.html#/createbase         | 创建新项目             |
+| http://127.0.0.1/dist/index.html#/translation        | 项目翻译任务           |
+| http://127.0.0.1/dist/index.html#/manuanalysisreport | 项目区块分析报告       |
+| http://127.0.0.1/dist/index.html#/distribution       | 发布项目配置（可视化） |
+| http://127.0.0.1/dist/index.html#/equallydistributed | 发布项目配置（均分）   |
+| http://127.0.0.1/dist/index.html#/term               | 术语库、语料库列表     |
+| http://127.0.0.1/dist/index.html#/createterm         | 新建语料库/术语库      |
+| http://127.0.0.1/dist/index.html#/qareport           | QA报告                 |
