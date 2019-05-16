@@ -2,16 +2,7 @@
 .nav-menus {
     width: 200px;
     min-height: 400px;
-    .el-menu-item  {
-        a {
-            color:#409EFF;
-            text-decoration: none;
-        }
-        a:hover {
-            color:#409ECC;
-            text-decoration: none;    
-        }
-    }
+    
 }
 </style>
 <template>
@@ -90,21 +81,6 @@
     
     export default {
         name:"navMenuDatas",
-        data() {
-            return {
-                isCollapse: false
-            }
-        },
-        mounted() {
-            this.$data.isCollapse = false
-        },
-        methods: {
-            handleOpen(key, keyPath) {
-                console.log(key, keyPath);
-            },
-            handleClose(key, keyPath) {
-                console.log(key, keyPath);
-            }
-        }
+        
     }
 </script>
