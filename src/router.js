@@ -9,7 +9,7 @@ import Translation from './components/Translation.vue'
 import ManuScriptAnalysisReport from './components/ManuScriptAnalysisReport.vue'
 import Distribution from './components/Distribution.vue'
 import EquallyDistributed from './components/EquallyDistributed.vue'
-
+import BlockArticle from './components/BlockArticle.vue'
 import Term from './components/Term.vue'
 import CreateTerm from './components/CreateTerm.vue'
 import EditorTerm from './components/EditorTerm.vue'
@@ -37,6 +37,10 @@ const router = new VueRouter({
             path: '/statistics',
             name: 'statistics',
             component: Statistics
+        }, {
+            path: '/blockarticle',
+            name: 'blockarticle',
+            component: BlockArticle
         }, {
             path: '/projectdetail',
             name: 'projectdetail',

@@ -46,8 +46,8 @@
         <div class="row">
             <el-steps :active="1" align-center>
                 <el-step title="创建新项目" description="这是一段很长很长很长的描述性文字"></el-step>
+                <el-step title="分配区块" description="这是一段很长很长很长的描述性文字"></el-step>
                 <el-step title="分配任务" description="这是一段很长很长很长的描述性文字"></el-step>
-                <el-step title="审效稿件" description="这是一段很长很长很长的描述性文字"></el-step>
                 <el-step title="完成" description="这是一段很长很长很长的描述性文字"></el-step>
             </el-steps>
         </div>

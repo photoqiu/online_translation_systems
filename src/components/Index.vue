@@ -120,7 +120,7 @@
           label="操作"
           width="120">
           <template slot-scope="scope">
-            <el-button @click="handleClick(scope.row)" type="text" size="small">去翻译</el-button>
+            <el-button @click="handleClick(scope.row)" type="text" size="small">查看区块</el-button>
             <el-button type="text" size="small">审校</el-button>
           </template>
         </el-table-column>
@@ -200,6 +200,10 @@
             });
         },
         methods: {
+            handleClick(row) {
+                console.log(row);
+                window.location.href = "/#/blockarticle"
+            },
             handleOpen(key, keyPath) {
                 console.log(key, keyPath);
             },

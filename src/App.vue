@@ -58,7 +58,7 @@ body > .el-container {
             <el-header>Header</el-header>
             <el-container>
                 <el-aside width="200px">
-                    <el-menu default-active="1-1" router="true" unique-opened="true" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="isCollapse">
+                    <el-menu default-active="1-1" :router="isRouter" :unique-opened="isOpen" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="isCollapse">
                         <el-submenu index="1">
                             <template slot="title">
                                 <i class="el-icon-location"></i>
@@ -139,7 +139,9 @@ body > .el-container {
         name:"App",
         data() {
             return {
-                isCollapse: false
+                isCollapse: false,
+                isRouter:true,
+                isOpen:true
             }
         },
         methods: {
