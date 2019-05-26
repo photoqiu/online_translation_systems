@@ -2,8 +2,11 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import * as actions from './actions'
 import * as getters from './getters'
-import flowControllers from './modules/flowControllers'
-import indexControllers from './modules/indexControllers'
+import addControllers from './modules/addControllers'
+import updateControllers from './modules/updateControllers'
+import delControllers from './modules/delControllers'
+import listControllers from './modules/listControllers'
+import getControllers from './modules/getControllers'
 import createLogger from 'vuex/dist/logger'
 const DEBUG = false;
 // const DEBUG = process.env.NODE_ENV === 'production' ? true : false;
@@ -32,8 +35,11 @@ export default new Vuex.Store({
     strict: DEBUG,
     plugins: [createLogger()],
     modules: {
-        flowControllers,
-        indexControllers
+        addControllers,
+        updateControllers,
+        delControllers,
+        getControllers,
+        listControllers
     },
     actions,
     getters

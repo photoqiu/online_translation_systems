@@ -58,7 +58,7 @@
                         <td>15010</td>
                         <td>2183</td>
                         <td>112</td>
-                        <td rowspan="2">
+                        <td>
                             字典：《世界人口状况报告》
                             禁用语文档：《世界人口状况报告》
                         </td>
@@ -74,7 +74,7 @@
                         <td>15010</td>
                         <td>2183</td>
                         <td>112</td>
-                        <td rowspan="2">
+                        <td>
                             字典：《世界人口状况报告》
                             禁用语文档：《世界人口状况报告》
                         </td>
@@ -90,7 +90,7 @@
                         <td>15010</td>
                         <td>2183</td>
                         <td>112</td>
-                        <td rowspan="2">
+                        <td>
                             字典：《世界人口状况报告》
                             禁用语文档：《世界人口状况报告》
                         </td>
@@ -106,39 +106,7 @@
                         <td>15010</td>
                         <td>2183</td>
                         <td>112</td>
-                        <td rowspan="2">
-                            字典：《世界人口状况报告》
-                            禁用语文档：《世界人口状况报告》
-                        </td>
                         <td>
-                            <div class="progress"><div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">60%</div></div>
-                        <td>
-                            <router-link :to="{path:'/', activeClass: 'active'}">编辑</router-link>
-                            <router-link :to="{path:'/', activeClass: 'active'}">审校</router-link>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>世界人口状况报告-区块01</td>
-                        <td>15010</td>
-                        <td>2183</td>
-                        <td>112</td>
-                        <td rowspan="2">
-                            字典：《世界人口状况报告》
-                            禁用语文档：《世界人口状况报告》
-                        </td>
-                        <td>
-                            <div class="progress"><div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">60%</div></div>
-                        <td>
-                            <router-link :to="{path:'/', activeClass: 'active'}">编辑</router-link>
-                            <router-link :to="{path:'/', activeClass: 'active'}">审校</router-link>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>世界人口状况报告-区块01</td>
-                        <td>15010</td>
-                        <td>2183</td>
-                        <td>112</td>
-                        <td rowspan="2">
                             字典：《世界人口状况报告》
                             禁用语文档：《世界人口状况报告》
                         </td>

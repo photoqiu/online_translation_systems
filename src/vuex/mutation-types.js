@@ -1,33 +1,10 @@
-export const USER_SIGNIN = 'USER_SIGNIN'
-export const USER_SIGNOUT = 'USER_SIGNOUT'
-export const USER_SENDCODE = 'USER_SENDCODE'
 export const HTTP_STATUS_ERROR = 'HTTP_STATUS_ERROR'
-//////////////////////////////////////////////////////////////
-export const BANNER_STATU_DATA = 'BANNER_STATU_DATA'
-export const RECOMMEND_DATAS = 'RECOMMEND_DATAS'
-//////////////////////////////////////////////////////////////
-export const GET_COMMENT_LIST_DATAS = 'GET_COMMENT_LIST_DATAS'
-//////////////////////////////////////////////////////////////
-export const STRATEGY_INFO_DATAS = 'STRATEGY_INFO_DATAS'
-export const STRATEGY_CATEGORY_INFO = 'STRATEGY_CATEGORY_INFO'
-export const STRATEGY_INFO_DATAS_DETAIL = 'STRATEGY_INFO_DATAS_DETAIL'
-///////////////////////////////////////////////////////////////
-export const COUNSELOR_INFO_DATAS = 'COUNSELOR_INFO_DATAS'
-export const COUNSELOR_LIST_DATAS_INFO = 'COUNSELOR_LIST_DATAS_INFO'
-export const CONSULT_INFO_DATAS_DETAIL = 'CONSULT_INFO_DATAS_DETAIL'
-//////////////////////////////////////////////////////////////
-export const SERVICE_INFO_DATAS = 'SERVICE_INFO_DATAS'
-export const SERVICE_INFO_DATAS_MENUS = 'SERVICE_INFO_DATAS_MENUS'
-export const CHANGE_SERVICE_INFO_DATAS = 'CHANGE_SERVICE_INFO_DATAS'
-export const CHANGE_SERVICE_INFO_DATAS_MENUS = 'CHANGE_SERVICE_INFO_DATAS_MENUS'
-export const CHANGE_SUB_SERVICE_INFO_DATAS_MENUS = 'CHANGE_SUB_SERVICE_INFO_DATAS_MENUS'
-export const GET_SERVICE_SUB_MENUS_ORDER_INFO_DATAS = 'GET_SERVICE_SUB_MENUS_ORDER_INFO_DATAS'
-
-export const GET_CATEGORY_COURSE = 'GET_CATEGORY_COURSE'
-export const GET_COURSE_DATA_LIST = 'GET_COURSE_DATA_LIST' 
-export const GET_COURSE_DATA_INFO = 'GET_COURSE_DATA_INFO'
-export const SET_COURSE_DEFAULT_DATA_LIST = 'SET_COURSE_DEFAULT_DATA_LIST'
-
-export const GET_COLLECT_LIST_DATAS = 'GET_COLLECT_LIST_DATAS'
-export const DEL_COLLECT_DATAS = 'DEL_COLLECT_DATAS'
-export const ADD_COLLECT_DATAS = 'ADD_COLLECT_DATAS'
+export const TRANSLATOR = 'TRANSLATOR'
+export const MAIN_INDUSTRY = 'MAIN_INDUSTRY'
+export const SUB_INDUSTRY = 'SUB_INDUSTRY'
+export const LANGUAGE = 'LANGUAGE'
+export const CUSTOMER = 'CUSTOMER'
+export const FILE_UPLOADER = 'FILE_UPLOADER'
+export const FILE_DETAIL = 'FILE_DETAIL'
+export const TERM_SAVE = 'TERM_SAVE'
+export const CORPUS_SAVE = 'CORPUS_SAVE'

@@ -131,45 +131,9 @@ devconfig.devServer = {
         poll: 1000
     },
     proxy: {
-        '/login': {
-            target: 'http://39.105.127.20:8280/',
-            pathRewrite: {'^/login' : '/login'}
-        },
-        '/recommend': {
-            target: 'http://39.105.127.20:8280/',
-            pathRewrite: {'^/recommend' : '/recommend'}
-        },
-        '/category':{
-            target: 'http://39.105.127.20:8280/',
-            pathRewrite: {'^/category' : '/category'}
-        },
-        '/comment':{
-            target: 'http://39.105.127.20:8280/',
-            pathRewrite: {'^/comment' : '/comment'}
-        },
-        '/banner': {
-            target: 'http://39.105.127.20:8280/',
-            pathRewrite: {'^/banner' : '/banner'}
-        },
-        '/consult': {
-            target: 'http://39.105.127.20:8280/',
-            pathRewrite: {'^/consult' : '/consult'}
-        },
-        '/strategy': {
-            target: 'http://39.105.127.20:8280/',
-            pathRewrite: {'^/strategy' : '/strategy'}
-        },
-        '/collect': {
-            target: 'http://39.105.127.20:8280/',
-            pathRewrite: {'^/collect' : '/collect'}
-        },
-        '/course': {
-            target: 'http://39.105.127.20:8280/',
-            pathRewrite: {'^/course' : '/course'}
-        },
-        '/service': {
-            target: 'http://39.105.127.20:8280/',
-            pathRewrite: {'^/service' : '/service'}
+        '/atreus': {
+            target: 'http://139.129.201.64:8020/atreus/',
+            pathRewrite: {'^/atreus' : '/atreus'}
         }
     },
     hot: true,
