@@ -46,16 +46,24 @@
         <div class="row">
             <el-form ref="form" :model="form" label-width="180px">
                 <el-form-item label="语料名称">
-                    <el-input v-model="form.name"></el-input>
+                    <el-input v-model="name"></el-input>
                 </el-form-item>
                 <el-form-item label="机构名称">
-                    <el-input v-model="form.sname"></el-input>
+                    <el-select v-model="sname" filterable placeholder="请选择或输入">
+                        <el-option
+                            v-for="(item, $index) in customer_datas"
+                            :key="$index"
+                            :data-datas="item.json_datas"
+                            :label="item.customerName"
+                            :value="item.id">
+                        </el-option>
+                    </el-select>
                 </el-form-item>
                 <el-form-item label="语言">
                     <el-select v-model="value4" placeholder="请选择">
                         <el-option
-                          v-for="item in language0"
-                          :key="item.value"
+                          v-for="(item, $index) in languagedatas"
+                          :key="$index"
                           :label="item.label"
                           :value="item.value">
                         </el-option>
@@ -63,15 +71,15 @@
                     <i class="fas fa-arrows-alt-h" style="font-size:18px;"></i>
                     <el-select v-model="value5" placeholder="请选择">
                         <el-option
-                          v-for="item in language0"
-                          :key="item.value"
+                          v-for="(item, $index) in languagedatas"
+                          :key="$index"
                           :label="item.label"
                           :value="item.value">
                         </el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="语料类型">
-                    <el-select v-model="form.type" placeholder="请选择">
+                    <el-select v-model="type" placeholder="请选择">
                         <el-option
                           v-for="item in author"
                           :key="item.value"
@@ -81,7 +89,7 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item label="语言级别">
-                    <el-select v-model="form.level" placeholder="请选择">
+                    <el-select v-model="level" placeholder="请选择">
                         <el-option
                           v-for="item in levels"
                           :key="item.value"
@@ -91,54 +99,58 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item label="一级行业">
-                    <el-select v-model="form.level" placeholder="请选择">
+                    <el-select v-model="form.level_0" filterable @change="getOneLevelDatas" placeholder="请选择">
                         <el-option
-                          v-for="item in industry0"
-                          :key="item.value"
-                          :label="item.label"
-                          :value="item.value">
+                          v-for="item in main_industry_models_0"
+                          :key="item.code"
+                          :data-id="item.id"
+                          :label="item.name"
+                          :value="item.code">
                         </el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="二级行业">
-                    <el-select v-model="form.level" placeholder="请选择">
+                    <el-select v-model="form.level_1" filterable @change="getTwoLevelDatas" placeholder="请选择">
                         <el-option
-                          v-for="item in industry1"
-                          :key="item.value"
-                          :label="item.label"
-                          :value="item.value">
+                          v-for="item in sub_industry_models_1"
+                          :key="item.code"
+                          :data-id="item.id"
+                          :label="item.name"
+                          :value="item.code">
                         </el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="三级行业">
-                    <el-select v-model="form.level" placeholder="请选择">
+                    <el-select v-model="form.level_2" filterable @change="getThereLevelDatas" placeholder="请选择">
                         <el-option
-                          v-for="item in industry2"
-                          :key="item.value"
-                          :label="item.label"
-                          :value="item.value">
+                          v-for="item in sub_industry_models_2"
+                          :key="item.code"
+                          :data-id="item.id"
+                          :label="item.name"
+                          :value="item.code">
                         </el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="四级行业">
-                    <el-select v-model="form.level" placeholder="请选择">
+                    <el-select v-model="form.level_3" filterable placeholder="请选择">
                         <el-option
-                          v-for="item in industry3"
-                          :key="item.value"
-                          :label="item.label"
-                          :value="item.value">
+                          v-for="item in sub_industry_models_3"
+                          :key="item.code"
+                          :data-id="item.id"
+                          :label="item.name"
+                          :value="item.code">
                         </el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="稿件上传">
                     <el-upload
                         class="upload-demo"
-                        action="https://jsonplaceholder.typicode.com/posts/"
+                        action="http://139.129.201.64/atreus/file/v1/upload"
                         :on-preview="handlePreview"
                         :on-remove="handleRemove"
                         :before-remove="beforeRemove"
                         multiple
-                        :limit="3"
+                        :limit="100"
                         :on-exceed="handleExceed"
                         :file-list="fileList">
                         <el-button size="small" type="primary">点击上传</el-button>
@@ -155,7 +167,8 @@
 </div>
 </template>
 
-<script type="text/babel">    
+<script type="text/babel">
+    //action="https://jsonplaceholder.typicode.com/posts/"
     import $ from 'jQuery'
     import * as localForage from 'localforage'
     import {mapGetters} from 'vuex'
@@ -165,8 +178,22 @@
         data() {
             return {
                 isUsedFaster:false,
-                fileList: [{name: 'food.docx', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}, {name: 'food2.doc', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}],
-                form: {},
+                fileList: [
+                    {name: 'food.docx', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}, 
+                    {name: 'food2.doc', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}
+                ],
+                form : {
+                    level_0 : '',
+                    level_1 : '',
+                    level_2 : '',
+                    level_3 : ''
+                },
+                customer_datas:[],
+                customer_indexpage:1,
+                name:'',
+                sname:'',
+                level:'',
+                type:'',
                 value4: '',
                 value5: '',
                 value1: [],
@@ -181,19 +208,24 @@
                     label: '语料'
                 }],
                 levels: [{
-                    value: '选项1',
+                    value: '1',
                     label: '权威级'
                 }, {
-                    value: '选项2',
+                    value: '2',
                     label: '标准级'
                 }, {
-                    value: '选项3',
+                    value: '3',
                     label: '参考级'
                 }],
-                industry0:[],
+                main_industry_models_0 : [],
+                sub_industry_models_1 : [],
+                sub_industry_models_2 : [],
+                sub_industry_models_3 : [],
+                sub_industry_models_4 : [],
                 industry1:[],
                 industry2:[],
                 industry3:[],
+                languagedatas:[],
                 language0: [{
                     value: '选项1',
                     label: '中文'
@@ -252,25 +284,90 @@
                 activeName: 'second'
             }    
         },
+        computed: {
+            ...mapGetters({
+                error_datas: 'error_datas',
+                main_industry_models_datas: 'main_industry_models_datas',
+                sub_one_industry_models_datas: 'sub_one_industry_models_datas',
+                sub_two_industry_models_datas: 'sub_two_industry_models_datas',
+                get_language_datas: 'get_language_datas',
+                customer_info_datas: 'customer_info_datas',
+                sub_there_industry_models_datas: 'sub_there_industry_models_datas'
+            })
+        },
+        watch: {
+            error_datas: function () {
+                console.log("error_datas:", this.error_datas)
+            },
+            main_industry_models_datas: function() {
+                this.$data.main_industry_models_0 = this.main_industry_models_datas
+            },
+            sub_one_industry_models_datas: function() {
+                this.$data.sub_industry_models_1 = this.sub_one_industry_models_datas
+            },
+            sub_two_industry_models_datas: function() {
+                this.$data.sub_industry_models_2 = this.sub_two_industry_models_datas
+            },
+            sub_there_industry_models_datas: function() {
+                this.$data.sub_industry_models_3 = this.sub_there_industry_models_datas
+            },
+            customer_info_datas: function() {
+                for (let keys of this.customer_info_datas.list) {
+                    this.$data.customer_datas.push(keys)
+                }
+                if (!!this.customer_info_datas.isLastPage) {
+                    return false
+                }
+                this.$data.customer_indexpage += 1
+                this.$store.dispatch('getCustomerInfo', this.$data.customer_indexpage)
+            },
+            get_language_datas: function() {
+                let datas = {}
+                for (let keys of this.get_language_datas) {
+                    datas = {}
+                    datas.value = keys.languageKey
+                    datas.label = keys.languageName
+                    this.$data.languagedatas.push(datas)
+                }
+            }
+        },
         mounted() {
-            let _self = this
-            let userDatas = {}
-            localForage.getItem('users').then(function(value) {
-                let data = {}
-                userDatas = value
-                data.token = userDatas.token
-                _self.$store.dispatch('getServiceInfo', data)
-                _self.$store.dispatch('getServiceMenusInfo', data)
-            }).catch(function(err) {
-                console.log(err);
-            });
+            let datas = ''
+            this.$store.dispatch('getIndustryInfo', datas)
+            this.$store.dispatch('getLanguage', datas)
+            datas = '1'
+            this.$store.dispatch('getCustomerInfo', datas)
         },
         methods: {
             handleClick(event) {
-                let eles = event.target
-                let index = parseInt(eles.getAttribute("data-index"), 10)
-                let datas = [this.$data.categoryDatas, index]
-                this.$store.dispatch('changeServiceMenusInfo', datas)
+
+            },
+            handleRemove(file, fileList) {
+                console.log(file, fileList);
+            },
+            handlePreview(file) {
+                console.log(file);
+            },
+            handleExceed(files, fileList) {
+                this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
+            },
+            beforeRemove(file, fileList) {
+                return this.$confirm(`确定移除 ${ file.name }？`);
+            },
+            getOneLevelDatas(event) {
+                let datas = this.$data.form.level_0
+                this.$store.dispatch('getOneIndustryInfo', datas)
+            },
+            getTwoLevelDatas(event) {
+                let datas = this.$data.form.level_1
+                this.$store.dispatch('getTwoIndustryInfo', datas)
+            },
+            getThereLevelDatas(event) {
+                let datas = this.$data.form.level_2
+                this.$store.dispatch('getThereIndustryInfo', datas)
+            },
+            onSubmit(event) {
+
             }
         }
     }

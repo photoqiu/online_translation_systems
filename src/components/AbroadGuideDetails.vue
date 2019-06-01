@@ -162,13 +162,13 @@
         name: "AbroadGuideDetails",
         computed: {
             ...mapGetters({
-                error_datas_flags: 'error_datas_flags',
+                error_datas: 'error_datas',
                 strategy_data_detail: 'strategy_data_detail'
             })
         },
         watch: {
-            error_datas_flags: function () {
-                console.log("user_error_datas:", this.error_datas_flags)
+            error_datas: function () {
+                console.log("error_datas:", this.error_datas)
             },
             strategy_data_detail: function() {
                 this.$data.strategy_data_detail_info = this.strategy_data_detail

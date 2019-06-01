@@ -1,15 +1,16 @@
 let DEBUG = process.env.NODE_ENV === 'production' ? false : true;
 let USER_API = DEBUG ? 'http://127.0.0.1:9000/atreus/' : 'http://127.0.0.1:9000/atreus/';
-// let USER_API = "http://132.232.35.109/"
-// http://139.129.201.64:8020/atreus/translator/v1/list
+// let USER_API = "http://139.129.201.64:8020/atreus/"
+// let USER_API = "http://139.129.201.64:8020/atreus/"
 const Constant = {
     debug : DEBUG,
     API   : {
-        translator             : USER_API + 'translator/v1/list', // 获取译员列表
+        translator             : USER_API + 'translator/v1/list{{pageIndex}}', // 获取译员列表
         industry               : USER_API + 'industry/v1/list?parentId=-1', // 行业列表
         subIndustry            : USER_API + 'industry/v1/list?parentId={{code}}', // 子行业列表
         language               : USER_API + 'language/dic/v1/list', // 语言列表
-        customer               : USER_API + 'customer/v1/list', // 客户列表
+        customer               : USER_API + 'customer/v1/list?pageNum={{pageIndex}}', // 客户列表
+        corpus                 : USER_API + 'corpus/v1/list?pageNum={{pageIndex}}&pageSize={{pageSize}}',
         /////////////////////////////攻略
         fileUpload             : USER_API + 'file/v1/upload',
         fileDetail             : USER_API + 'file/v1/detail',

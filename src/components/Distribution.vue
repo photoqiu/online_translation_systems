@@ -99,6 +99,34 @@
         componets : {
             canvasDatagrid:canvasDatagrid
         },
+        computed: {
+            ...mapGetters({
+                error_datas_flags: 'error_datas_flags',
+                translator_models_datas: 'translator_models_datas'
+            })
+        },
+        watch: {
+            error_datas_flags: function () {
+                console.log("user_error_datas:", this.error_datas_flags)
+            },
+            translator_models_datas: function() {
+                for (let ukeys of this.translator_models_datas.translators.list) {
+                    this.$data.translators.push([ukeys.id, ukeys.name])
+                }
+                if (this.translator_models_datas.translators.navigateLastPage > this.$data.pageIndex) {
+                    this.$data.pageIndex += 1
+                    let data = "?pageindex=" + this.$data.pageIndex
+                    this.$store.dispatch('getTranslatorInfo', data)
+                } else {
+                    for (let key of this.$data.grid.schema) {
+                        if (key.hasOwnProperty("enum")) {
+                            key.enum = this.$data.translators
+                        }
+                    }
+                    console.log("this.$data.translators:", this.$data.translators)
+                }
+            }
+        },
         data() {
             return {
                 grid: {
@@ -112,13 +140,6 @@
                         {
                             name: '初译译员',
                             enum: [
-                                ['a', 'a'],
-                                ['翻译员B', '翻译员B'],
-                                ['翻译员C', '翻译员C'],
-                                ['翻译员D', '翻译员D'],
-                                ['翻译员E', '翻译员E'],
-                                ['翻译员F', '翻译员F'],
-                                ['翻译员G', '翻译员G']
                             ]
                         },
                         {
@@ -152,16 +173,14 @@
                         {'原文': 'I sincerely hope that our common cause will be successful, and I wish us a bright future!', '状态(未翻译)': '', '初译译员': 'a', '审校译员': ''},
                         {'原文': 'I sincerely hope that our common cause will be successful, and I wish us a bright future!', '状态(未翻译)': '', '初译译员': 'a', '审校译员': ''}
                     ]
-                }
+                },
+                translators:[],
+                pageIndex:1
             }
         },
         mounted() {
-            localForage.getItem('users').then(function(value) {
-                let data = {}
-                userDatas = value
-            }).catch(function(err) {
-                console.log(err)
-            })
+            let data = "?pageindex=" + this.$data.pageIndex
+            this.$store.dispatch('getTranslatorInfo', data)
         },
         methods: {
             handleClose(key, keyPath) {

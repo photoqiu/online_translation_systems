@@ -132,7 +132,7 @@ devconfig.devServer = {
     },
     proxy: {
         '/atreus': {
-            target: 'http://139.129.201.64:8020/atreus/',
+            target: 'http://139.129.201.64:8020/',
             pathRewrite: {'^/atreus' : '/atreus'}
         }
     },
