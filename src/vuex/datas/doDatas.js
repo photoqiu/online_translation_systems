@@ -74,8 +74,12 @@ export default {
     doPostRawDatas(url, datas, cb, errorCb) {
         fetch(url, {
             credentials: 'same-origin',
+            mimeType: "multipart/form-data",
             headers: {
-                'Accept': 'application/json',
+                "Cache-Control": "no-cache",
+                "accept-encoding": "gzip, deflate",
+                "Connection": "keep-alive",
+                "cache-control": "no-cache",
                 'Content-Type' : 'multipart/form-data;charset=utf-8'
             },
             method: 'POST',

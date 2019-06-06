@@ -3,19 +3,21 @@ import asyncAPI from '../datas/doDatas.js'
 import * as types from '../mutation-types.js'
 
 const state = {
-    error_datas: {}
+    error_datas: {},
+    file_status: {}
 }
 
 // getters
 const getters = {
-    error_datas: state => state.error_datas
+    error_datas: state => state.error_datas,
+    file_status: state => state.file_status
 }
 
 // actions
 const actions = {
     doUploaderFile({commit}, datas) {
         let url = Constant.API.fileUpload
-        asyncAPI.doPostRawDatas(url, data,
+        asyncAPI.doPostRawDatas(url, datas,
             (datas) => commit(types.FILE_UPLOADER, datas),
             (datas) => commit(types.HTTP_STATUS_ERROR, datas)
         );

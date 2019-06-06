@@ -9,6 +9,25 @@
     .bd {
         margin:0;
         padding:0;
+        .showUploaderFiles {
+            position:relative;
+            .upload-file {
+                left:0;
+                top:3px;
+                width:140px;
+                height:40px;
+                position:absolute;
+                z-index:10;
+            }
+            .flowFileUploader {
+                left:0;
+                top:3px;
+                height:40px;
+                width:140px;
+                position:absolute;
+                z-index:1;
+            }
+        }
         .row {
             .el-steps {
                 border-top:1px soild #ccc;
@@ -20,9 +39,6 @@
             .el-select {
                 float:left;
                 width:600px;
-            }
-            .upload-demo {
-                float:left;
             }
             i {
                 float:left;
@@ -143,19 +159,10 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item label="稿件上传">
-                    <el-upload
-                        class="upload-demo"
-                        action="http://139.129.201.64/atreus/file/v1/upload"
-                        :on-preview="handlePreview"
-                        :on-remove="handleRemove"
-                        :before-remove="beforeRemove"
-                        multiple
-                        :limit="100"
-                        :on-exceed="handleExceed"
-                        :file-list="fileList">
-                        <el-button size="small" type="primary">点击上传</el-button>
-                        <div slot="tip" class="el-upload__tip">只能上传doc,pdf,docx,txt文件，且不超过20M</div>
-                    </el-upload>
+                    <div class="showUploaderFiles">
+                        <input type="file" class="custom-file-input upload-file" v-model="form.filepath"  @change="uploaderFiles" />
+                        <button type="button" class="btn btn-secondary flowFileUploader">点击上传</button>
+                    </div>
                 </el-form-item>
                 <el-form-item>
                     <el-button type="primary" @click="onSubmit">立即创建</el-button>
@@ -183,6 +190,7 @@
                     {name: 'food2.doc', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}
                 ],
                 form : {
+                    filepath : '',
                     level_0 : '',
                     level_1 : '',
                     level_2 : '',
@@ -339,20 +347,13 @@
             this.$store.dispatch('getCustomerInfo', datas)
         },
         methods: {
-            handleClick(event) {
-
-            },
-            handleRemove(file, fileList) {
-                console.log(file, fileList);
-            },
-            handlePreview(file) {
-                console.log(file);
-            },
-            handleExceed(files, fileList) {
-                this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
-            },
-            beforeRemove(file, fileList) {
-                return this.$confirm(`确定移除 ${ file.name }？`);
+            uploaderFiles(event) {
+                let elements = event.target
+                let filedatas = elements.files
+                console.log("filedatas : ", filedatas, elements.value, event)
+                let data = new FormData()
+                data.append("file", this.$data.form.filepath)
+                this.$store.dispatch('doUploaderFile', data)
             },
             getOneLevelDatas(event) {
                 let datas = this.$data.form.level_0
