@@ -160,7 +160,7 @@
                 </el-form-item>
                 <el-form-item label="稿件上传">
                     <div class="showUploaderFiles">
-                        <input type="file" class="custom-file-input upload-file" v-model="form.filepath"  @change="uploaderFiles" />
+                        <input type="file" id="input-file" class="custom-file-input upload-file" @change="uploaderFiles" />
                         <button type="button" class="btn btn-secondary flowFileUploader">点击上传</button>
                     </div>
                 </el-form-item>
@@ -349,11 +349,28 @@
         methods: {
             uploaderFiles(event) {
                 let elements = event.target
-                let filedatas = elements.files
-                console.log("filedatas : ", filedatas, elements.value, event)
+                let file_datas = elements.files
                 let data = new FormData()
-                data.append("file", this.$data.form.filepath)
-                this.$store.dispatch('doUploaderFile', data)
+                let _self = this
+                let path = ""
+                let FileReader = window.FileReader
+                if (FileReader) { //chrome浏览器处理
+                    let reader = new FileReader()
+                    reader.onload = function(e) {
+                        data.append("file", e.target.result)
+                    };
+                    reader.readAsDataURL(file_datas)
+                    setTimeout(function() {
+                        _self.$store.dispatch('doUploaderFile', data)
+                    },1000)
+                } else { //其他浏览器处理，火狐在这里就不写出来了，网上资料很多
+                    path = elements.value
+                    if (/"\w\W"/.test(path)) {
+                        path = path.slice(1, -1)
+                    }
+                    data.append("file", path)
+                    _self.$store.dispatch('doUploaderFile', data)
+                }
             },
             getOneLevelDatas(event) {
                 let datas = this.$data.form.level_0
