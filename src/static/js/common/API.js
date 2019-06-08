@@ -1,7 +1,7 @@
 let DEBUG = process.env.NODE_ENV === 'production' ? false : true;
 let USER_API = 'http://127.0.0.1:9000/atreus/';
 // let USER_API = "http://139.129.201.64/atreus/"
-// let USER_API = "http://139.129.201.64:8020/atreus/"
+// let USER_API = "http://139.129.201.64:8020/atreus//term/v1/list"
 const Constant = {
     debug : DEBUG,
     API   : {
@@ -14,6 +14,8 @@ const Constant = {
         /////////////////////////////攻略
         fileUpload             : USER_API + 'file/upload',
         fileDetail             : USER_API + 'file/v1/detail',
+        termList               : USER_API + 'term/v1/list?pageNum={{pageIndex}}', /// 获取所有术语库数据
+        getTermList            : USER_API + 'term/item/v1/list?pageNum={{pageIndex}}', /// 获取术语项列表
         termSave               : USER_API + 'term/v1/save', // 新增术语
         corpusSave             : USER_API + 'corpus/v1/save', // 新增语料
         getStrategyDetail      : USER_API + 'strategy/{{id}}?token={{token}}',

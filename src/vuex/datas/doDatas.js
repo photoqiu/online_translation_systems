@@ -1,5 +1,6 @@
 import 'whatwg-fetch'
 import 'fetch-jsonp'
+import $ from 'jQuery'
 
 function checkStatus(response) {
   if (response.status >= 200 && response.status < 300) {
@@ -29,7 +30,21 @@ export default {
             errorCb(error)
         })
     },
-    doFormPostDatas(url, datas, cb, errorCb) {
+    jQueryPostDatas(urls, datas, cb, errorCb) {
+        $.ajax({
+            url: urls,
+            type: 'POST',
+            data: datas,
+            cache: false,
+            processData: false,
+            contentType: false
+        }).done(function( msg ) {
+            cb( msg );
+        }).fail(function() {
+            errorCb( "error" );
+        })
+    },
+    doFormPostRawDatas(url, datas, cb, errorCb) {
         fetch(url, {
             method: 'POST',
             headers: {
@@ -41,6 +56,22 @@ export default {
             cb(response)
         }).catch(function(error) {
             errorCb(error)
+        })
+    },
+    doFormPostDatas(url, datas, cb, errorCb) {
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                "Content-type": "multipart/form-data"
+            },
+            credentials: 'same-origin',
+            body: datas
+        }).then(function(response) {
+            return response.json()
+        }).then(function(json) {
+            cb(json)
+        }).catch(function(ex) {
+            errorCb(ex)
         })
     },
     doFormDatas(url, datas, cb, errorCb) {

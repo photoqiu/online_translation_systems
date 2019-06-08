@@ -4,20 +4,20 @@ import * as types from '../mutation-types.js'
 
 const state = {
     error_datas: {},
-    file_status: {}
+    uploaders_file_status: {}
 }
 
 // getters
 const getters = {
     error_datas: state => state.error_datas,
-    file_status: state => state.file_status
+    uploaders_file_status: state => state.uploaders_file_status
 }
 
 // actions
 const actions = {
     doUploaderFile({commit}, datas) {
         let url = Constant.API.fileUpload
-        asyncAPI.doPostRawDatas(url, datas,
+        asyncAPI.jQueryPostDatas(url, datas,
             (datas) => commit(types.FILE_UPLOADER, datas),
             (datas) => commit(types.HTTP_STATUS_ERROR, datas)
         );
@@ -29,7 +29,12 @@ const mutations = {
         state.error_datas = {"data": "请求错误"}
     },
     [types.FILE_UPLOADER] (state, datas) {
-        console.log("uploader:", datas)
+        if (!!datas.data.status) {
+            state.uploaders_file_status = datas.data.result
+        } else {
+            state.error_datas = {"data": "系统错误"}
+        }
+
     }
 }
 
