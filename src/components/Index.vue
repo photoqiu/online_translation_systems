@@ -187,17 +187,27 @@
                     language : "英->中",
                     wordnumbers: "22324",
                     process: "40%"
-                }]
+                }],
+                pageIndex:1
+            }
+        },
+        computed: {
+            ...mapGetters({
+                error_datas: 'error_datas',
+                project_list_datas: 'project_list_datas'
+            })
+        },
+        watch: {
+            error_datas: function () {
+                console.log("error_datas:", this.error_datas)
+            },
+            project_list_datas: function() {
+                console.log("project_list_datas : ", this.project_list_datas)
             }
         },
         mounted() {
-            localForage.getItem('users').then(function(value) {
-                let data = {}
-                let userDatas = value
-            }).catch(function(err) {
-                // This code runs if there were any errors
-                console.log(err);
-            });
+            console.log("1111111111111111111111", this)
+            this.$store.dispatch('getProjectList', this.$data.pageIndex)
         },
         methods: {
             handleClick(row) {
@@ -205,16 +215,16 @@
                 window.location.href = "/#/blockarticle"
             },
             handleOpen(key, keyPath) {
-                console.log(key, keyPath);
+                console.log(key, keyPath)
             },
             handleSizeChange(val) {
-                console.log(`每页 ${val} 条`);
+                console.log(`每页 ${val} 条`)
             },
             handleCurrentChange(val) {
-                console.log(`当前页: ${val}`);
+                console.log(`当前页: ${val}`)
             },
             handleClose(key, keyPath) {
-                console.log(key, keyPath);
+                console.log(key, keyPath)
             }
         }
     }

@@ -17,6 +17,12 @@ const Constant = {
         termList               : USER_API + 'term/v1/list?pageNum={{pageIndex}}', /// 获取所有术语库数据
         getTermList            : USER_API + 'term/item/v1/list?pageNum={{pageIndex}}', /// 获取术语项列表
         termSave               : USER_API + 'term/v1/save', // 新增术语
+        /////////////////////////////////////////////////////////////
+        getProject             : USER_API + 'project/v1/list?pageNum={{pageIndex}}',
+        projectDetail          : USER_API + 'project/{{id}}/detail',
+        saveProject            : USER_API + 'project/v1/save',
+        delProject             : USER_API + 'project/file/v1/delete',
+        /////////////////////////////////////////////////////////////
         corpusSave             : USER_API + 'corpus/v1/save', // 新增语料
         getStrategyDetail      : USER_API + 'strategy/{{id}}?token={{token}}',
         /////////////////////////////////收藏列表

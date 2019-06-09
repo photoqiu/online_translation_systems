@@ -12,7 +12,12 @@ export const GET_LANGUAGE = 'GET_LANGUAGE'
 export const CUSTOMER = 'CUSTOMER'
 
 export const DO_TERM_SAVE = 'DO_TERM_SAVE'
-export const CORPUS_SAVE = 'CORPUS_SAVE'
 
+export const GET_PROJECT = 'GET_PROJECT'
+export const GET_PROJECT_DETAILS = 'GET_PROJECT_DETAILS'
+export const SAVE_PROJECT = 'SAVE_PROJECT'
+export const DEL_PROJECT = 'DEL_PROJECT'
+
+export const CORPUS_SAVE = 'CORPUS_SAVE'
 export const FILE_UPLOADER = 'FILE_UPLOADER'
 export const FILE_DETAIL = 'FILE_DETAIL'

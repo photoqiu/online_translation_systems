@@ -11,6 +11,7 @@ const state = {
     sub_four_industry_models_datas : [],
     customer_info_datas : {},
     get_language_datas:[],
+    project_list_datas: [],
     error_datas: {}
 }
 
@@ -24,6 +25,7 @@ const getters = {
     sub_four_industry_models_datas: state => state.sub_four_industry_models_datas,
     get_language_datas: state => state.get_language_datas,
     customer_info_datas: state => state.customer_info_datas,
+    project_list_datas: state => state.project_list_datas,
     error_datas: state => state.error_datas
 }
 
@@ -76,12 +78,21 @@ const actions = {
             (datas) => commit(types.HTTP_STATUS_ERROR, datas)
         );
     },
+    getProjectList({commit}, datas) {
+        let url = Constant.API.getProject
+        url = url.replace("{{pageIndex}}", datas)
+        console.log("url:", url)
+        asyncAPI.doPostDatas(url, {},
+            (datas) => commit(types.GET_PROJECT, datas),
+            (datas) => commit(types.HTTP_STATUS_ERROR, datas)
+        )
+    },
     getLanguage({commit}, datas) {
         let url = Constant.API.language
         asyncAPI.doGetDatas(url,
             (datas) => commit(types.GET_LANGUAGE, datas),
             (datas) => commit(types.HTTP_STATUS_ERROR, datas)
-        );
+        )
     }
 }
 
@@ -92,6 +103,13 @@ const mutations = {
     [types.TRANSLATOR] (state, datas) {
         if (!!datas.data.status) {
             state.translator_models_datas = datas.data || []
+        } else {
+            state.error_datas = {"data": "系统错误"}
+        }
+    },
+    [types.GET_PROJECT] (state, datas) {
+        if (!!datas.data.status) {
+            state.project_list_datas = datas.data.projects || []
         } else {
             state.error_datas = {"data": "系统错误"}
         }

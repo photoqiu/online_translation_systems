@@ -187,7 +187,6 @@
 </template>
 
 <script type="text/babel">
-    //action="https://jsonplaceholder.typicode.com/posts/"
     import $ from 'jQuery'
     import * as localForage from 'localforage'
     import {mapGetters} from 'vuex'
