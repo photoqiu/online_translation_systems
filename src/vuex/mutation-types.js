@@ -11,7 +11,7 @@ export const GET_CUSTOMER_DATAS = 'GET_CUSTOMER_DATAS'
 export const GET_LANGUAGE = 'GET_LANGUAGE'
 export const CUSTOMER = 'CUSTOMER'
 
-export const TERM_SAVE = 'TERM_SAVE'
+export const DO_TERM_SAVE = 'DO_TERM_SAVE'
 export const CORPUS_SAVE = 'CORPUS_SAVE'
 
 export const FILE_UPLOADER = 'FILE_UPLOADER'

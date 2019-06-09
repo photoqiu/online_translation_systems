@@ -76,7 +76,7 @@
                             :key="$index"
                             :data-datas="item.json_datas"
                             :label="item.customerName"
-                            :value="item.id">
+                            :value="item.json_datas">
                         </el-option>
                     </el-select>
                 </el-form-item>
@@ -110,7 +110,7 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item label="语言级别">
-                    <el-select v-model="form.industry1" placeholder="请选择">
+                    <el-select v-model="form.termLevel" placeholder="请选择">
                         <el-option
                           v-for="item in levels"
                           :key="item.value"
@@ -120,46 +120,46 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item label="一级行业">
-                    <el-select v-model="form.industry2" filterable @change="getOneLevelDatas" placeholder="请选择">
+                    <el-select v-model="form.industry1" filterable @change="getOneLevelDatas" placeholder="请选择">
                         <el-option
                           v-for="item in main_industry_models_0"
                           :key="item.code"
                           :data-id="item.id"
                           :label="item.name"
-                          :value="item.code">
+                          :value="item.json_data">
                         </el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="二级行业">
-                    <el-select v-model="form.industry3" filterable @change="getTwoLevelDatas" placeholder="请选择">
+                    <el-select v-model="form.industry2" filterable @change="getTwoLevelDatas" placeholder="请选择">
                         <el-option
                           v-for="item in sub_industry_models_1"
                           :key="item.code"
                           :data-id="item.id"
                           :label="item.name"
-                          :value="item.code">
+                          :value="item.json_data">
                         </el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="三级行业">
-                    <el-select v-model="form.industry4" filterable @change="getThereLevelDatas" placeholder="请选择">
+                    <el-select v-model="form.industry3" filterable @change="getThereLevelDatas" placeholder="请选择">
                         <el-option
                           v-for="item in sub_industry_models_2"
                           :key="item.code"
                           :data-id="item.id"
                           :label="item.name"
-                          :value="item.code">
+                          :value="item.json_data">
                         </el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="四级行业">
-                    <el-select v-model="form.industry5" filterable placeholder="请选择">
+                    <el-select v-model="form.industry4" filterable placeholder="请选择">
                         <el-option
                           v-for="item in sub_industry_models_3"
                           :key="item.code"
                           :data-id="item.id"
                           :label="item.name"
-                          :value="item.code">
+                          :value="item.json_data">
                         </el-option>
                     </el-select>
                 </el-form-item>
@@ -168,7 +168,7 @@
                         <input type="file" id="input-file" class="custom-file-input upload-file" @change="uploaderFiles" />
                         <button type="button" class="btn btn-secondary flowFileUploader">点击上传</button>
                     </div>
-                    <div class="downUpFile alert alert-light alert-dismissible fade show" role="alert" v-for="(item, $index) in file_datas" :data-id="item.id" :data-uuid="item.uuid">
+                    <div class="downUpFile alert alert-light alert-dismissible fade show" role="alert" v-for="(item, $index) in file_datas" :data-id="item.id" :data-uuid="item.uuid" :data-data="item.data">
                         <strong>上传文件：</strong> {{item.file_name}}
                         <button type="button" :data-index="$index" class="close" data-dismiss="alert" aria-label="Close" @click="delUpLoaderFiles">
                             <span aria-hidden="true" :data-index="$index">&times;</span>
@@ -200,23 +200,19 @@
                 form : {
                     id:0,
                     termName: '',
-                    customer: 0,
+                    
                     languageFrom: '',
                     languageTo: '',
                     termLevel:'',
+                    customer: '',
                     industry1:'',
                     industry2:'',
                     industry3:'',
                     industry4:'',
-                    industry5:'',
                     termFile: '',
-                    filepath : '',
-                    type: '',
-                    level_0 : '',
-                    level_1 : '',
-                    level_2 : '',
-                    level_3 : ''
+                    type: ''
                 },
+                fromdata:{},
                 customer_datas:[],
                 customer_indexpage:1,
                 name:'',
@@ -359,6 +355,7 @@
                 datas.uuid = this.uploaders_file_status.uuid
                 datas.data = JSON.stringify(this.uploaders_file_status)
                 this.$data.file_datas.push(datas)
+                this.$data.form.termFile = datas.data
             },
             get_language_datas: function() {
                 let datas = {}
@@ -388,24 +385,39 @@
                 this.$store.dispatch('doUploaderFile', data)
             },
             getOneLevelDatas(event) {
-                let datas = this.$data.form.industry1
-                this.$store.dispatch('getOneIndustryInfo', datas)
+                let datas = JSON.parse(this.$data.form.industry1)
+                this.$store.dispatch('getOneIndustryInfo', datas.code)
             },
             getTwoLevelDatas(event) {
-                let datas = this.$data.form.industry2
-                this.$store.dispatch('getTwoIndustryInfo', datas)
+                let datas = JSON.parse(this.$data.form.industry2)
+                this.$store.dispatch('getTwoIndustryInfo', datas.code)
             },
             getThereLevelDatas(event) {
-                let datas = this.$data.form.industry3
-                this.$store.dispatch('getThereIndustryInfo', datas)
+                let datas = JSON.parse(this.$data.form.industry3)
+                this.$store.dispatch('getThereIndustryInfo', datas.code)
             },
             delUpLoaderFiles(event) {
                 let elements = event.target
                 let index = parseInt(elements.getAttribute('data-index'), 10)
                 this.$data.file_datas.splice(index, 1)
+                this.$data.form.termFile.splice(index, 1)
             },
             onSubmit(event) {
-
+                let datas = {}
+                datas.id = this.$data.form.id
+                datas.termName = this.$data.form.termName
+                datas.languageFrom = this.$data.form.languageFrom
+                datas.languageTo = this.$data.form.languageTo
+                datas.termLevel = parseInt(this.$data.form.termLevel, 10)
+                datas.customer = JSON.parse(this.$data.form.customer)
+                datas.industry1 = JSON.parse(this.$data.form.industry1)
+                datas.industry2 = JSON.parse(this.$data.form.industry2)
+                datas.industry3 = JSON.parse(this.$data.form.industry3 || '{}')
+                datas.industry4 = JSON.parse(this.$data.form.industry4 || '{}')
+                datas.termFile = JSON.parse(this.$data.form.termFile)
+                datas.owner = 1
+                console.log("datas : ", datas)
+                this.$store.dispatch('doSaveTerm', datas)
             }
         }
     }

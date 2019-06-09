@@ -110,7 +110,13 @@ const mutations = {
     [types.MAIN_INDUSTRY] (state, datas) {
         console.log("datas : ", datas)
         if (!!datas.data.status) {
-            state.main_industry_models_datas = datas.data.industrys || []
+            let data = datas.data.industrys
+            let json_datas = []
+            for (let keys of data) {
+                keys.json_data = JSON.stringify(keys)
+                json_datas.push(keys)
+            }
+            state.main_industry_models_datas = json_datas
         } else {
             state.error_datas = {"data": "系统错误"}
         }
@@ -118,7 +124,13 @@ const mutations = {
     [types.SUB_ONE_INDUSTRY] (state, datas) {
         console.log("datas : ", datas)
         if (!!datas.data.status) {
-            state.sub_one_industry_models_datas = datas.data.industrys || []
+            let data = datas.data.industrys
+            let json_datas = []
+            for (let keys of data) {
+                keys.json_data = JSON.stringify(keys)
+                json_datas.push(keys)
+            }
+            state.sub_one_industry_models_datas = json_datas
         } else {
             state.error_datas = {"data": "系统错误"}
         }
@@ -126,7 +138,13 @@ const mutations = {
     [types.SUB_TWO_INDUSTRY] (state, datas) {
         console.log("datas : ", datas)
         if (!!datas.data.status) {
-            state.sub_two_industry_models_datas = datas.data.industrys || []
+            let data = datas.data.industrys
+            let json_datas = []
+            for (let keys of data) {
+                keys.json_data = JSON.stringify(keys)
+                json_datas.push(keys)
+            }
+            state.sub_two_industry_models_datas = json_datas
         } else {
             state.error_datas = {"data": "系统错误"}
         }
@@ -134,7 +152,13 @@ const mutations = {
     [types.SUB_THERE_INDUSTRY] (state, datas) {
         console.log("datas : ", datas)
         if (!!datas.data.status) {
-            state.sub_there_industry_models_datas = datas.data.industrys || []
+            let data = datas.data.industrys
+            let json_datas = []
+            for (let keys of data) {
+                keys.json_data = JSON.stringify(keys)
+                json_datas.push(keys)
+            }
+            state.sub_there_industry_models_datas = json_datas
         } else {
             state.error_datas = {"data": "系统错误"}
         }
