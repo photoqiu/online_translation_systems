@@ -5,6 +5,7 @@ import * as types from '../mutation-types.js'
 const state = {
     error_datas: {},
     uploaders_file_status: {},
+    save_project_status: {},
     save_term_status: {}
 }
 
@@ -12,6 +13,7 @@ const state = {
 const getters = {
     error_datas: state => state.error_datas,
     uploaders_file_status: state => state.uploaders_file_status,
+    save_project_status: state => state.save_project_status,
     save_term_status: state => state.save_term_status
 }
 
@@ -24,6 +26,13 @@ const actions = {
             (datas) => commit(types.HTTP_STATUS_ERROR, datas)
         );
     },
+    doSaveProject({commit}, datas) {
+        let url = Constant.API.saveProject
+        asyncAPI.doPostDatas(url, datas,
+            (datas) => commit(types.DO_PROJECT_SAVE, datas),
+            (datas) => commit(types.HTTP_STATUS_ERROR, datas)
+        );
+    },
     doSaveTerm({commit}, datas) {
         let url = Constant.API.termSave
         asyncAPI.doPostDatas(url, datas,
@@ -31,6 +40,7 @@ const actions = {
             (datas) => commit(types.HTTP_STATUS_ERROR, datas)
         );
     }
+    //saveProject
 }
 
 const mutations = {
@@ -43,7 +53,13 @@ const mutations = {
         } else {
             state.error_datas = {"data": "系统错误"}
         }
-
+    },
+    [types.DO_PROJECT_SAVE] (state, datas) {
+        if (!!datas.data.status) {
+            state.save_project_status = datas.data.result
+        } else {
+            state.error_datas = {"data": "系统错误"}
+        }
     },
     [types.FILE_UPLOADER] (state, datas) {
         if (!!datas.data.status) {

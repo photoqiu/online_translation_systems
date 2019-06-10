@@ -54,22 +54,23 @@
         <div class="row">
             <el-form ref="form" :model="form" label-width="180px">
                 <el-form-item label="项目名称">
-                    <el-input v-model="form.name"></el-input>
+                    <el-input v-model="form.projectName"></el-input>
                 </el-form-item>
                 <el-form-item label="项目经理">
-                    <el-select v-model="form.author" placeholder="请选择">
+                    <el-select v-model="form.customer" placeholder="请选择">
                         <el-option
-                          v-for="item in author"
-                          :key="item.value"
-                          :label="item.label"
-                          :value="item.value">
+                            v-for="(item, $index) in customer_datas"
+                            :key="$index"
+                            :data-datas="item.json_datas"
+                            :label="item.customerName"
+                            :value="item.json_datas">
                         </el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="起止时间：">
                     <el-date-picker
-                        v-model="value2"
-                        type="daterange"
+                        v-model="form.startTime"
+                        type="datetimerange"
                         align="right"
                         unlink-panels
                         range-separator="至"
@@ -94,19 +95,19 @@
                     </el-upload>
                 </el-form-item>
                 <el-form-item label="语言">
-                    <el-select v-model="value4" placeholder="请选择">
+                    <el-select v-model="form.languageFrom" placeholder="请选择">
                         <el-option
-                          v-for="item in language0"
-                          :key="item.value"
+                          v-for="(item, $index) in languagedatas"
+                          :key="$index"
                           :label="item.label"
                           :value="item.value">
                         </el-option>
                     </el-select>
                     <i class="fas fa-arrows-alt-h" style="font-size:18px;"></i>
-                    <el-select v-model="value5" placeholder="请选择">
+                    <el-select v-model="form.languageTo" placeholder="请选择">
                         <el-option
-                          v-for="item in language0"
-                          :key="item.value"
+                          v-for="(item, $index) in languagedatas"
+                          :key="$index"
                           :label="item.label"
                           :value="item.value">
                         </el-option>
@@ -115,8 +116,8 @@
                 <el-form-item label="字数">
                         <el-input
                             placeholder="字数显示"
-                            v-model="input"
-                            :disabled="true">
+                            v-model="form.wordCount"
+                            :disabled="false">
                         </el-input>
                 </el-form-item>
                 <el-form-item label="语料库（可多选）">
@@ -130,12 +131,12 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item label="术语库（可多选）">
-                    <el-select v-model="value2" multiple placeholder="请选择">
+                    <el-select v-model="form.termid" multiple placeholder="请选择">
                         <el-option
-                            v-for="item in options1"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value">
+                            v-for="item in get_term_list_datas"
+                            :key="item.id"
+                            :label="item.termName"
+                            :value="item.id">
                         </el-option>
                     </el-select>
                 </el-form-item>
@@ -163,21 +164,24 @@
     import $ from 'jQuery'
     import * as localForage from 'localforage'
     import {mapGetters} from 'vuex'
-    
+    import 'moment'
+
     export default {
         name: "CreateProjectBase",
         data() {
             return {
                 isUsedFaster:false,
+                languagedatas:[],
                 fileList: [{name: 'food.docx', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}, {name: 'food2.doc', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}],
                 pickerOptions: {
                     shortcuts: [{
                         text: '最近一周',
                         onClick(picker) {
-                          const end = new Date();
-                          const start = new Date();
-                          start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
-                          picker.$emit('pick', [start, end]);
+                            const end = new Date();
+                            const start = new Date();
+                            start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+                            console.log("0 -----------> datas : ", start, end)
+                            picker.$emit('pick', [start, end]);
                         }
                     }, {
                         text: '最近一个月',
@@ -185,6 +189,7 @@
                             const end = new Date();
                             const start = new Date();
                             start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+                            console.log("1 -----------> datas : ", start, end)
                             picker.$emit('pick', [start, end]);
                         }
                     }, {
@@ -193,17 +198,29 @@
                             const end = new Date();
                             const start = new Date();
                             start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+                            console.log("2 -----------> datas : ", start, end)
                             picker.$emit('pick', [start, end]);
                         }
                     }]
                 },
-                form: {},
+                form: {
+                    languageFrom: '',
+                    languageTo: '',
+                    projectName: '',
+                    customer: {},
+                    startTime:'',
+                    endTime:'',
+                    termid:'',
+                    sourceFiles:{},
+                    wordCount:0,
+                    progress:0
+                },
+                customer_datas: [],
                 value4: '',
                 value5: '',
+                value3: '',
                 value1: [],
                 value2: [],
-                value3: [],
-                input: '10000000000字',
                 author: [{
                     value: '选项1',
                     label: '张三'
@@ -219,22 +236,6 @@
                 }, {
                     value: '选项5',
                     label: '....'
-                }],
-                language0: [{
-                    value: '选项1',
-                    label: '中文'
-                }, {
-                    value: '选项2',
-                    label: '英文'
-                }, {
-                    value: '选项3',
-                    label: '法文'
-                }, {
-                    value: '选项4',
-                    label: '日文'
-                }, {
-                    value: '选项5',
-                    label: '韩文'
                 }],
                 options0: [{
                     value: '选项1',
@@ -275,28 +276,82 @@
                     value: '选项4',
                     label: '中国汽车工程学会'
                 }],
+                customer_indexpage: 1,
+                term_indexpage: 1,
+                get_term_list_datas:[],
                 activeName: 'second'
             }    
         },
+        computed: {
+            ...mapGetters({
+                error_datas: 'error_datas',
+                get_language_datas: 'get_language_datas',
+                term_list_datas: 'term_list_datas',
+                customer_info_datas: 'customer_info_datas'
+            })
+        },
+        watch: {
+            error_datas: function () {
+                console.log("error_datas:", this.error_datas)
+            },
+            term_list_datas: function() {
+                for (let keys of this.term_list_datas.list) {
+                    this.$data.get_term_list_datas.push(keys)
+                }
+                if (!!this.term_list_datas.isLastPage) {
+                    return false
+                }
+                this.$data.term_indexpage += 1
+                this.$store.dispatch('getTermList', this.$data.term_indexpage)
+            },
+            customer_info_datas: function() {
+                for (let keys of this.customer_info_datas.list) {
+                    this.$data.customer_datas.push(keys)
+                }
+                if (!!this.customer_info_datas.isLastPage) {
+                    return false
+                }
+                this.$data.customer_indexpage += 1
+                this.$store.dispatch('getCustomerInfo', this.$data.customer_indexpage)
+            },
+            get_language_datas: function() {
+                let datas = {}
+                for (let keys of this.get_language_datas) {
+                    datas = {}
+                    datas.value = keys.languageKey
+                    datas.label = keys.languageName
+                    this.$data.languagedatas.push(datas)
+                }
+            }
+        },
         mounted() {
-            let _self = this
-            let userDatas = {}
-            localForage.getItem('users').then(function(value) {
-                let data = {}
-                userDatas = value
-                data.token = userDatas.token
-                _self.$store.dispatch('getServiceInfo', data)
-                _self.$store.dispatch('getServiceMenusInfo', data)
-            }).catch(function(err) {
-                console.log(err);
-            });
+            let datas = ''
+            this.$store.dispatch('getLanguage', datas)
+            datas = '1'
+            this.$store.dispatch('getCustomerInfo', datas)
+            this.$store.dispatch('getTermList', datas)
         },
         methods: {
-            handleClick(event) {
-                let eles = event.target
-                let index = parseInt(eles.getAttribute("data-index"), 10)
-                let datas = [this.$data.categoryDatas, index]
-                this.$store.dispatch('changeServiceMenusInfo', datas)
+            onSubmit(event) {
+                console.log("form : ", this.$data.form)
+                let beginTimer = moment(this.$data.form.startTime[0], "YYYY-MM-DD HH:mm:ss").format().replace("T", ' ').split("+")[0]
+                let endTimer = moment(this.$data.form.startTime[1], "YYYY-MM-DD HH:mm:ss").format().replace("T", ' ').split("+")[0]
+                this.$data.form.startTime = beginTimer
+                this.$data.form.endTime = endTimer
+                this.$store.dispatch('doSaveProject', this.$data.form)
+                console.log("1--------------> form : ", beginTimer, endTimer)
+            },
+            handleExceed(event) {
+
+            },
+            beforeRemove(event) {
+
+            },
+            handleRemove(event) {
+
+            },
+            handlePreview(event) {
+
             }
         }
     }

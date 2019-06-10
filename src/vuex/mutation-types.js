@@ -7,7 +7,7 @@ export const SUB_TWO_INDUSTRY = 'SUB_TWO_INDUSTRY'
 export const SUB_THERE_INDUSTRY = 'SUB_THERE_INDUSTRY'
 export const SUB_FOUR_INDUSTRY = 'SUB_FOUR_INDUSTRY'
 export const GET_CUSTOMER_DATAS = 'GET_CUSTOMER_DATAS'
-
+export const GET_TERM_LIST = 'GET_TERM_LIST'
 export const GET_LANGUAGE = 'GET_LANGUAGE'
 export const CUSTOMER = 'CUSTOMER'
 
@@ -15,7 +15,8 @@ export const DO_TERM_SAVE = 'DO_TERM_SAVE'
 
 export const GET_PROJECT = 'GET_PROJECT'
 export const GET_PROJECT_DETAILS = 'GET_PROJECT_DETAILS'
-export const SAVE_PROJECT = 'SAVE_PROJECT'
+
+export const DO_PROJECT_SAVE = 'DO_PROJECT_SAVE'
 export const DEL_PROJECT = 'DEL_PROJECT'
 
 export const CORPUS_SAVE = 'CORPUS_SAVE'

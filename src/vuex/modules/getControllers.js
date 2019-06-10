@@ -12,6 +12,7 @@ const state = {
     customer_info_datas : {},
     get_language_datas:[],
     project_list_datas: [],
+    term_list_datas:[],
     error_datas: {}
 }
 
@@ -26,6 +27,7 @@ const getters = {
     get_language_datas: state => state.get_language_datas,
     customer_info_datas: state => state.customer_info_datas,
     project_list_datas: state => state.project_list_datas,
+    term_list_datas: state => state.term_list_datas,
     error_datas: state => state.error_datas
 }
 
@@ -36,6 +38,14 @@ const actions = {
         url = url.replace("{{pageIndex}}", datas)
         asyncAPI.doGetDatas(url,
             (datas) => commit(types.TRANSLATOR, datas),
+            (datas) => commit(types.HTTP_STATUS_ERROR, datas)
+        );
+    },
+    getTermList({commit}, datas) {
+        let url = Constant.API.termList
+        url = url.replace("{{pageIndex}}", datas)
+        asyncAPI.doGetDatas(url,
+            (datas) => commit(types.GET_TERM_LIST, datas),
             (datas) => commit(types.HTTP_STATUS_ERROR, datas)
         );
     },
@@ -103,6 +113,13 @@ const mutations = {
     [types.TRANSLATOR] (state, datas) {
         if (!!datas.data.status) {
             state.translator_models_datas = datas.data || []
+        } else {
+            state.error_datas = {"data": "系统错误"}
+        }
+    },
+    [types.GET_TERM_LIST] (state, datas) {
+        if (!!datas.data.status) {
+            state.term_list_datas = datas.data.terms || []
         } else {
             state.error_datas = {"data": "系统错误"}
         }
