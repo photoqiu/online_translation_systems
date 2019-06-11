@@ -1,7 +1,7 @@
 let DEBUG = process.env.NODE_ENV === 'production' ? false : true;
 let USER_API = 'http://127.0.0.1:9000/atreus/';
 // let USER_API = "http://139.129.201.64/atreus/"
-// let USER_API = "http://139.129.201.64:8020/atreus//term/v1/list"
+// let USER_API = "http://139.129.201.64:8020/atreus/user/v1/list?pageNum=1"
 const Constant = {
     debug : DEBUG,
     API   : {
@@ -11,6 +11,7 @@ const Constant = {
         language               : USER_API + 'language/dic/v1/list', // 语言列表
         customer               : USER_API + 'customer/v1/list?pageNum={{pageIndex}}', // 客户列表
         corpus                 : USER_API + 'corpus/v1/list?pageNum={{pageIndex}}&pageSize={{pageSize}}',
+        getUsers               : USER_API + 'user/v1/list?pageNum={{pageIndex}}',
         /////////////////////////////攻略
         fileUpload             : USER_API + 'file/upload',
         fileDetail             : USER_API + 'file/v1/detail',

@@ -62,7 +62,7 @@
                             v-for="(item, $index) in customer_datas"
                             :key="$index"
                             :data-datas="item.json_datas"
-                            :label="item.customerName"
+                            :label="item.nickName"
                             :value="item.json_datas">
                         </el-option>
                     </el-select>
@@ -82,14 +82,14 @@
                 <el-form-item label="稿件上传">
                     <el-upload
                         class="upload-demo"
-                        action="https://jsonplaceholder.typicode.com/posts/"
+                        action="/atreus/file/upload"
                         :on-preview="handlePreview"
                         :on-remove="handleRemove"
                         :before-remove="beforeRemove"
                         multiple
-                        :limit="3"
+                        :limit="100"
                         :on-exceed="handleExceed"
-                        :file-list="fileList">
+                        :file-list="form.fileList">
                         <el-button size="small" type="primary">点击上传</el-button>
                         <div slot="tip" class="el-upload__tip">只能上传doc,pdf,docx,txt文件，且不超过20M</div>
                     </el-upload>
@@ -172,7 +172,7 @@
             return {
                 isUsedFaster:false,
                 languagedatas:[],
-                fileList: [{name: 'food.docx', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}, {name: 'food2.doc', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}],
+                fileList: [],
                 pickerOptions: {
                     shortcuts: [{
                         text: '最近一周',
@@ -213,6 +213,7 @@
                     termid:'',
                     sourceFiles:{},
                     wordCount:0,
+                    fileList: [],
                     progress:0
                 },
                 customer_datas: [],
@@ -287,12 +288,27 @@
                 error_datas: 'error_datas',
                 get_language_datas: 'get_language_datas',
                 term_list_datas: 'term_list_datas',
+                users_list_datas: 'users_list_datas',
                 customer_info_datas: 'customer_info_datas'
             })
         },
         watch: {
             error_datas: function () {
                 console.log("error_datas:", this.error_datas)
+            },
+            users_list_datas: function() {
+                for (let keys of this.users_list_datas.list) {
+                    if(keys.roleId >= 2 && keys.status === 1) {
+                        keys.json_datas = JSON.stringify(keys)
+                        this.$data.customer_datas.push(keys)
+                    }
+                }
+                if (!!this.users_list_datas.isLastPage) {
+                    console.log(this.$data.customer_datas)
+                    return false
+                }
+                this.$data.customer_indexpage += 1
+                this.$store.dispatch('getUsersInfo', this.$data.customer_indexpage)
             },
             term_list_datas: function() {
                 for (let keys of this.term_list_datas.list) {
@@ -303,16 +319,6 @@
                 }
                 this.$data.term_indexpage += 1
                 this.$store.dispatch('getTermList', this.$data.term_indexpage)
-            },
-            customer_info_datas: function() {
-                for (let keys of this.customer_info_datas.list) {
-                    this.$data.customer_datas.push(keys)
-                }
-                if (!!this.customer_info_datas.isLastPage) {
-                    return false
-                }
-                this.$data.customer_indexpage += 1
-                this.$store.dispatch('getCustomerInfo', this.$data.customer_indexpage)
             },
             get_language_datas: function() {
                 let datas = {}
@@ -328,7 +334,7 @@
             let datas = ''
             this.$store.dispatch('getLanguage', datas)
             datas = '1'
-            this.$store.dispatch('getCustomerInfo', datas)
+            this.$store.dispatch('getUsersInfo', datas)
             this.$store.dispatch('getTermList', datas)
         },
         methods: {
@@ -342,7 +348,13 @@
                 console.log("1--------------> form : ", beginTimer, endTimer)
             },
             handleExceed(event) {
-
+                let elements = event.target
+                let file_datas = elements.files[0]
+                let data = new FormData()
+                let _self = this
+                let path = ""
+                data.append("file", file_datas)
+                this.$store.dispatch('doUploaderFile', data)
             },
             beforeRemove(event) {
 

@@ -12,7 +12,8 @@ const state = {
     customer_info_datas : {},
     get_language_datas:[],
     project_list_datas: [],
-    term_list_datas:[],
+    term_list_datas: [],
+    users_list_datas: [],
     error_datas: {}
 }
 
@@ -28,6 +29,7 @@ const getters = {
     customer_info_datas: state => state.customer_info_datas,
     project_list_datas: state => state.project_list_datas,
     term_list_datas: state => state.term_list_datas,
+    users_list_datas: state => state.users_list_datas,
     error_datas: state => state.error_datas
 }
 
@@ -38,6 +40,14 @@ const actions = {
         url = url.replace("{{pageIndex}}", datas)
         asyncAPI.doGetDatas(url,
             (datas) => commit(types.TRANSLATOR, datas),
+            (datas) => commit(types.HTTP_STATUS_ERROR, datas)
+        );
+    },
+    getUsersInfo({commit}, datas) {
+        let url = Constant.API.getUsers
+        url = url.replace("{{pageIndex}}", datas)
+        asyncAPI.doGetDatas(url,
+            (datas) => commit(types.GET_USERS_LIST, datas),
             (datas) => commit(types.HTTP_STATUS_ERROR, datas)
         );
     },
@@ -109,6 +119,13 @@ const actions = {
 const mutations = {
     [types.HTTP_STATUS_ERROR] (state, datas) {
         state.error_datas = {"data": "请求错误"}
+    },
+    [types.GET_USERS_LIST] (state, datas) {
+        if (!!datas.data.status) {
+            state.users_list_datas = datas.data.users || []
+        } else {
+            state.error_datas = {"data": "系统错误"}
+        }
     },
     [types.TRANSLATOR] (state, datas) {
         if (!!datas.data.status) {

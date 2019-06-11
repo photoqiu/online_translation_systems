@@ -15,9 +15,10 @@ export const DO_TERM_SAVE = 'DO_TERM_SAVE'
 
 export const GET_PROJECT = 'GET_PROJECT'
 export const GET_PROJECT_DETAILS = 'GET_PROJECT_DETAILS'
-
 export const DO_PROJECT_SAVE = 'DO_PROJECT_SAVE'
 export const DEL_PROJECT = 'DEL_PROJECT'
+
+export const GET_USERS_LIST = 'GET_USERS_LIST'
 
 export const CORPUS_SAVE = 'CORPUS_SAVE'
 export const FILE_UPLOADER = 'FILE_UPLOADER'
