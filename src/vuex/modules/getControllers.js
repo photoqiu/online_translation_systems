@@ -8,7 +8,6 @@ const state = {
     sub_one_industry_models_datas : [],
     sub_two_industry_models_datas : [],
     sub_there_industry_models_datas : [],
-    sub_four_industry_models_datas : [],
     customer_info_datas : {},
     get_language_datas:[],
     project_list_datas: [],
@@ -24,7 +23,6 @@ const getters = {
     sub_one_industry_models_datas: state => state.sub_one_industry_models_datas,
     sub_two_industry_models_datas: state => state.sub_two_industry_models_datas,
     sub_there_industry_models_datas: state => state.sub_there_industry_models_datas,
-    sub_four_industry_models_datas: state => state.sub_four_industry_models_datas,
     get_language_datas: state => state.get_language_datas,
     customer_info_datas: state => state.customer_info_datas,
     project_list_datas: state => state.project_list_datas,
@@ -210,6 +208,7 @@ const mutations = {
                 keys.json_data = JSON.stringify(keys)
                 json_datas.push(keys)
             }
+            console.log("datas:", data)
             state.sub_there_industry_models_datas = json_datas
         } else {
             state.error_datas = {"data": "系统错误"}
