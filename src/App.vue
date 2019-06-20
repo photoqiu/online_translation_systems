@@ -65,33 +65,34 @@ body > .el-container {
                                 <span slot="title">项目功能列表</span>
                             </template>
                             <el-menu-item-group>
-                                <span slot="title">初审</span>
+                                <span slot="title">项目</span>
                                 <el-menu-item index="1-1" :route="{path: '/', activeClass: 'active'}">
                                     项目列表
                                 </el-menu-item>
-                                <el-menu-item index="1-2" :route="{path: '/statistics', activeClass: 'active'}">初审审校</el-menu-item>
-                                <el-menu-item index="1-3" :route="{path: '/qareport', activeClass: 'active'}">
-                                    稿件分析报告
+                                <el-menu-item index="1-2" :route="{path: '/statistics', activeClass: 'active'}">进行中的项目..</el-menu-item>
+                                <el-menu-item index="1-3" :route="{path: '/statistics', activeClass: 'active'}">已完成项目</el-menu-item>
+                                <el-menu-item index="1-4" :route="{path: '/qareport', activeClass: 'active'}">
+                                    初审审校 稿件分析报告
                                 </el-menu-item>
                             </el-menu-item-group>
-                            <el-menu-item-group title="创建项目">
-                                <el-menu-item index="1-3" :route="{path: '/createbase', activeClass: 'active'}">基本信息</el-menu-item>
-                                <el-menu-item index="1-4" :route="{path: '/projectdetail', activeClass: 'active'}">项目详情</el-menu-item>
-                                <el-menu-item index="1-5" :route="{path: '/equallydistributed', activeClass: 'active'}">稿件分配</el-menu-item>
+                            <el-menu-item-group title="审校相关">
+                                <el-menu-item index="1-3-1" :route="{path: '/createbase', activeClass: 'active'}">初审审校</el-menu-item>
+                                <el-menu-item index="1-4-1" :route="{path: '/projectdetail', activeClass: 'active'}">稿件分析报告 </el-menu-item>
+                                <el-menu-item index="1-5-1" :route="{path: '/equallydistributed', activeClass: 'active'}">稿件分配</el-menu-item>
                             </el-menu-item-group>
                             <el-submenu index="1-7">
-                                <span slot="title">翻译字典</span>
-                                <el-menu-item index="1-4-1" :route="{path: '/createterm', activeClass: 'active'}">
-                                    新建翻译字典
+                                <span slot="title">语料库</span>
+                                <el-menu-item index="1-4-1" :route="{path: '/createcorpus', activeClass: 'active'}">
+                                    新建语料库
                                 </el-menu-item>
                                 <el-menu-item index="1-4-2" :route="{path: '/term', activeClass: 'active'}">
-                                    编辑翻译字典
+                                    编辑语料库
                                 </el-menu-item>
                                 <el-menu-item index="1-4-4">
-                                    导入术语库
+                                    导入语料库
                                 </el-menu-item>
                                 <el-menu-item index="1-4-3" :route="{path: '/term', activeClass: 'active'}">
-                                    查看翻译字典
+                                    查看语料库
                                 </el-menu-item>
                             </el-submenu>
                             <el-submenu index="1-8">
@@ -110,18 +111,6 @@ body > .el-container {
                                 </el-menu-item>
                             </el-submenu>
                         </el-submenu>
-                        <el-menu-item index="2">
-                            <i class="el-icon-menu"></i>
-                            <span slot="title">进行中翻译任务</span>
-                        </el-menu-item>
-                        <el-menu-item index="3" disabled>
-                            <i class="el-icon-document"></i>
-                            <span slot="title">已完成翻译任务</span>
-                        </el-menu-item>
-                        <el-menu-item index="4">
-                            <i class="el-icon-setting"></i>
-                            <span slot="title">统计翻译</span>
-                        </el-menu-item>
                     </el-menu>
                 </el-aside>
                 <el-container>

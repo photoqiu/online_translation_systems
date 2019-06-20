@@ -13,6 +13,8 @@ const state = {
     project_list_datas: [],
     term_list_datas: [],
     users_list_datas: [],
+    corpus_list_datas: [],
+    assign_part_list_datas: [],
     error_datas: {}
 }
 
@@ -28,6 +30,8 @@ const getters = {
     project_list_datas: state => state.project_list_datas,
     term_list_datas: state => state.term_list_datas,
     users_list_datas: state => state.users_list_datas,
+    corpus_list_datas: state => state.corpus_list_datas,
+    assign_part_list_datas: state => state.assign_part_list_datas,
     error_datas: state => state.error_datas
 }
 
@@ -41,6 +45,15 @@ const actions = {
             (datas) => commit(types.HTTP_STATUS_ERROR, datas)
         );
     },
+    getPartInfo({commit}, datas) {
+        let url = Constant.API.getFilePartList
+        //projectFileId
+        url = url.replace("{{projectFileId}}", datas)
+        asyncAPI.doGetDatas(url,
+            (datas) => commit(types.ASSIGN_PART_LIST, datas),
+            (datas) => commit(types.HTTP_STATUS_ERROR, datas)
+        );
+    }
     getUsersInfo({commit}, datas) {
         let url = Constant.API.getUsers
         url = url.replace("{{pageIndex}}", datas)
@@ -54,6 +67,15 @@ const actions = {
         url = url.replace("{{pageIndex}}", datas)
         asyncAPI.doGetDatas(url,
             (datas) => commit(types.GET_TERM_LIST, datas),
+            (datas) => commit(types.HTTP_STATUS_ERROR, datas)
+        );
+    },
+    getCorpusList({commit}, datas) {
+        let url = Constant.API.corpusList
+        url = url.replace("{{pageIndex}}", datas)
+        url = url.replace("{{pageSize}}", 15)
+        asyncAPI.doGetDatas(url,
+            (datas) => commit(types.GET_CORPUS_LIST, datas),
             (datas) => commit(types.HTTP_STATUS_ERROR, datas)
         );
     },
@@ -100,7 +122,7 @@ const actions = {
         let url = Constant.API.getProject
         url = url.replace("{{pageIndex}}", datas)
         console.log("url:", url)
-        asyncAPI.doPostDatas(url, {},
+        asyncAPI.doGetDatas(url,
             (datas) => commit(types.GET_PROJECT, datas),
             (datas) => commit(types.HTTP_STATUS_ERROR, datas)
         )
@@ -118,9 +140,23 @@ const mutations = {
     [types.HTTP_STATUS_ERROR] (state, datas) {
         state.error_datas = {"data": "请求错误"}
     },
+    [types.ASSIGN_PART_LIST] (state, datas) {
+        if (!!datas.data.status) {
+            state.assign_part_list_datas = datas.data.users || []
+        } else {
+            state.error_datas = {"data": "系统错误"}
+        }
+    },
     [types.GET_USERS_LIST] (state, datas) {
         if (!!datas.data.status) {
             state.users_list_datas = datas.data.users || []
+        } else {
+            state.error_datas = {"data": "系统错误"}
+        }
+    },
+    [types.GET_CORPUS_LIST] (state, datas) {
+        if (!!datas.data.status) {
+            state.corpus_list_datas = datas.data || []
         } else {
             state.error_datas = {"data": "系统错误"}
         }

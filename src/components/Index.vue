@@ -54,6 +54,7 @@
                     <el-form-item label="项目名称:">
                         <el-input placeholder="请输入内容" prefix-icon="el-icon-search" v-model="form.search_text"></el-input>
                     </el-form-item>
+
                     <el-form-item label="项目经理:">
                         <el-select v-model="form.region_users" placeholder="请选择项目经理">
                             <el-option label="张三" value="shanghai"></el-option>
@@ -73,6 +74,17 @@
                 </el-form>
             </div>
         </el-col>
+    </el-row>
+    <el-row :gutter="20">
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h1 class="h2">项目列表</h1>
+            <div class="btn-toolbar mb-2 mb-md-0">
+                <div class="btn-group mr-2">
+                    <button type="button" class="btn btn-sm btn-outline-secondary">新建项目</button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary">新建区块</button>
+                </div>
+            </div>
+        </div>
     </el-row>
     <el-table
         :data="tableData"
@@ -118,8 +130,9 @@
         <el-table-column
           fixed="right"
           label="操作"
-          width="120">
+          width="220">
           <template slot-scope="scope">
+            <el-button @click="handleClick(scope.row)" type="text" size="small">项目详情</el-button>
             <el-button @click="handleClick(scope.row)" type="text" size="small">查看区块</el-button>
             <el-button type="text" size="small">审校</el-button>
           </template>

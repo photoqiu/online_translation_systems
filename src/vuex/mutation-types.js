@@ -21,5 +21,9 @@ export const DEL_PROJECT = 'DEL_PROJECT'
 export const GET_USERS_LIST = 'GET_USERS_LIST'
 
 export const CORPUS_SAVE = 'CORPUS_SAVE'
+export const GET_CORPUS_LIST = 'GET_CORPUS_LIST'
+
 export const FILE_UPLOADER = 'FILE_UPLOADER'
 export const FILE_DETAIL = 'FILE_DETAIL'
+
+export const ASSIGN_PART_LIST = 'ASSIGN_PART_LIST'

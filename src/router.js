@@ -12,6 +12,7 @@ import EquallyDistributed from './components/EquallyDistributed.vue'
 import BlockArticle from './components/BlockArticle.vue'
 import Term from './components/Term.vue'
 import CreateTerm from './components/CreateTerm.vue'
+import CreateCorpus from './components/CreateCorpus.vue'
 import EditorTerm from './components/EditorTerm.vue'
 import TermList from './components/TermList.vue'
 import UploaderTerm from './components/UploaderTerm.vue'
@@ -25,6 +26,10 @@ const router = new VueRouter({
         {
             path: '*',
             redirect: '/notfound'
+        }, {
+            path: '/createcorpus',
+            name: 'CreateCorpus',
+            component: CreateCorpus
         }, {
             path: '/userguide',
             name: 'userguide',
