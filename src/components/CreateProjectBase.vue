@@ -324,16 +324,17 @@
                     sourceFiles:[],
                     wordCount:0,
                     id: 0,
+                    projectId: 0,
                     fileList: [
                         {
-                            "id": 0,
-                            "projectId": 0,
-                            "file": {},
-                            "industry1": '',
-                            "industry2": '',
-                            "industry3": '',
-                            "industry4": '',
-                            "prohibited": ''
+                            id: 0,
+                            projectId: 0,
+                            file: {},
+                            industry1: '',
+                            industry2: '',
+                            industry3: '',
+                            industry4: '',
+                            prohibited: ''
                         }
                     ],
                     progress:0
@@ -543,7 +544,6 @@
                 }
                 let elements = event.target
                 this.$data.addFileOrder += 1
-                console.log("this.$data.addFileOrder : ", this.$data.addFileOrder)
                 for (var i = 0; i < this.$data.addFileOrder; i++) {
                     if (i === this.$data.currentIndex) {
                         this.$data.titleStyle[i] = 'list-group-item list-group-item-action active'
@@ -592,6 +592,8 @@
                     datas.fileList[i].industry3 = JSON.parse(this.$data.form.fileList[i].industry3)
                     datas.fileList[i].industry4 = JSON.parse(this.$data.form.fileList[i].industry4)
                     datas.fileList[i].file = this.$data.form.fileList[i].file
+                    datas.fileList[i].id = 0
+                    datas.fileList[i].projectId = 0
                 }
                 let data_str = JSON.stringify(datas.fileList)
                 this.$data.form.sourceFiles = JSON.parse(data_str)
