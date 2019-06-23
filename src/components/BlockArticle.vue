@@ -24,6 +24,10 @@
             .progress {
                 margin:10px 0 0 0;
             }
+            .datagrid {
+                width:100%;
+                height:40rem;
+            }
         }
     }
 }
@@ -40,85 +44,25 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <table class="table table-hover table-bordered">
-                <thead>
-                    <tr>
-                        <th scope="col">名称</th>
-                        <th scope="col">字符数(不计空格)</th>
-                        <th scope="col">字数</th>
-                        <th scope="col">句段数</th>
-                        <th scope="col">文档支持</th>
-                        <th scope="col">完成度</th>
-                        <th scope="col">操作</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>世界人口状况报告-区块01</td>
-                        <td>15010</td>
-                        <td>2183</td>
-                        <td>112</td>
-                        <td>
-                            字典：《世界人口状况报告》
-                            禁用语文档：《世界人口状况报告》
-                        </td>
-                        <td>
-                            <div class="progress"><div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">60%</div></div>
-                        <td>
-                            <router-link :to="{path:'/', activeClass: 'active'}">编辑</router-link>
-                            <router-link :to="{path:'/', activeClass: 'active'}">审校</router-link>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>世界人口状况报告-区块01</td>
-                        <td>15010</td>
-                        <td>2183</td>
-                        <td>112</td>
-                        <td>
-                            字典：《世界人口状况报告》
-                            禁用语文档：《世界人口状况报告》
-                        </td>
-                        <td>
-                            <div class="progress"><div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">60%</div></div>
-                        <td>
-                            <router-link :to="{path:'/', activeClass: 'active'}">编辑</router-link>
-                            <router-link :to="{path:'/', activeClass: 'active'}">审校</router-link>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>世界人口状况报告-区块01</td>
-                        <td>15010</td>
-                        <td>2183</td>
-                        <td>112</td>
-                        <td>
-                            字典：《世界人口状况报告》
-                            禁用语文档：《世界人口状况报告》
-                        </td>
-                        <td>
-                            <div class="progress"><div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">60%</div></div>
-                        <td>
-                            <router-link :to="{path:'/', activeClass: 'active'}">编辑</router-link>
-                            <router-link :to="{path:'/', activeClass: 'active'}">审校</router-link>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>世界人口状况报告-区块01</td>
-                        <td>15010</td>
-                        <td>2183</td>
-                        <td>112</td>
-                        <td>
-                            字典：《世界人口状况报告》
-                            禁用语文档：《世界人口状况报告》
-                        </td>
-                        <td>
-                            <div class="progress"><div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">60%</div></div>
-                        <td>
-                            <router-link :to="{path:'/', activeClass: 'active'}">编辑</router-link>
-                            <router-link :to="{path:'/', activeClass: 'active'}">审校</router-link>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+            <el-form ref="form" :model="form" label-width="180px">
+                <el-form-item label="起止时间：">
+                    <el-date-picker
+                        v-model="sTime"
+                        type="datetimerange"
+                        align="right"
+                        unlink-panels
+                        range-separator="至"
+                        start-placeholder="开始日期"
+                        end-placeholder="结束日期"
+                        :picker-options="pickerOptions">
+                    </el-date-picker>
+                </el-form-item>
+                <el-form-item>
+                    <el-button type="primary" @click="applyTime">确认时间</el-button>
+                    <el-button type="primary" @click="onSubmit">创建区块</el-button>
+                </el-form-item>
+            </el-form>
+            <canvas-datagrid v-bind.prop="grid" class="datagrid"></canvas-datagrid>
         </div>
     </div>
 </div>
@@ -128,66 +72,164 @@
     import $ from 'jQuery'
     import * as localForage from 'localforage'
     import {mapGetters} from 'vuex'
+    import canvasDatagrid from 'canvasDatagrid'
     
     export default {
         name: "BlockArticle",
+        componets : {
+            canvasDatagrid:canvasDatagrid
+        },
         data() {
             return {
                 isUsedFaster:false,
-                tableData: [{
-                    date: '2016-05-07~2016-05-11',
-                    name: '王小虎',
-                    pmname: '张三',
-                    projectname : "国际贸易合同翻译",
-                    qkname : "合同翻译",
-                    language : "英->中",
-                    wordnumbers: "22324",
-                    process: "40%"
-                },{
-                    date: '2016-05-07~2016-05-11',
-                    name: '王小虎',
-                    pmname: '张三',
-                    projectname : "国际贸易合同翻译",
-                    qkname : "合同翻译",
-                    language : "英->中",
-                    wordnumbers: "22324",
-                    process: "40%"
-                },{
-                    date: '2016-05-07~2016-05-11',
-                    name: '王小虎',
-                    pmname: '张三',
-                    projectname : "国际贸易合同翻译",
-                    qkname : "合同翻译",
-                    language : "英->中",
-                    wordnumbers: "22324",
-                    process: "40%"
-                },{
-                    date: '2016-05-07~2016-05-11',
-                    name: '王小虎',
-                    pmname: '张三',
-                    projectname : "国际贸易合同翻译",
-                    qkname : "合同翻译",
-                    language : "英->中",
-                    wordnumbers: "22324",
-                    process: "40%"
-                }],
-                activeName: 'second'
+                sTime: '',
+                form: {},
+                pickerOptions: {
+                    shortcuts: [{
+                        text: '最近一周',
+                        onClick(picker) {
+                            const end = new Date();
+                            const start = new Date();
+                            start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+                            console.log("0 -----------> datas : ", start, end)
+                            picker.$emit('pick', [start, end]);
+                        }
+                    }, {
+                        text: '最近一个月',
+                        onClick(picker) {
+                            const end = new Date();
+                            const start = new Date();
+                            start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+                            console.log("1 -----------> datas : ", start, end)
+                            picker.$emit('pick', [start, end]);
+                        }
+                    }, {
+                        text: '最近三个月',
+                        onClick(picker) {
+                            const end = new Date();
+                            const start = new Date();
+                            start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+                            console.log("2 -----------> datas : ", start, end)
+                            picker.$emit('pick', [start, end]);
+                        }
+                    }]
+                },
+                grid: {
+                    schema: [
+                        {
+                            name: '原文'
+                        },
+                        {
+                            name: '状态(未翻译)'
+                        },
+                        {
+                            name: '开始时间'
+                        },
+                        {
+                            name: '结束时间'
+                        },
+                        {
+                            name: '初译译员',
+                            enum: []
+                        },
+
+                        {
+                            name: '审校译员',
+                            enum: []
+                        }
+                    ],
+                    data: []
+                },
+                translators:[],
+                activeName: 'second',
+                pageIndex: 1
             }    
         },
+        computed: {
+            ...mapGetters({
+                error_datas: 'error_datas',
+                translator_models_datas: 'translator_models_datas',
+                assign_part_list_datas: 'assign_part_list_datas'
+            })
+        },
+        watch: {
+            error_datas: function () {
+                console.log("error_datas:", this.error_datas)
+            },
+            translator_models_datas: function() {
+                for (let ukeys of this.translator_models_datas.translators.list) {
+                    this.$data.translators.push([ukeys.id, ukeys.name])
+                }
+                if (this.translator_models_datas.translators.navigateLastPage > this.$data.pageIndex) {
+                    this.$data.pageIndex += 1
+                    let data = `?pageindex=${this.$data.pageIndex}`
+                    this.$store.dispatch('getTranslatorInfo', data)
+                } else {
+                    for (let key of this.$data.grid.schema) {
+                        if (key.hasOwnProperty("enum")) {
+                            key.enum = this.$data.translators
+                        }
+                    }
+                }
+            },
+            assign_part_list_datas: function() {
+                this.$data.grid.data = []
+                for (let keys of this.assign_part_list_datas.result) {
+                    let models = {'原文': `${keys.source}`, '状态(未翻译)': '', '开始时间': '', '结束时间': '', '初译译员': '', '审校译员': ''}
+                    this.$data.grid.data.push(models)
+                }
+                /*
+                "id": 1,
+                "projectId": 2,
+                "projectFileId": 2,
+                "partBegin": 2,
+                "partEnd": 1011,
+                "startTime": "2019-06-18 09:22:41",
+                "endTime": "2019-06-18 09:22:41",
+                "translateWordCount": 1011,
+                "reviewWordCount": 1011,
+                "translator": {
+                    "id": 30
+                },
+                "reviewer": {
+                    "id": 30
+                }
+                */
+            }
+        },
         mounted() {
-            let _self = this
-            let userDatas = {}
-            localForage.getItem('users').then(function(value) {
-                let data = {}
-                userDatas = value
-                data.token = userDatas.token
-                _self.$store.dispatch('getServiceInfo', data)
-                _self.$store.dispatch('getServiceMenusInfo', data)
-            }).catch(function(err) {
-                console.log(err);
-            });
+            let datas = 6
+            let pages = `?pageindex=${this.$data.pageIndex}`
+            this.$store.dispatch('getPartInfo', datas)
+            this.$store.dispatch('getTranslatorInfo', pages)
         },
         methods: {
+            onSubmit(event) {
+                let datas = {}
+                datas.id = ''
+                datas.projectId = ''
+                datas.projectFile = ''
+                datas.partBegin = ''
+                datas.partEnd = ''
+                datas.startTime = ''
+                datas.endTime = ''
+                datas.translateWordCount = ''
+                datas.reviewWordCount = ''
+                datas.translator = {}
+                datas.reviewer = {}
+            },
+            applyTime: function() {
+                let startTime = moment(this.$data.sTime[0], "YYYY-MM-DD HH:mm:ss").format().replace("T", ' ').split("+")[0]
+                let endTime = moment(this.$data.sTime[1], "YYYY-MM-DD HH:mm:ss").format().replace("T", ' ').split("+")[0]
+                for (let keys of this.$data.grid.data) {
+                    for(let key in keys) {
+                        console.log("key : ", key, key === '开始时间', key === '结束时间')
+                        keys.开始时间 = startTime
+                        keys.结束时间 = endTime
+                    }
+                }
+                console.log("this.$data.grid.data : ", this.$data.grid.data)
+            },
             handleClick(event) {
                 let eles = event.target
                 let index = parseInt(eles.getAttribute("data-index"), 10)

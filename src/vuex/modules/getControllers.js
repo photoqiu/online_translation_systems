@@ -47,13 +47,12 @@ const actions = {
     },
     getPartInfo({commit}, datas) {
         let url = Constant.API.getFilePartList
-        //projectFileId
         url = url.replace("{{projectFileId}}", datas)
         asyncAPI.doGetDatas(url,
             (datas) => commit(types.ASSIGN_PART_LIST, datas),
             (datas) => commit(types.HTTP_STATUS_ERROR, datas)
         );
-    }
+    },
     getUsersInfo({commit}, datas) {
         let url = Constant.API.getUsers
         url = url.replace("{{pageIndex}}", datas)
@@ -142,7 +141,7 @@ const mutations = {
     },
     [types.ASSIGN_PART_LIST] (state, datas) {
         if (!!datas.data.status) {
-            state.assign_part_list_datas = datas.data.users || []
+            state.assign_part_list_datas = datas.data || []
         } else {
             state.error_datas = {"data": "系统错误"}
         }

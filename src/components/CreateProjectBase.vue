@@ -595,7 +595,7 @@
                 }
                 let data_str = JSON.stringify(datas.fileList)
                 this.$data.form.sourceFiles = JSON.parse(data_str)
-                this.$store.dispatch('doSaveProject', datas_data) //this.$data.form)
+                this.$store.dispatch('doSaveProject', this.$data.form)
             },
             getOneLevelDatas(event) {
                 let datas = JSON.parse(this.$data.form.fileList[this.$data.currentIndex].industry1)

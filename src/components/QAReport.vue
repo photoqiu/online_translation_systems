@@ -89,10 +89,11 @@
 <script type="text/babel">    
     import $ from 'jQuery'
     import * as localForage from 'localforage'
+    import {mapGetters} from 'vuex'
     import canvasDatagrid from 'canvasDatagrid'
     
     export default {
-        name: "Translation",
+        name: "QAReport",
         componets : {
             canvasDatagrid:canvasDatagrid
         },
@@ -144,6 +145,20 @@
                 isTerm:true
             }
         },
+        computed: {
+            ...mapGetters({
+                error_datas: 'error_datas',
+                assign_part_list_datas: 'assign_part_list_datas'
+            })
+        },
+        watch: {
+            error_datas: function () {
+                console.log("error_datas:", this.error_datas)
+            },
+            assign_part_list_datas: function() {
+                console.log("this.assign_part_list_datas : ", this.assign_part_list_datas)
+            },
+        },
         methods : {
             memoryClick() {
                 this.$data.isMemory = !this.$data.isMemory
@@ -157,6 +172,8 @@
         },
         mounted() {
             let _self = this
+            let datas = 2
+            this.$store.dispatch('getPartInfo', datas)
         }
     }
 </script>
