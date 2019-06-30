@@ -6,6 +6,7 @@ const state = {
     error_datas: {},
     uploaders_file_status: {},
     save_project_status: {},
+    save_part_status: {},
     save_term_status: {}
 }
 
@@ -14,6 +15,7 @@ const getters = {
     error_datas: state => state.error_datas,
     uploaders_file_status: state => state.uploaders_file_status,
     save_project_status: state => state.save_project_status,
+    save_part_status: state => state.save_part_status,
     save_term_status: state => state.save_term_status
 }
 
@@ -23,6 +25,13 @@ const actions = {
         let url = Constant.API.fileUpload
         asyncAPI.jQueryPostDatas(url, datas,
             (datas) => commit(types.FILE_UPLOADER, datas),
+            (datas) => commit(types.HTTP_STATUS_ERROR, datas)
+        );
+    },
+    doSavePart({commit}, datas) {
+        let url = Constant.API.partSave
+        asyncAPI.doPostDatas(url, datas,
+            (datas) => commit(types.DO_PART_SAVE, datas),
             (datas) => commit(types.HTTP_STATUS_ERROR, datas)
         );
     },
@@ -46,6 +55,13 @@ const actions = {
 const mutations = {
     [types.HTTP_STATUS_ERROR] (state, datas) {
         state.error_datas = {"data": "请求错误"}
+    },
+    [types.DO_PART_SAVE] (state, datas) {
+        if (!!datas.data.status) {
+            state.save_part_status = datas.data.result
+        } else {
+            state.error_datas = {"data": "系统错误"}
+        }
     },
     [types.DO_TERM_SAVE] (state, datas) {
         if (!!datas.data.status) {

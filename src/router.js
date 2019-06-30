@@ -43,7 +43,7 @@ const router = new VueRouter({
             name: 'statistics',
             component: Statistics
         }, {
-            path: '/blockarticle',
+            path: '/blockarticle/:id',
             name: 'blockarticle',
             component: BlockArticle
         }, {

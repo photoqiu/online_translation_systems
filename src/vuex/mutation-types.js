@@ -10,20 +10,16 @@ export const GET_CUSTOMER_DATAS = 'GET_CUSTOMER_DATAS'
 export const GET_TERM_LIST = 'GET_TERM_LIST'
 export const GET_LANGUAGE = 'GET_LANGUAGE'
 export const CUSTOMER = 'CUSTOMER'
-
 export const DO_TERM_SAVE = 'DO_TERM_SAVE'
-
 export const GET_PROJECT = 'GET_PROJECT'
 export const GET_PROJECT_DETAILS = 'GET_PROJECT_DETAILS'
-export const DO_PROJECT_SAVE = 'DO_PROJECT_SAVE'
 export const DEL_PROJECT = 'DEL_PROJECT'
-
 export const GET_USERS_LIST = 'GET_USERS_LIST'
-
 export const CORPUS_SAVE = 'CORPUS_SAVE'
 export const GET_CORPUS_LIST = 'GET_CORPUS_LIST'
-
 export const FILE_UPLOADER = 'FILE_UPLOADER'
 export const FILE_DETAIL = 'FILE_DETAIL'
-
 export const ASSIGN_PART_LIST = 'ASSIGN_PART_LIST'
+
+export const DO_PROJECT_SAVE = 'DO_PROJECT_SAVE'
+export const DO_PART_SAVE = 'DO_PART_SAVE'

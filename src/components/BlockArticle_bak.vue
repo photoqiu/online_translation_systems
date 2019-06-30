@@ -196,7 +196,6 @@
                 valuex : '',
                 activeName: 'second',
                 isConUsed: [true],
-                gridDatas:[],
                 pageIndex: 1
             }    
         },
@@ -204,7 +203,6 @@
             ...mapGetters({
                 error_datas: 'error_datas',
                 translator_models_datas: 'translator_models_datas',
-                save_part_status: 'save_part_status',
                 assign_part_list_datas: 'assign_part_list_datas'
             })
         },
@@ -212,17 +210,13 @@
             error_datas: function () {
                 console.log("error_datas:", this.error_datas)
             },
-            save_part_status: function() {
-
-            },
             translator_models_datas: function() {
                 let datas = {}
                 for (let ukeys of this.translator_models_datas.translators.list) {
                     datas = {}
                     datas.id = ukeys.id
                     datas.name = ukeys.name
-                    this.$data.options.push(datas)
-                    this.$data.translators.push([ukeys.id, ukeys.name])
+                    this.$data.translators.push(datas)
                 }
                 if (this.translator_models_datas.translators.navigateLastPage > this.$data.pageIndex) {
                     this.$data.pageIndex += 1
@@ -231,16 +225,16 @@
                 } else {
                     this.$data.options[0] = this.$data.translators
                     this.$data.sxoptions[0] = this.$data.translators
-                    for (let key of this.$data.grid.schema) {
-                        if (key.hasOwnProperty("enum")) {
-                            key.enum = this.$data.translators
-                        }
-                    }
+                    // for (let key of this.$data.grid.schema) {
+                        // if (key.hasOwnProperty("enum")) {
+                            // key.enum = this.$data.translators
+                        // }
+                    // }
+                    console.log("this.$data.options:", this.$data.options)
                 }
             },
             assign_part_list_datas: function() {
                 this.$data.grid.data = []
-                this.$data.gridDatas = this.assign_part_list_datas.result
                 for (let keys of this.assign_part_list_datas.result) {
                     let models = {'原文': `${keys.source}`, '状态(未翻译)': '', '开始时间': '', '结束时间': '', '初译译员': '', '审校译员': ''}
                     this.$data.grid.data.push(models)
@@ -252,6 +246,7 @@
             let pages = `?pageindex=${this.$data.pageIndex}`
             this.$store.dispatch('getPartInfo', datas)
             this.$store.dispatch('getTranslatorInfo', pages)
+            //this.$data.grid = canvasDatagrid()
         },
         methods: {
             addUsers(event) {
@@ -264,28 +259,20 @@
 
             },
             onSubmit(event) {
-                let datas = this.assign_part_list_datas.result
-                let index = 0
-                let wordLens = 0
-                
-                for (let keys of datas) {
-                    keys.translateWordCount = keys.source.length
-                    keys.reviewWordCount = keys.source.length
-                    keys.startTime = this.$data.grid.data[index].开始时间
-                    keys.endTime = this.$data.grid.data[index].结束时间
-                    keys.partId = index
-                    keys.translator = {
-                        id: this.$data.grid.data[index].初译译员
-                    }
-                    keys.reviewer = {
-                        id: this.$data.grid.data[index].审校译员
-                    }
-                    index += 1
-                }
-                this.$store.dispatch('doSavePart', datas)
-                console.log("this.$data.grid.data ： ", datas)
+                let datas = {}
+                datas.id = ''
+                datas.projectId = ''
+                datas.projectFile = ''
+                datas.partBegin = ''
+                datas.partEnd = ''
+                datas.startTime = ''
+                datas.endTime = ''
+                datas.translateWordCount = ''
+                datas.reviewWordCount = ''
+                datas.translator = {}
+                datas.reviewer = {}
             },
-            applyTime(event) {
+            applyTime: function() {
                 let startTime = moment(this.$data.sTime[0], "YYYY-MM-DD HH:mm:ss").format().replace("T", ' ').split("+")[0]
                 let endTime = moment(this.$data.sTime[1], "YYYY-MM-DD HH:mm:ss").format().replace("T", ' ').split("+")[0]
                 for (let keys of this.$data.grid.data) {

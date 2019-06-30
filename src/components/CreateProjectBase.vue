@@ -578,8 +578,6 @@
                 let startTime = moment(this.$data.form.sTime[0], "YYYY-MM-DD HH:mm:ss").format().replace("T", ' ').split("+")[0]
                 let endTime = moment(this.$data.form.sTime[1], "YYYY-MM-DD HH:mm:ss").format().replace("T", ' ').split("+")[0]
                 let datas = {}
-                datas.id = 0
-                datas.projectId = 0
                 datas.fileList = []
                 this.$data.form.startTime = startTime
                 this.$data.form.endTime = endTime
