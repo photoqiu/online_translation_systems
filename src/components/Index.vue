@@ -57,9 +57,13 @@
 
                     <el-form-item label="项目经理:">
                         <el-select v-model="form.region_users" placeholder="请选择项目经理">
-                            <el-option label="张三" value="shanghai"></el-option>
-                            <el-option label="李四" value="beijing"></el-option>
-                            <el-option label="王五" value="beijing"></el-option>
+                            <el-option
+                                v-for="(item, $index) in project_datas"
+                                :key="$index"
+                                :data-datas="item.json_datas"
+                                :label="item.nickName"
+                                :value="item.json_datas">
+                            </el-option>
                         </el-select>
                     </el-form-item>
 
@@ -80,8 +84,7 @@
             <h1 class="h2">项目列表</h1>
             <div class="btn-toolbar mb-2 mb-md-0">
                 <div class="btn-group mr-2">
-                    <button type="button" class="btn btn-sm btn-outline-secondary">新建项目</button>
-                    <button type="button" class="btn btn-sm btn-outline-secondary">新建区块</button>
+                    <router-link class="btn btn-outline-info" role="button" :to="{path:'/createbase'}">新建项目</router-link>
                 </div>
             </div>
         </div>
@@ -90,13 +93,18 @@
         :data="tableData"
         border
         style="width:1430"
-        max-height="550">
+        height="550">
         <el-table-column
           fixed
           prop="projectname"
           label="项目名称"
           width="420">
         </el-table-column>
+        <el-table-column
+          prop="baseId"
+          label="项目Id"
+          width="120">
+        </el-table-column>  
         <el-table-column
           prop="qkname"
           label="区块名称"
@@ -132,7 +140,7 @@
           label="操作"
           width="220">
           <template slot-scope="scope">
-            <el-button @click="handleClick(scope.row)" type="text" size="small">项目详情</el-button>
+            <el-button @click="handleDetailClick(scope.row)" type="text" size="small">项目详情</el-button>
             <el-button @click="handleClick(scope.row)" type="text" size="small">查看区块</el-button>
             <el-button type="text" size="small">审校</el-button>
           </template>
@@ -144,7 +152,7 @@
         @current-change="handleCurrentChange"
         background
         layout="prev, pager, next"
-        :total="1000">
+        :total="totalPage">
     </el-pagination>
 </div>
 </template>
@@ -164,6 +172,7 @@
                     region_users: "",
                     status:""
                 },
+                project_datas: [],
                 tableData: [{
                     date: '2016-05-07~2016-05-11',
                     name: '王小虎',
@@ -172,41 +181,18 @@
                     qkname : "合同翻译",
                     language : "英->中",
                     wordnumbers: "22324",
-                    process: "40%"
-                },{
-                    date: '2016-05-07~2016-05-11',
-                    name: '王小虎',
-                    pmname: '张三',
-                    projectname : "国际贸易合同翻译",
-                    qkname : "合同翻译",
-                    language : "英->中",
-                    wordnumbers: "22324",
-                    process: "40%"
-                },{
-                    date: '2016-05-07~2016-05-11',
-                    name: '王小虎',
-                    pmname: '张三',
-                    projectname : "国际贸易合同翻译",
-                    qkname : "合同翻译",
-                    language : "英->中",
-                    wordnumbers: "22324",
-                    process: "40%"
-                },{
-                    date: '2016-05-07~2016-05-11',
-                    name: '王小虎',
-                    pmname: '张三',
-                    projectname : "国际贸易合同翻译",
-                    qkname : "合同翻译",
-                    language : "英->中",
-                    wordnumbers: "22324",
+                    baseId: '1',
                     process: "40%"
                 }],
-                pageIndex:1
+                pageIndex : 1,
+                totalPage:0,
+                project_indexpage : 1
             }
         },
         computed: {
             ...mapGetters({
                 error_datas: 'error_datas',
+                users_list_datas: 'users_list_datas',
                 project_list_datas: 'project_list_datas'
             })
         },
@@ -214,18 +200,56 @@
             error_datas: function () {
                 console.log("error_datas:", this.error_datas)
             },
+            users_list_datas: function() {
+                for (let keys of this.users_list_datas.list) {
+                    if(keys.roleId <= 2 && keys.status === 1) {
+                        keys.json_datas = JSON.stringify(keys)
+                        this.$data.project_datas.push(keys)
+                    }
+                }
+                if (!!this.users_list_datas.isLastPage) {
+                    return false
+                }
+                this.$data.project_indexpage += 1
+                this.$store.dispatch('getUsersInfo', this.$data.project_indexpage)
+            },
             project_list_datas: function() {
+                this.$data.totalPage = this.project_list_datas.navigateLastPage
+                let datas = {}
+                this.$data.tableData = []
+                for (let keys of this.project_list_datas.list) {
+                    datas = {}
+                    datas.date = `${keys.startTime}~${keys.endTime}`
+                    datas.name = `${keys.customer.customerName}`
+                    datas.pmname = `${keys.projectManager.nickName}`
+                    datas.projectname = `${keys.projectName}`
+                    datas.qkname = `${keys.projectName}`
+                    datas.language = `${keys.languageFrom}->${keys.languageTo}`
+                    datas.wordnumbers = `${keys.wordCount}`
+                    datas.baseId = `${keys.id}`
+                    if (keys.translateProgress === null) {
+                        datas.process = `0%`
+                    } else {
+                        datas.process = `${keys.translateProgress}%`
+                    }
+                    this.$data.tableData.push(datas)
+                }
                 console.log("project_list_datas : ", this.project_list_datas)
             }
         },
         mounted() {
             console.log("1111111111111111111111", this)
             this.$store.dispatch('getProjectList', this.$data.pageIndex)
+            let datas = '1'
+            this.$store.dispatch('getUsersInfo', datas)
         },
         methods: {
             handleClick(row) {
-                console.log(row);
-                window.location.href = "/#/blockarticle"
+                console.log(row)
+                window.location.href = `/#/blockarticle/${row.baseId}`
+            },
+            handleDetailClick(row) {
+                console.log(row)
             },
             handleOpen(key, keyPath) {
                 console.log(key, keyPath)

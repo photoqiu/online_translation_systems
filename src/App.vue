@@ -65,49 +65,33 @@ body > .el-container {
                                 <span slot="title">项目功能列表</span>
                             </template>
                             <el-menu-item-group>
-                                <span slot="title">项目</span>
                                 <el-menu-item index="1-1" :route="{path: '/', activeClass: 'active'}">
                                     项目列表
                                 </el-menu-item>
-                                <el-menu-item index="1-2" :route="{path: '/statistics', activeClass: 'active'}">进行中的项目..</el-menu-item>
-                                <el-menu-item index="1-3" :route="{path: '/statistics', activeClass: 'active'}">已完成项目</el-menu-item>
-                                <el-menu-item index="1-4" :route="{path: '/qareport', activeClass: 'active'}">
-                                    初审审校 稿件分析报告
-                                </el-menu-item>
+                                <el-menu-item index="1-1-1" :route="{path: '/createbase', activeClass: 'active'}">新建项目</el-menu-item>
+                                <el-menu-item index="1-2" :route="{path: '/', activeClass: 'active'}">进行中的项目..</el-menu-item>
+                                <el-menu-item index="1-3" :route="{path: '/', activeClass: 'active'}">已完成项目</el-menu-item>
+                                
                             </el-menu-item-group>
                             <el-menu-item-group title="审校相关">
-                                <el-menu-item index="1-3-1" :route="{path: '/createbase', activeClass: 'active'}">初审审校</el-menu-item>
+                                <el-menu-item index="1-4" :route="{path: '/statistics', activeClass: 'active'}">
+                                    初审审校
+                                </el-menu-item>
+                                <el-menu-item index="1-4-1" :route="{path: '/qareport', activeClass: 'active'}">
+                                    QA报告
+                                </el-menu-item>
                                 <el-menu-item index="1-4-1" :route="{path: '/projectdetail', activeClass: 'active'}">稿件分析报告 </el-menu-item>
-                                <el-menu-item index="1-5-1" :route="{path: '/equallydistributed', activeClass: 'active'}">稿件分配</el-menu-item>
                             </el-menu-item-group>
                             <el-submenu index="1-7">
                                 <span slot="title">语料库</span>
                                 <el-menu-item index="1-4-1" :route="{path: '/createcorpus', activeClass: 'active'}">
                                     新建语料库
                                 </el-menu-item>
-                                <el-menu-item index="1-4-2" :route="{path: '/term', activeClass: 'active'}">
-                                    编辑语料库
-                                </el-menu-item>
-                                <el-menu-item index="1-4-4">
-                                    导入语料库
-                                </el-menu-item>
-                                <el-menu-item index="1-4-3" :route="{path: '/term', activeClass: 'active'}">
-                                    查看语料库
-                                </el-menu-item>
                             </el-submenu>
                             <el-submenu index="1-8">
                                 <span slot="title">术语库</span>
                                 <el-menu-item index="1-5-1" :route="{path: '/createterm', activeClass: 'active'}">
                                     新建术语库
-                                </el-menu-item>
-                                <el-menu-item index="1-5-2" :route="{path: '/term', activeClass: 'active'}">
-                                    编辑术语库
-                                </el-menu-item>
-                                <el-menu-item index="1-5-2">
-                                    导入术语库
-                                </el-menu-item>
-                                <el-menu-item index="1-5-3" :route="{path: '/term', activeClass: 'active'}">
-                                    查看术语库
                                 </el-menu-item>
                             </el-submenu>
                         </el-submenu>

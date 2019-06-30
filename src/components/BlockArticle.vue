@@ -274,6 +274,7 @@
                     keys.startTime = this.$data.grid.data[index].开始时间
                     keys.endTime = this.$data.grid.data[index].结束时间
                     keys.partId = index
+                    keys.id = keys.projectId
                     keys.translator = {
                         id: this.$data.grid.data[index].初译译员
                     }
