@@ -6,6 +6,7 @@ import Statistics from './components/Statistics.vue'
 import ProjectDetail from './components/ProjectDetail.vue'
 import CreateProjectBase from './components/CreateProjectBase.vue'
 import Translation from './components/Translation.vue'
+import ReviewTranslation from './components/ReviewTranslation.vue'
 import ManuScriptAnalysisReport from './components/ManuScriptAnalysisReport.vue'
 import Distribution from './components/Distribution.vue'
 import EquallyDistributed from './components/EquallyDistributed.vue'
@@ -47,7 +48,7 @@ const router = new VueRouter({
             name: 'blockarticle',
             component: BlockArticle
         }, {
-            path: '/projectdetail',
+            path: '/projectdetail/:id',
             name: 'projectdetail',
             component: ProjectDetail
         }, {
@@ -55,9 +56,13 @@ const router = new VueRouter({
             name: 'createbase',
             component: CreateProjectBase
         }, {
-            path: '/translation',
+            path: '/translation/:id',
             name: 'translation',
             component: Translation
+        }, {
+            path: '/reviewtranslation/:id',
+            name: 'reviewtranslation',
+            component: ReviewTranslation
         }, {
             path: '/manuanalysisreport',
             name: 'manuanalysisreport',

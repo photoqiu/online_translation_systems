@@ -15,6 +15,7 @@ const state = {
     users_list_datas: [],
     corpus_list_datas: [],
     assign_part_list_datas: [],
+    part_sentence_list_datas: [],
     error_datas: {}
 }
 
@@ -32,6 +33,7 @@ const getters = {
     users_list_datas: state => state.users_list_datas,
     corpus_list_datas: state => state.corpus_list_datas,
     assign_part_list_datas: state => state.assign_part_list_datas,
+    part_sentence_list_datas: state => state.part_sentence_list_datas,
     error_datas: state => state.error_datas
 }
 
@@ -50,6 +52,15 @@ const actions = {
         url = url.replace("{{projectFileId}}", datas)
         asyncAPI.doGetDatas(url,
             (datas) => commit(types.ASSIGN_PART_LIST, datas),
+            (datas) => commit(types.HTTP_STATUS_ERROR, datas)
+        );
+    },
+    getPartSentenceList({commit}, datas) {
+        let url = Constant.API.getPartList
+        url = url.replace("{{projectFileId}}", datas.projectFileId)
+        url = url.replace("{{projectId}}", datas.projectId)
+        asyncAPI.doGetDatas(url,
+            (datas) => commit(types.GET_PART_SENTENCE_LIST, datas),
             (datas) => commit(types.HTTP_STATUS_ERROR, datas)
         );
     },
@@ -142,6 +153,13 @@ const mutations = {
     [types.ASSIGN_PART_LIST] (state, datas) {
         if (!!datas.data.status) {
             state.assign_part_list_datas = datas.data || []
+        } else {
+            state.error_datas = {"data": "系统错误"}
+        }
+    },
+    [types.GET_PART_SENTENCE_LIST] (state, datas) {
+        if (!!datas.data.status) {
+            state.part_sentence_list_datas = datas.data.result || []
         } else {
             state.error_datas = {"data": "系统错误"}
         }

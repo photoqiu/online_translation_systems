@@ -77,7 +77,7 @@
     <div class="bd">
         <div class="row">
             <div class="table_wapper">
-                <h3>翻译操作区</h3>
+                <h3>审核-翻译操作区</h3>
                 <div class="btn-group" role="group" aria-label="Basic example">
                     <button type="button" class="btn btn-secondary" @click="memoryClick">记忆库</button>
                     <button type="button" class="btn btn-secondary" @click="termClick">术语库</button>
@@ -182,13 +182,13 @@
     <el-dialog title="添加术语库" :visible.sync="dialogFormVisible">
         <el-form :model="form">
             <el-form-item label="原文" :label-width="formLabelWidth">
-                <el-input v-model="form.orgname" autocomplete="off"></el-input>
+                <el-input autocomplete="off"></el-input>
             </el-form-item>
             <el-form-item label="译文" :label-width="formLabelWidth">
-                <el-input v-model="form.name" autocomplete="off"></el-input>
+                <el-input autocomplete="off"></el-input>
             </el-form-item>
             <el-form-item label="来源" :label-width="formLabelWidth">
-                <el-select v-model="form.region" placeholder="请选择文章来源">
+                <el-select  placeholder="请选择文章来源">
                     <el-option label="文章来源1" value="shanghai"></el-option>
                     <el-option label="文章来源2" value="beijing"></el-option>
                 </el-select>
@@ -215,7 +215,7 @@
     import canvasDatagrid from 'canvasDatagrid'
     
     export default {
-        name: "Translation",
+        name: "ReviewTranslation",
         componets : {
             canvasDatagrid:canvasDatagrid
         },
@@ -223,8 +223,44 @@
             return {
                 grid: {
                     data: [
-                        {'原文': 'I sincerely hope that our common cause will be successful, and I wish us a bright future!', '译文': 'a', '状态': 'a', '备注': ''},
-                        {'原文': 'foo', '译文': 'a', '状态': 'a', '备注': ''}
+                        {'原文': 'I sincerely hope that our common cause will be successful, and I wish us a bright future!', '译者': 'a', '译文': 'a', '状态': 'a', '备注': ''},
+                        {'原文': 'foo', '译者': 'a', '译文': 'a', '状态': 'a', '备注': ''},
+                        {'原文': 'foo', '译者': 'a', '译文': 'a', '状态': 'a', '备注': ''},
+                        {'原文': 'foo', '译者': 'a', '译文': 'a', '状态': 'a', '备注': ''},
+                        {'原文': 'foo', '译者': 'a', '译文': 'a', '状态': 'a', '备注': ''},
+                        {'原文': 'foo', '译者': 'a', '译文': 'a', '状态': 'a', '备注': ''},
+                        {'原文': 'foo', '译者': 'a', '译文': 'a', '状态': 'a', '备注': ''},
+                        {'原文': 'foo', '译者': 'a', '译文': 'a', '状态': 'a', '备注': ''},
+                        {'原文': 'foo', '译者': 'a', '译文': 'a', '状态': 'a', '备注': ''},
+                        {'原文': 'foo', '译者': 'a', '译文': 'a', '状态': 'a', '备注': ''},
+                        {'原文': 'foo', '译者': 'a', '译文': 'a', '状态': 'a', '备注': ''},
+                        {'原文': 'foo', '译者': 'a', '译文': 'a', '状态': 'a', '备注': ''},
+                        {'原文': 'foo', '译者': 'a', '译文': 'a', '状态': 'a', '备注': ''},
+                        {'原文': 'foo', '译者': 'a', '译文': 'a', '状态': 'a', '备注': ''},
+                        {'原文': 'foo', '译者': 'a', '译文': 'a', '状态': 'a', '备注': ''},
+                        {'原文': 'foo', '译者': 'a', '译文': 'a', '状态': 'a', '备注': ''},
+                        {'原文': 'foo', '译者': 'a', '译文': 'a', '状态': 'a', '备注': ''},
+                        {'原文': 'foo', '译者': 'a', '译文': 'a', '状态': 'a', '备注': ''},
+                        {'原文': 'foo', '译者': 'a', '译文': 'a', '状态': 'a', '备注': ''},
+                        {'原文': 'foo', '译者': 'a', '译文': 'a', '状态': 'a', '备注': ''},
+                        {'原文': 'foo', '译者': 'a', '译文': 'a', '状态': 'a', '备注': ''},
+                        {'原文': 'foo', '译者': 'a', '译文': 'a', '状态': 'a', '备注': ''},
+                        {'原文': 'foo', '译者': 'a', '译文': 'a', '状态': 'a', '备注': ''},
+                        {'原文': 'foo', '译者': 'a', '译文': 'a', '状态': 'a', '备注': ''},
+                        {'原文': 'foo', '译者': 'a', '译文': 'a', '状态': 'a', '备注': ''},
+                        {'原文': 'foo', '译者': 'a', '译文': 'a', '状态': 'a', '备注': ''},
+                        {'原文': 'foo', '译者': 'a', '译文': 'a', '状态': 'a', '备注': ''},
+                        {'原文': 'foo', '译者': 'a', '译文': 'a', '状态': 'a', '备注': ''},
+                        {'原文': 'foo', '译者': 'a', '译文': 'a', '状态': 'a', '备注': ''},
+                        {'原文': 'foo', '译者': 'a', '译文': 'a', '状态': 'a', '备注': ''},
+                        {'原文': 'foo', '译者': 'a', '译文': 'a', '状态': 'a', '备注': ''},
+                        {'原文': 'foo', '译者': 'a', '译文': 'a', '状态': 'a', '备注': ''},
+                        {'原文': 'foo', '译者': 'a', '译文': 'a', '状态': 'a', '备注': ''},
+                        {'原文': 'foo', '译者': 'a', '译文': 'a', '状态': 'a', '备注': ''},
+                        {'原文': 'foo', '译者': 'a', '译文': 'a', '状态': 'a', '备注': ''},
+                        {'原文': 'foo', '译者': 'a', '译文': 'a', '状态': 'a', '备注': ''},
+                        {'原文': 'foo', '译者': 'a', '译文': 'a', '状态': 'a', '备注': ''},
+                        {'原文': 'foo', '译者': 'a', '译文': 'a', '状态': 'a', '备注': ''}
                     ]
                 },
                 input_memory: '',
@@ -234,6 +270,8 @@
                 isFixed:false,
                 dialogFormVisible:false,
                 formLabelWidth: '120px',
+                name: '',
+                region: '',
                 form: {
                     orgname:'',
                     name:'',
@@ -262,10 +300,70 @@
                 isTerm:false
             }
         },
+        computed: {
+            ...mapGetters({
+                error_datas: 'error_datas',
+                translator_models_datas: 'translator_models_datas',
+                save_part_status: 'save_part_status',
+                part_sentence_list_datas: 'part_sentence_list_datas',
+                assign_part_list_datas: 'assign_part_list_datas'
+            })
+        },
+        watch: {
+            error_datas: function () {
+                console.log("error_datas:", this.error_datas)
+            },
+            save_part_status: function() {
+
+            },
+            translator_models_datas: function() {
+                let datas = {}
+                for (let ukeys of this.translator_models_datas.translators.list) {
+                    datas = {}
+                    datas.id = ukeys.id
+                    datas.name = ukeys.name
+                    this.$data.options.push(datas)
+                    this.$data.translators.push([ukeys.id, ukeys.name])
+                }
+                if (this.translator_models_datas.translators.navigateLastPage > this.$data.pageIndex) {
+                    this.$data.pageIndex += 1
+                    let data = `?pageindex=${this.$data.pageIndex}`
+                    this.$store.dispatch('getTranslatorInfo', data)
+                } else {
+                    this.$data.options[0] = this.$data.translators
+                    this.$data.sxoptions[0] = this.$data.translators
+                    for (let key of this.$data.grid.schema) {
+                        if (key.hasOwnProperty("enum")) {
+                            key.enum = this.$data.translators
+                        }
+                    }
+                }
+            },
+            part_sentence_list_datas: function() {
+                console.log("part_sentence_list_datas ： ", this.part_sentence_list_datas)
+            },
+            assign_part_list_datas: function() {
+                this.$data.grid.data = []
+                this.$data.gridDatas = this.assign_part_list_datas.result
+                let ProjectFileId = 1
+                let ProjectId = 1
+                for (let keys of this.assign_part_list_datas.result) {
+                    let models = {'原文': `${keys.source}`, '状态(未翻译)': '', '开始时间': '', '结束时间': '', '初译译员': '', '审校译员': ''}
+                    this.$data.contents.push(keys.source)
+                    ProjectFileId = keys.projectFileId
+                    ProjectId = keys.projectId
+                    this.$data.grid.data.push(models)
+                }
+                let objects = {}
+                objects.projectFileId = ProjectFileId
+                objects.projectId = ProjectId
+                this.$store.dispatch('getPartSentenceList', objects)
+            }
+        },
         mounted() {
             let datas = this.$route.params.id || 1
             let pages = `?pageindex=${this.$data.pageIndex}`
-            this.$store.dispatch('getPartInfo', datas)
+            //this.$store.dispatch('getPartInfo', datas)
             this.$store.dispatch('getTranslatorInfo', pages)
         },
         methods : {

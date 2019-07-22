@@ -141,8 +141,6 @@
           width="220">
           <template slot-scope="scope">
             <el-button @click="handleDetailClick(scope.row)" type="text" size="small">项目详情</el-button>
-            <el-button @click="handleClick(scope.row)" type="text" size="small">查看区块</el-button>
-            <el-button type="text" size="small">审校</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -250,6 +248,7 @@
             },
             handleDetailClick(row) {
                 console.log(row)
+                window.location.href = `/#/projectdetail/${row.baseId}`
             },
             handleOpen(key, keyPath) {
                 console.log(key, keyPath)

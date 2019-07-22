@@ -42,8 +42,8 @@
                 <b>进行中...</b>
             </el-form-item>
             <el-form-item label="项目进度：">
-                <el-progress :text-inside="true" :stroke-width="18" :percentage="70"></el-progress>
-                <el-progress :text-inside="true" :stroke-width="18" :percentage="80" color="rgba(142, 113, 199, 0.7)"></el-progress>
+                <el-progress :text-inside="true" :stroke-width="18" :percentage="0"></el-progress>
+                <el-progress :text-inside="true" :stroke-width="18" :percentage="0" color="rgba(142, 113, 199, 0.7)"></el-progress>
             </el-form-item>
             <el-form-item label="起止时间：">
                 <el-date-picker

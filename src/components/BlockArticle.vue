@@ -188,6 +188,7 @@
                     data: []
                 },
                 translators:[],
+                contents:[],
                 options: [],
                 sxoptions: [],
                 order: 1,
@@ -205,6 +206,7 @@
                 error_datas: 'error_datas',
                 translator_models_datas: 'translator_models_datas',
                 save_part_status: 'save_part_status',
+                part_sentence_list_datas: 'part_sentence_list_datas',
                 assign_part_list_datas: 'assign_part_list_datas'
             })
         },
@@ -238,13 +240,25 @@
                     }
                 }
             },
+            part_sentence_list_datas: function() {
+                console.log("part_sentence_list_datas ： ", this.part_sentence_list_datas)
+            },
             assign_part_list_datas: function() {
                 this.$data.grid.data = []
                 this.$data.gridDatas = this.assign_part_list_datas.result
+                let ProjectFileId = 1
+                let ProjectId = 1
                 for (let keys of this.assign_part_list_datas.result) {
                     let models = {'原文': `${keys.source}`, '状态(未翻译)': '', '开始时间': '', '结束时间': '', '初译译员': '', '审校译员': ''}
+                    this.$data.contents.push(keys.source)
+                    ProjectFileId = keys.projectFileId
+                    ProjectId = keys.projectId
                     this.$data.grid.data.push(models)
                 }
+                let objects = {}
+                objects.projectFileId = ProjectFileId
+                objects.projectId = ProjectId
+                this.$store.dispatch('getPartSentenceList', objects)
             }
         },
         mounted() {
@@ -267,14 +281,25 @@
                 let datas = this.assign_part_list_datas.result
                 let index = 0
                 let wordLens = 0
-                
+                let beginIndex = 0
+                let tmpArray = []
                 for (let keys of datas) {
+                    tmpArray = []
+                    console.log("contents : ", this.$data.contents[index])
+                    tmpArray = this.$data.contents[index].split(/(?:[。.?？!]+)/)
                     keys.translateWordCount = keys.source.length
                     keys.reviewWordCount = keys.source.length
                     keys.startTime = this.$data.grid.data[index].开始时间
                     keys.endTime = this.$data.grid.data[index].结束时间
                     keys.partId = index
                     keys.id = keys.projectId
+                    keys.partBegin = beginIndex
+                    if (tmpArray.length > 1) {
+                        keys.partEnd = beginIndex + (tmpArray.length - 1)
+                        beginIndex = keys.partEnd
+                    } else {
+                        keys.partEnd = beginIndex
+                    }
                     keys.translator = {
                         id: this.$data.grid.data[index].初译译员
                     }
