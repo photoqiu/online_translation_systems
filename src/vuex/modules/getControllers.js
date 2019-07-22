@@ -16,6 +16,8 @@ const state = {
     corpus_list_datas: [],
     assign_part_list_datas: [],
     part_sentence_list_datas: [],
+    project_detail_datas: [],
+    part_detail_datas: [],
     error_datas: {}
 }
 
@@ -34,6 +36,8 @@ const getters = {
     corpus_list_datas: state => state.corpus_list_datas,
     assign_part_list_datas: state => state.assign_part_list_datas,
     part_sentence_list_datas: state => state.part_sentence_list_datas,
+    project_detail_datas: state => state.project_detail_datas,
+    part_detail_datas: state => state.part_detail_datas,
     error_datas: state => state.error_datas
 }
 
@@ -52,6 +56,22 @@ const actions = {
         url = url.replace("{{projectFileId}}", datas)
         asyncAPI.doGetDatas(url,
             (datas) => commit(types.ASSIGN_PART_LIST, datas),
+            (datas) => commit(types.HTTP_STATUS_ERROR, datas)
+        );
+    },
+    getPorjectDetails({commit}, datas) {
+        let url = Constant.API.projectDetail
+        url = url.replace("{{id}}", datas)
+        asyncAPI.doGetDatas(url,
+            (datas) => commit(types.GET_PROJECT_DETAILS, datas),
+            (datas) => commit(types.HTTP_STATUS_ERROR, datas)
+        );
+    },
+    getPartDetails({commit}, datas) {
+        let url = Constant.API.getPartDetails
+        url = url.replace("{{partId}}", datas)
+        asyncAPI.doGetDatas(url,
+            (datas) => commit(types.GET_PART_DETAILS, datas),
             (datas) => commit(types.HTTP_STATUS_ERROR, datas)
         );
     },
@@ -153,6 +173,20 @@ const mutations = {
     [types.ASSIGN_PART_LIST] (state, datas) {
         if (!!datas.data.status) {
             state.assign_part_list_datas = datas.data || []
+        } else {
+            state.error_datas = {"data": "系统错误"}
+        }
+    },
+    [types.GET_PART_DETAILS] (state, datas) {
+        if (!!datas.data.status) {
+            state.part_detail_datas = datas.data || []
+        } else {
+            state.error_datas = {"data": "系统错误"}
+        }
+    },
+    [types.GET_PROJECT_DETAILS] (state, datas) {
+        if (!!datas.data.status) {
+            state.project_detail_datas = datas.data.result || []
         } else {
             state.error_datas = {"data": "系统错误"}
         }

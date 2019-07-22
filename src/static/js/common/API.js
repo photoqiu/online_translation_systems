@@ -26,9 +26,9 @@ const Constant = {
         termSave               : USER_API + 'term/save', // 新增术语
         /////////////////////////////////////////////////////////////
         getProject             : USER_API + 'project/list?pageNum={{pageIndex}}',
-        projectDetail          : USER_API + 'project/{{id}}/detail',
+        projectDetail          : USER_API + 'project/detail?projectId={{id}}',
         saveProject            : USER_API + 'project/save',
-        delProject             : USER_API + 'project/file/delete',
+        delProject             : USER_API + 'project/file/delete?projectId={{projectId}}&projectFileId={{projectFileId}}',
         /////////////////////////////////////////////////////////////
         corpusSave             : USER_API + 'corpus/save', // 新增语料
         corpusBatchSave        : USER_API + 'corpus/item/batch/save',

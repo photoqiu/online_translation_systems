@@ -36,7 +36,7 @@
 <template>
 <div class="container_bd">
     <div class="hd">
-        <h1>项目：世界人口状况报告</h1>
+        <h1>项目：{{detail_datas.projectName}}</h1>
         <el-form ref="form" :model="form" label-width="140px">
             <el-form-item label="状态：">
                 <b>进行中...</b>
@@ -60,12 +60,13 @@
             <el-form-item label="上传文件：">
                 <el-upload
                     class="upload-demo"
-                    action="https://jsonplaceholder.typicode.com/posts/"
+                    action="atreus/file/upload"
                     :on-preview="handlePreview"
                     :on-remove="handleRemove"
+                    :on-success="handleSuccess"
                     :before-remove="beforeRemove"
                     multiple
-                    :limit="3"
+                    :limit="200"
                     :on-exceed="handleExceed"
                     :file-list="fileList">
                     <el-button size="small" type="primary">点击上传</el-button>
@@ -88,37 +89,13 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <th scope="row">1</th>
-                        <td>世界人口状况报告01.doc</td>
-                        <td><el-progress :text-inside="true" :stroke-width="18" :percentage="67"></el-progress></td>
-                        <td>张三</td>
+                    <tr v-for="(item, $index) in detail_datas.sourceFiles" :key="$index">
+                        <th scope="row">{{$index + 1}}</th>
+                        <td>{{item.file.fileName}}</td>
+                        <td><el-progress :text-inside="true" :stroke-width="18" :percentage="detail_datas.process"></el-progress></td>
+                        <td>{{detail_datas.projectManager.nickName}}</td>
                         <td>
-                            <button type="button" class="btn btn-link">打开</button>
-                            <button type="button" class="btn btn-link">分配</button>
-                            <el-dropdown split-button type="primary" @click="handleClick">
-                                更多操作
-                                <el-dropdown-menu slot="dropdown">
-                                    <el-dropdown-item>导出初译译文</el-dropdown-item>
-                                    <el-dropdown-item>导出审校译文</el-dropdown-item>
-                                    <el-dropdown-item>导出离线文件</el-dropdown-item>
-                                    <el-dropdown-item>导入离线文件</el-dropdown-item>
-                                    <el-dropdown-item>导出最终译文</el-dropdown-item>
-                                    <el-dropdown-item>导出原-译对照</el-dropdown-item>
-                                    <el-dropdown-item>导出译-原对照</el-dropdown-item>
-                                </el-dropdown-menu>
-                            </el-dropdown>
-                            <button type="button" class="btn btn-link">删除</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row">2</th>
-                        <td>世界人口状况报告02.doc</td>
-                        <td><el-progress :text-inside="true" :stroke-width="18" :percentage="17"></el-progress></td>
-                        <td>李四</td>
-                        <td>
-                            <button type="button" class="btn btn-link">打开</button>
-                            <button type="button" class="btn btn-link">分配</button>
+                            <button type="button" class="btn btn-link">分配区块</button>
                             <el-dropdown split-button type="primary" @click="handleClick">
                                 更多操作
                                 <el-dropdown-menu slot="dropdown">
@@ -136,14 +113,6 @@
                     </tr>
                 </tbody>
             </table>
-            <el-col :span="16"></el-col>
-            <el-col :span="8">
-                <el-pagination
-                    background
-                    layout="prev, pager, next"
-                    :total="1000">
-                </el-pagination>
-            </el-col>
         </div>
     </div>
 </div>
@@ -156,10 +125,46 @@
     
     export default {
         name: "ProjectDetail",
+        computed: {
+            ...mapGetters({
+                error_datas: 'error_datas',
+                del_status: 'del_status',
+                project_detail_datas: 'project_detail_datas'
+            })
+        },
+        watch: {
+            error_datas: function () {
+                console.log("error_datas:", this.error_datas)
+            },
+            del_status: function() {
+
+            },
+            project_detail_datas: function() {
+                this.$data.fileList = []
+                let fileskeys = {}
+                this.$data.detail_datas = this.project_detail_datas
+                this.$data.detail_datas.process = this.project_detail_datas.translateProgress === null ? 0 : parseInt(this.project_detail_datas.translateProgress, 10)
+                for (let keys of this.$data.detail_datas.sourceFiles) {
+                    fileskeys = {}
+                    fileskeys.name = keys.file.fileName
+                    fileskeys.url = keys.file.filePath
+                    fileskeys.id = keys.file.id
+                    this.$data.fileList.push(fileskeys)
+                }
+                console.log("project_detail_datas: ", this.$data.detail_datas.sourceFiles, this.$data.fileList)
+            }
+        },
         data() {
             return {
                 isUsedFaster:false,
                 fileList: [{name: 'food.docx', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}, {name: 'food2.doc', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}],
+                detail_datas: {
+                    projectName: '',
+                    process: 0,
+                    sourceFiles: []
+                },
+                form: {},
+                value2:'',
                 pickerOptions: {
                     shortcuts: [{
                         text: '最近一周',
@@ -191,30 +196,54 @@
             }    
         },
         mounted() {
-            let _self = this
-            let userDatas = {}
-            localForage.getItem('users').then(function(value) {
-                let data = {}
-                userDatas = value
-                data.token = userDatas.token
-                _self.$store.dispatch('getServiceInfo', data)
-                _self.$store.dispatch('getServiceMenusInfo', data)
-            }).catch(function(err) {
-                console.log(err);
-            });
+            let datas = this.$route.params.id || 1
+            this.$store.dispatch('getPorjectDetails', datas)
         },
         methods: {
             handleRemove(file, fileList) {
-                console.log(file, fileList);
+                let datas = {}
+                datas.projectFileId = file.id
+                datas.projectId = this.$route.params.id || 1
+                console.log("fileList, file:", fileList, file)
+                if (fileList.length <= 1) {
+                    return false
+                } else {
+                    this.$store.dispatch('delProjectFiles', datas)
+                    return false
+                }
             },
             handlePreview(file) {
                 console.log(file);
             },
+            handleSuccess(response, file, fileList) {
+                console.log("response : ", response)
+                let fileDatas = response.data.result
+                fileDatas.name = fileDatas.fileName
+                fileDatas.url = fileDatas.filePath
+                fileDatas.id = fileDatas.id
+                this.$data.fileList.push(fileDatas)
+            },
             handleExceed(files, fileList) {
-                this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
+                console.log("handleExceed files:", files)
+                this.$message.warning(`当前限制选择 200 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
             },
             beforeRemove(file, fileList) {
-                return this.$confirm(`确定移除 ${ file.name }？`);
+                let datas = {}
+                console.log("fileList, file:", fileList, file)
+                datas.projectFileId = file.id
+                datas.projectId = this.$route.params.id || 1
+                if (fileList.length <= 1) {
+                    this.$confirm(`不能删除最后一个文件 ${ file.name }？`)
+                    return false
+                } else {
+                    for (let i = 0, lens = fileList.length;  i < lens; i++) {
+                        if (fileList[i].id === file.id) {
+                            this.$data.fileList.splice(i, 1)
+                        }
+                    }
+                    this.$store.dispatch('delProjectFiles', datas)
+                    return false
+                }
             },
             handleClick(event) {
                 let eles = event.target
