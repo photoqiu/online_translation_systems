@@ -95,7 +95,7 @@
                         <td><el-progress :text-inside="true" :stroke-width="18" :percentage="detail_datas.process"></el-progress></td>
                         <td>{{detail_datas.projectManager.nickName}}</td>
                         <td>
-                            <button type="button" class="btn btn-link">分配区块</button>
+                            <router-link :to="{path:`/blockarticle/${projectId}/${item.file.id}`}" class="btn btn-link">分配区块</router-link>
                             <el-dropdown split-button type="primary" @click="handleClick">
                                 更多操作
                                 <el-dropdown-menu slot="dropdown">
@@ -165,6 +165,7 @@
                 },
                 form: {},
                 value2:'',
+                projectId:-1,
                 pickerOptions: {
                     shortcuts: [{
                         text: '最近一周',
@@ -197,6 +198,7 @@
         },
         mounted() {
             let datas = this.$route.params.id || 1
+            this.$data.projectId = this.$route.params.id || 1
             this.$store.dispatch('getPorjectDetails', datas)
         },
         methods: {
@@ -216,12 +218,20 @@
                 console.log(file);
             },
             handleSuccess(response, file, fileList) {
-                console.log("response : ", response)
                 let fileDatas = response.data.result
                 fileDatas.name = fileDatas.fileName
                 fileDatas.url = fileDatas.filePath
                 fileDatas.id = fileDatas.id
                 this.$data.fileList.push(fileDatas)
+                let datas = this.$data.detail_datas
+                let filesdatas = {}
+                filesdatas.file = response.data.result
+                filesdatas.industry1 = this.$data.detail_datas.sourceFiles[0].industry1
+                filesdatas.industry2 = this.$data.detail_datas.sourceFiles[0].industry2
+                filesdatas.industry3 = this.$data.detail_datas.sourceFiles[0].industry3
+                filesdatas.industry4 = this.$data.detail_datas.sourceFiles[0].industry4
+                datas.sourceFiles.push(filesdatas)
+                this.$store.dispatch('doSaveProject', datas)
             },
             handleExceed(files, fileList) {
                 console.log("handleExceed files:", files)
