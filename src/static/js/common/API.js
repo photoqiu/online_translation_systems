@@ -31,6 +31,10 @@ const Constant = {
         translateUnit          : USER_API + 'tu/list?partId={{partId}}&pageSize=3000&projectFileId={{projectFileId}}&pageNum={{pageNum}}',
         translateUnitSave      : USER_API + 'tu/save',
         delProject             : USER_API + 'project/file/delete?projectId={{projectId}}&projectFileId={{projectFileId}}',
+        ///////////////////////////////////////////////////////////// 导出接口
+        exportSourceArticle    : USER_API + 'export/source?projectFileId={{projectFileId}}',
+        exportTargetArticle    : USER_API + 'export/target?projectFileId={{projectFileId}}',
+        exportReviewedArticle  : USER_API + 'export/reviewed?projectFileId={{projectFileId}}',
         /////////////////////////////////////////////////////////////
         corpusSave             : USER_API + 'corpus/save', // 新增语料
         corpusBatchSave        : USER_API + 'corpus/item/batch/save',

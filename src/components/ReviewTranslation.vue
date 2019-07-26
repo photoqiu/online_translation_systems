@@ -222,46 +222,7 @@
         data() {
             return {
                 grid: {
-                    data: [
-                        {'原文': 'I sincerely hope that our common cause will be successful, and I wish us a bright future!', '译者': 'a', '译文': 'a', '状态': 'a', '备注': ''},
-                        {'原文': 'foo', '译者': 'a', '译文': 'a', '状态': 'a', '备注': ''},
-                        {'原文': 'foo', '译者': 'a', '译文': 'a', '状态': 'a', '备注': ''},
-                        {'原文': 'foo', '译者': 'a', '译文': 'a', '状态': 'a', '备注': ''},
-                        {'原文': 'foo', '译者': 'a', '译文': 'a', '状态': 'a', '备注': ''},
-                        {'原文': 'foo', '译者': 'a', '译文': 'a', '状态': 'a', '备注': ''},
-                        {'原文': 'foo', '译者': 'a', '译文': 'a', '状态': 'a', '备注': ''},
-                        {'原文': 'foo', '译者': 'a', '译文': 'a', '状态': 'a', '备注': ''},
-                        {'原文': 'foo', '译者': 'a', '译文': 'a', '状态': 'a', '备注': ''},
-                        {'原文': 'foo', '译者': 'a', '译文': 'a', '状态': 'a', '备注': ''},
-                        {'原文': 'foo', '译者': 'a', '译文': 'a', '状态': 'a', '备注': ''},
-                        {'原文': 'foo', '译者': 'a', '译文': 'a', '状态': 'a', '备注': ''},
-                        {'原文': 'foo', '译者': 'a', '译文': 'a', '状态': 'a', '备注': ''},
-                        {'原文': 'foo', '译者': 'a', '译文': 'a', '状态': 'a', '备注': ''},
-                        {'原文': 'foo', '译者': 'a', '译文': 'a', '状态': 'a', '备注': ''},
-                        {'原文': 'foo', '译者': 'a', '译文': 'a', '状态': 'a', '备注': ''},
-                        {'原文': 'foo', '译者': 'a', '译文': 'a', '状态': 'a', '备注': ''},
-                        {'原文': 'foo', '译者': 'a', '译文': 'a', '状态': 'a', '备注': ''},
-                        {'原文': 'foo', '译者': 'a', '译文': 'a', '状态': 'a', '备注': ''},
-                        {'原文': 'foo', '译者': 'a', '译文': 'a', '状态': 'a', '备注': ''},
-                        {'原文': 'foo', '译者': 'a', '译文': 'a', '状态': 'a', '备注': ''},
-                        {'原文': 'foo', '译者': 'a', '译文': 'a', '状态': 'a', '备注': ''},
-                        {'原文': 'foo', '译者': 'a', '译文': 'a', '状态': 'a', '备注': ''},
-                        {'原文': 'foo', '译者': 'a', '译文': 'a', '状态': 'a', '备注': ''},
-                        {'原文': 'foo', '译者': 'a', '译文': 'a', '状态': 'a', '备注': ''},
-                        {'原文': 'foo', '译者': 'a', '译文': 'a', '状态': 'a', '备注': ''},
-                        {'原文': 'foo', '译者': 'a', '译文': 'a', '状态': 'a', '备注': ''},
-                        {'原文': 'foo', '译者': 'a', '译文': 'a', '状态': 'a', '备注': ''},
-                        {'原文': 'foo', '译者': 'a', '译文': 'a', '状态': 'a', '备注': ''},
-                        {'原文': 'foo', '译者': 'a', '译文': 'a', '状态': 'a', '备注': ''},
-                        {'原文': 'foo', '译者': 'a', '译文': 'a', '状态': 'a', '备注': ''},
-                        {'原文': 'foo', '译者': 'a', '译文': 'a', '状态': 'a', '备注': ''},
-                        {'原文': 'foo', '译者': 'a', '译文': 'a', '状态': 'a', '备注': ''},
-                        {'原文': 'foo', '译者': 'a', '译文': 'a', '状态': 'a', '备注': ''},
-                        {'原文': 'foo', '译者': 'a', '译文': 'a', '状态': 'a', '备注': ''},
-                        {'原文': 'foo', '译者': 'a', '译文': 'a', '状态': 'a', '备注': ''},
-                        {'原文': 'foo', '译者': 'a', '译文': 'a', '状态': 'a', '备注': ''},
-                        {'原文': 'foo', '译者': 'a', '译文': 'a', '状态': 'a', '备注': ''}
-                    ]
+                    data: []
                 },
                 input_memory: '',
                 input_term: '',
@@ -297,6 +258,7 @@
                     }
                 ],
                 dialogTableVisible: false,
+                pageNum:1,
                 isTerm:false
             }
         },
@@ -305,6 +267,8 @@
                 error_datas: 'error_datas',
                 translator_models_datas: 'translator_models_datas',
                 save_part_status: 'save_part_status',
+                translate_unit_datas: 'translate_unit_datas',
+                save_translate_unit_status: 'save_translate_unit_status',
                 part_sentence_list_datas: 'part_sentence_list_datas',
                 assign_part_list_datas: 'assign_part_list_datas'
             })
@@ -313,8 +277,39 @@
             error_datas: function () {
                 console.log("error_datas:", this.error_datas)
             },
-            save_part_status: function() {
-
+            translate_unit_datas:function() {
+                this.$data.grid.data = []
+                let _self = this
+                let status = ''
+                let datas = {}
+                for (let keys of this.translate_unit_datas.result) {
+                    if (keys.status === 1) {
+                        status = '未翻译'
+                    } else if (keys.status === 2) {
+                        status = '已翻译'
+                    } else if (keys.status === 3) {
+                        status = '已审校'
+                    }
+                    datas = {'原文': `${keys.source}`, '译文': `${keys.target}`, '审校': `${keys.reviewed}`, '状态': `${status}`, '备注': `${keys.remarks}`}
+                    this.$data.grid.data.push(datas)
+                }
+                setInterval(function() {
+                    let index = 0
+                    for (let key of _self.$data.grid.data) {
+                        console.log('审校', key['审校'])
+                        if (key['审校'] !== 'null') {
+                            _self.translate_unit_datas.result[index].reviewed = key['审校']
+                            _self.translate_unit_datas.result[index].remarks = key['备注']
+                            _self.translate_unit_datas.result[index].status = 3
+                            key['状态'] = '已审校'
+                            _self.$store.dispatch('doSaveTranslateUnit', _self.translate_unit_datas.result[index])
+                        }
+                        index += 1
+                    }
+                }, 800)
+            },
+            save_translate_unit_status: function() {
+                console.log("save_translate_unit_status:", this.save_translate_unit_status)
             },
             translator_models_datas: function() {
                 let datas = {}
@@ -362,8 +357,13 @@
         },
         mounted() {
             let datas = this.$route.params.id || 1
+            let data = {}
             let pages = `?pageindex=${this.$data.pageIndex}`
+            data.projectFileId = this.$route.params.fid || 1
+            data.partId = this.$route.params.id || 1
+            data.pageNum = this.$data.pageNum
             //this.$store.dispatch('getPartInfo', datas)
+            this.$store.dispatch('getTranslateUnitList', data)
             this.$store.dispatch('getTranslatorInfo', pages)
         },
         methods : {

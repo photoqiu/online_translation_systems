@@ -19,6 +19,9 @@ const state = {
     project_detail_datas: [],
     part_detail_datas: [],
     translate_unit_datas: [],
+    export_source_datas: {},
+    export_target_datas: {},
+    export_review_datas: {},
     error_datas: {}
 }
 
@@ -40,6 +43,9 @@ const getters = {
     project_detail_datas: state => state.project_detail_datas,
     part_detail_datas: state => state.part_detail_datas,
     translate_unit_datas: state => state.translate_unit_datas,
+    export_source_datas: state => state.translate_unit_datas,
+    export_target_datas: state => state.translate_unit_datas,
+    export_review_datas: state => state.translate_unit_datas,
     error_datas: state => state.error_datas
 }
 
@@ -50,6 +56,30 @@ const actions = {
         url = url.replace("{{pageIndex}}", datas)
         asyncAPI.doGetDatas(url,
             (datas) => commit(types.TRANSLATOR, datas),
+            (datas) => commit(types.HTTP_STATUS_ERROR, datas)
+        );
+    },
+    getExportSource({commit}, datas) {
+        let url = Constant.API.exportSourceArticle
+        url = url.replace("{{projectFileId}}", datas.projectFileId)
+        asyncAPI.doGetDatas(url,
+            (datas) => commit(types.EXPORT_SOURCE_ARTICLE, datas),
+            (datas) => commit(types.HTTP_STATUS_ERROR, datas)
+        );
+    },
+    getExportTarget({commit}, datas) {
+        let url = Constant.API.exportTargetArticle
+        url = url.replace("{{projectFileId}}", datas.projectFileId)
+        asyncAPI.doGetDatas(url,
+            (datas) => commit(types.EXPORT_TARGET_ARTICLE, datas),
+            (datas) => commit(types.HTTP_STATUS_ERROR, datas)
+        );
+    },
+    getExportReviewed({commit}, datas) {
+        let url = Constant.API.exportReviewedArticle
+        url = url.replace("{{projectFileId}}", datas.projectFileId)
+        asyncAPI.doGetDatas(url,
+            (datas) => commit(types.EXPORT_REVIEW_ARTICLE, datas),
             (datas) => commit(types.HTTP_STATUS_ERROR, datas)
         );
     },
@@ -185,6 +215,27 @@ const mutations = {
     [types.TRANSLATE_UNIT] (state, datas) {
         if (!!datas.data.status) {
             state.translate_unit_datas = datas.data || []
+        } else {
+            state.error_datas = {"data": "系统错误"}
+        }
+    },
+    [types.EXPORT_SOURCE_ARTICLE] (state, datas) {
+        if (!!datas.data.status) {
+            state.export_source_datas = datas.data || []
+        } else {
+            state.error_datas = {"data": "系统错误"}
+        }
+    },
+    [types.EXPORT_TARGET_ARTICLE] (state, datas) {
+        if (!!datas.data.status) {
+            state.export_target_datas = datas.data || []
+        } else {
+            state.error_datas = {"data": "系统错误"}
+        }
+    },
+    [types.EXPORT_REVIEW_ARTICLE] (state, datas) {
+        if (!!datas.data.status) {
+            state.export_review_datas = datas.data || []
         } else {
             state.error_datas = {"data": "系统错误"}
         }

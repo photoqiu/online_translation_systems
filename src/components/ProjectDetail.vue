@@ -99,6 +99,7 @@
                             <el-dropdown split-button type="primary" @click="handleClick">
                                 更多操作
                                 <el-dropdown-menu slot="dropdown">
+                                    <el-dropdown-item>导出原文</el-dropdown-item>
                                     <el-dropdown-item>导出初译译文</el-dropdown-item>
                                     <el-dropdown-item>导出审校译文</el-dropdown-item>
                                     <el-dropdown-item>导出离线文件</el-dropdown-item>

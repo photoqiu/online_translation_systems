@@ -241,7 +241,7 @@
                     } else if (keys.status === 3) {
                         status = '已审校'
                     }
-                    datas = {'原文': `${keys.source}`, '译文': `${keys.target}`, '状态': `${status}`, '备注': ''}
+                    datas = {'原文': `${keys.source}`, '译文': `${keys.target}`, '状态': `${status}`, '备注': `${keys.remarks}`}
                     this.$data.grid.data.push(datas)
                 }
                 setInterval(function() {
@@ -250,6 +250,7 @@
                         console.log('译文', key['译文'])
                         if (key['译文'] !== 'null') {
                             _self.translate_unit_datas.result[index].target = key['译文']
+                            _self.translate_unit_datas.result[index].remarks = key['备注']
                             _self.translate_unit_datas.result[index].status = 2
                             key['状态'] = '已翻译'
                             _self.$store.dispatch('doSaveTranslateUnit', _self.translate_unit_datas.result[index])
@@ -268,10 +269,7 @@
         data() {
             return {
                 grid: {
-                    data: [
-                        {'原文': 'I sincerely hope that our common cause will be successful, and I wish us a bright future!', '译文': 'a', '状态': 'a', '备注': ''},
-                        {'原文': 'foo', '译文': 'a', '状态': 'a', '备注': ''}
-                    ]
+                    data: []
                 },
                 input_memory: '',
                 input_term: '',
