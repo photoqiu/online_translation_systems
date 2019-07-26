@@ -28,6 +28,8 @@ const Constant = {
         getProject             : USER_API + 'project/list?pageNum={{pageIndex}}',
         projectDetail          : USER_API + 'project/detail?projectId={{id}}',
         saveProject            : USER_API + 'project/save',
+        translateUnit          : USER_API + 'tu/list?partId={{partId}}&pageSize=3000&projectFileId={{projectFileId}}&pageNum={{pageNum}}',
+        translateUnitSave      : USER_API + 'tu/save',
         delProject             : USER_API + 'project/file/delete?projectId={{projectId}}&projectFileId={{projectFileId}}',
         /////////////////////////////////////////////////////////////
         corpusSave             : USER_API + 'corpus/save', // 新增语料

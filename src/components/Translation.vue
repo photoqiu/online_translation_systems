@@ -219,6 +219,52 @@
         componets : {
             canvasDatagrid:canvasDatagrid
         },
+        computed: {
+            ...mapGetters({
+                error_datas: 'error_datas',
+                translate_unit_datas: 'translate_unit_datas',
+                save_translate_unit_status: 'save_translate_unit_status',
+                assign_part_list_datas: 'assign_part_list_datas'
+            })
+        },
+        watch: {
+            translate_unit_datas:function() {
+                this.$data.grid.data = []
+                let _self = this
+                let status = ''
+                let datas = {}
+                for (let keys of this.translate_unit_datas.result) {
+                    if (keys.status === 1) {
+                        status = '未翻译'
+                    } else if (keys.status === 2) {
+                        status = '已翻译'
+                    } else if (keys.status === 3) {
+                        status = '已审校'
+                    }
+                    datas = {'原文': `${keys.source}`, '译文': `${keys.target}`, '状态': `${status}`, '备注': ''}
+                    this.$data.grid.data.push(datas)
+                }
+                setInterval(function() {
+                    let index = 0
+                    for (let key of _self.$data.grid.data) {
+                        console.log('译文', key['译文'])
+                        if (key['译文'] !== 'null') {
+                            _self.translate_unit_datas.result[index].target = key['译文']
+                            _self.translate_unit_datas.result[index].status = 2
+                            key['状态'] = '已翻译'
+                            _self.$store.dispatch('doSaveTranslateUnit', _self.translate_unit_datas.result[index])
+                        }
+                        index += 1
+                    }
+                }, 800)
+            },
+            save_translate_unit_status: function() {
+                console.log("save_translate_unit_status:", this.save_translate_unit_status)
+            },
+            assign_part_list_datas: function() {
+                console.log("assign_part_list_datas: ", this.assign_part_list_datas)
+            }
+        },
         data() {
             return {
                 grid: {
@@ -258,15 +304,22 @@
                         errordesc: '多义词错误'
                     }
                 ],
+                pageIndex: 1,
+                pageNum: 1,
                 dialogTableVisible: false,
                 isTerm:false
             }
         },
         mounted() {
             let datas = this.$route.params.id || 1
+            let data = {}
             let pages = `?pageindex=${this.$data.pageIndex}`
+            data.projectFileId = this.$route.params.fid || 1
+            data.partId = this.$route.params.id || 1
+            data.pageNum = this.$data.pageNum
             this.$store.dispatch('getPartInfo', datas)
             this.$store.dispatch('getTranslatorInfo', pages)
+            this.$store.dispatch('getTranslateUnitList', data)
         },
         methods : {
             memoryClick() {

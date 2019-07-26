@@ -18,6 +18,7 @@ const state = {
     part_sentence_list_datas: [],
     project_detail_datas: [],
     part_detail_datas: [],
+    translate_unit_datas: [],
     error_datas: {}
 }
 
@@ -38,6 +39,7 @@ const getters = {
     part_sentence_list_datas: state => state.part_sentence_list_datas,
     project_detail_datas: state => state.project_detail_datas,
     part_detail_datas: state => state.part_detail_datas,
+    translate_unit_datas: state => state.translate_unit_datas,
     error_datas: state => state.error_datas
 }
 
@@ -48,6 +50,16 @@ const actions = {
         url = url.replace("{{pageIndex}}", datas)
         asyncAPI.doGetDatas(url,
             (datas) => commit(types.TRANSLATOR, datas),
+            (datas) => commit(types.HTTP_STATUS_ERROR, datas)
+        );
+    },
+    getTranslateUnitList({commit}, datas) {
+        let url = Constant.API.translateUnit
+        url = url.replace("{{projectFileId}}", datas.projectFileId)
+        url = url.replace("{{partId}}", datas.partId)
+        url = url.replace("{{pageNum}}", datas.pageNum)
+        asyncAPI.doGetDatas(url,
+            (datas) => commit(types.TRANSLATE_UNIT, datas),
             (datas) => commit(types.HTTP_STATUS_ERROR, datas)
         );
     },
@@ -169,6 +181,13 @@ const actions = {
 const mutations = {
     [types.HTTP_STATUS_ERROR] (state, datas) {
         state.error_datas = {"data": "请求错误"}
+    },
+    [types.TRANSLATE_UNIT] (state, datas) {
+        if (!!datas.data.status) {
+            state.translate_unit_datas = datas.data || []
+        } else {
+            state.error_datas = {"data": "系统错误"}
+        }
     },
     [types.ASSIGN_PART_LIST] (state, datas) {
         if (!!datas.data.status) {

@@ -56,11 +56,11 @@ const router = new VueRouter({
             name: 'createbase',
             component: CreateProjectBase
         }, {
-            path: '/translation/:id',
+            path: '/translation/:id/:fid',
             name: 'translation',
             component: Translation
         }, {
-            path: '/reviewtranslation/:id',
+            path: '/reviewtranslation/:id/:fid',
             name: 'reviewtranslation',
             component: ReviewTranslation
         }, {
