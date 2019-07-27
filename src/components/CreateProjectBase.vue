@@ -430,12 +430,16 @@
                 sub_there_industry_models_datas: 'sub_there_industry_models_datas',
                 uploaders_file_status: 'uploaders_file_status',
                 corpus_list_datas: 'corpus_list_datas',
+                save_project_status: 'save_project_status',
                 customer_info_datas: 'customer_info_datas'
             })
         },
         watch: {
             error_datas: function () {
                 console.log("error_datas:", this.error_datas)
+            },
+            save_project_status: function() {
+                window.location.href = "/#/"
             },
             corpus_list_datas: function() {
                 console.log("thie.corpus_list_datas : ", this.corpus_list_datas)

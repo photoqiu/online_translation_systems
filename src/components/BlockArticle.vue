@@ -110,8 +110,7 @@
                     </div>
                 </div>
                 <el-form-item>
-                    <el-button type="primary" @click="applyTime">均分确认</el-button>
-                    <el-button type="primary" @click="applyTime">自定义确认</el-button>
+                    <el-button type="primary" @click="applyAverageDatas">均分确认</el-button>
                     <el-button type="primary" @click="onSubmit">创建区块</el-button>
                 </el-form-item>
             </el-form>
@@ -249,7 +248,9 @@
                 }
             },
             part_sentence_list_datas: function() {
-                console.log("part_sentence_list_datas ： ", this.part_sentence_list_datas)
+                if (this.part_sentence_list_datas.length <= 0) {
+
+                }
             },
             project_detail_datas: function() {
                 for (let keys of this.project_detail_datas.sourceFiles) {
@@ -273,16 +274,19 @@
                 let objects = {}
                 objects.projectFileId = ProjectFileId
                 objects.projectId = ProjectId
-                this.$data.projectId = ProjectId
-                this.$data.fileId = ProjectFileId
-                this.$store.dispatch('getPartSentenceList', objects)
+                let partInfoArguments = `?projectFileId=${this.$route.params.fid}`
+                this.$store.dispatch('getPartSentenceList', partInfoArguments)
             }
         },
         mounted() {
             let datas = this.$route.params.id || 1
             this.$data.fileId = parseInt(this.$route.params.fid, 10) || 1
+            this.$data.projectId = this.$route.params.id || 1
+            this.$data.fileId = parseInt(this.$route.params.fid, 10) || 1
             let pages = `?pageindex=${this.$data.pageIndex}`
-            this.$store.dispatch('getPartInfo', datas)
+            let partInfoArguments = `?projectFileId=${this.$route.params.fid}`
+            this.$store.dispatch('getPartInfo', this.$data.fileId)
+            this.$store.dispatch('getPartSentenceList', partInfoArguments)
             this.$store.dispatch('getTranslatorInfo', pages)
             this.$store.dispatch('getPorjectDetails', datas)
         },
@@ -297,6 +301,38 @@
                 this.$data.num.push(1)
                 this.$data.beginNums.push(0)
             },
+            applyAverageDatas() {
+                console.log("this.$data.grid.data:", this.$data.grid.data)
+                let total = this.$data.grid.data.length
+                let lens = this.$data.num.length
+                let sr_nums = Math.ceil(total / lens)
+                let startTime = []
+                let endTime = []
+                let orderIndex = 0
+                let index = 0
+                let sr_index = 1
+                for (var i = 0; i < lens; i++) {
+                    if (i < lens) {
+                        this.$data.beginNums[i] = sr_nums * i
+                    }
+                    this.$data.beginNums[lens] = total
+                    this.$data.num[i] = sr_nums
+                    startTime[i] = moment(this.$data.sTime[i][0], "YYYY-MM-DD HH:mm:ss").format().replace("T", ' ').split("+")[0]
+                    endTime[i] = moment(this.$data.sTime[i][1], "YYYY-MM-DD HH:mm:ss").format().replace("T", ' ').split("+")[0]
+                }
+                this.$data.beginNums[lens] = total
+                console.log("this.$data.beginNums:", this.$data.num.length, this.$data.beginNums)
+                for (let keys of this.$data.gridDatas) {
+                    if (this.$data.beginNums[sr_index] > orderIndex) {
+                        this.$data.grid.data[orderIndex] = {'原文': `${keys.source}`, '状态(未翻译)': '待翻译', '开始时间': `${startTime[index]}`, '结束时间': `${endTime[index]}`, '初译译员': `${this.$data.values[index]}`, '审校译员': `${this.$data.valuex[index]}`}
+                    } else {
+                        sr_index += 1
+                        index += 1
+                        this.$data.grid.data[orderIndex] = {'原文': `${keys.source}`, '状态(未翻译)': '待翻译', '开始时间': `${startTime[index]}`, '结束时间': `${endTime[index]}`, '初译译员': `${this.$data.values[index]}`, '审校译员': `${this.$data.valuex[index]}`}
+                    }
+                    orderIndex += 1
+                }
+            },
             applydatas(event) {
                 let elements = event.currentTarget
                 let models = {}
@@ -309,7 +345,6 @@
                 let endTime = moment(this.$data.sTime[index][1], "YYYY-MM-DD HH:mm:ss").format().replace("T", ' ').split("+")[0]
                 let totalIndex = this.$data.num[index] + this.$data.beginNums[index]
                 ////////////////////////////////////////
-                console.log("sideIndex:", sideIndex, index, this.$data.num[index], totalIndex, this.$data.beginNums[index], totalIndex)
                 for (let keys of this.$data.gridDatas) {
                     if (totalIndex > orderIndex && sideIndex <= orderIndex) {
                         this.$data.grid.data[orderIndex] = {'原文': `${keys.source}`, '状态(未翻译)': '待翻译', '开始时间': `${startTime}`, '结束时间': `${endTime}`, '初译译员': `${this.$data.values[index]}`, '审校译员': `${this.$data.valuex[index]}`}
@@ -322,7 +357,6 @@
                     this.$data.num[arrIndex] = 0
                     this.$data.beginNums[arrIndex] = this.$data.gridDatas.length
                 }
-
             },
             delUserControllers(event) {
                 let elements = event.currentTarget
@@ -346,24 +380,25 @@
                     keys = {}
                     keys.translateWordCount = 0
                     keys.reviewWordCount = 0
-                    keys.startTime = this.$data.grid.data[index].开始时间
-                    keys.endTime = this.$data.grid.data[index].结束时间
-                    console.log("this.$data.grid.data[index].开始时间 ： ", index, this.$data.grid.data[index].开始时间)
-                    keys.partId = i
-                    keys.id = this.$data.projectId
+                    console.log("timer:", this.$data.sTime[i]);
+                    keys.startTime = moment(this.$data.sTime[i][0], "YYYY-MM-DD HH:mm:ss").format().replace("T", ' ').split("+")[0]
+                    keys.endTime = moment(this.$data.sTime[i][1], "YYYY-MM-DD HH:mm:ss").format().replace("T", ' ').split("+")[0]
+                    keys.partId = 0
+                    keys.id = 0
                     keys.projectId = this.$data.projectId
                     keys.projectFileId = this.$data.fileId
                     keys.partBegin = this.$data.beginNums[i]
                     keys.partEnd = this.$data.beginNums[eindex]
                     keys.translator = {
-                        id: this.$data.grid.data[index].初译译员
+                        id: this.$data.values[i]
                     }
                     keys.reviewer = {
-                        id: this.$data.grid.data[index].审校译员
+                        id: this.$data.valuex[i]
                     }
-                    if (eindex === lens) {
-                        console.log("this.$data.grid.data ： ", datas)
+                    if (eindex === (lens - 1)) {
+                        datas.push(keys)
                         this.$store.dispatch('doSavePart', datas)
+                        return false
                     } else {
                         datas.push(keys)
                     }

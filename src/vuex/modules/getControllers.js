@@ -118,9 +118,9 @@ const actions = {
         );
     },
     getPartSentenceList({commit}, datas) {
+        console.log("datas:", datas)
         let url = Constant.API.getPartList
-        url = url.replace("{{projectFileId}}", datas.projectFileId)
-        url = url.replace("{{projectId}}", datas.projectId)
+        url = url.replace("{{arguments}}", datas)
         asyncAPI.doGetDatas(url,
             (datas) => commit(types.GET_PART_SENTENCE_LIST, datas),
             (datas) => commit(types.HTTP_STATUS_ERROR, datas)

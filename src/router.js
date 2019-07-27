@@ -18,6 +18,7 @@ import EditorTerm from './components/EditorTerm.vue'
 import TermList from './components/TermList.vue'
 import UploaderTerm from './components/UploaderTerm.vue'
 import QAReport from './components/QAReport.vue'
+import PartList from'./components/PartList.vue'
 import NotFound from './components/NotFound.vue'
 
 Vue.use(VueRouter)
@@ -47,6 +48,10 @@ const router = new VueRouter({
             path: '/blockarticle/:id/:fid',
             name: 'blockarticle',
             component: BlockArticle
+        }, {
+            path: '/partlist/:id/:fid',
+            name: 'PartList',
+            component: PartList
         }, {
             path: '/projectdetail/:id',
             name: 'projectdetail',

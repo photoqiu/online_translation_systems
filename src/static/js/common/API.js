@@ -16,7 +16,7 @@ const Constant = {
         ////////////////////////////////////////////////////////////////////////////////////////
         getFilePartList        : USER_API + 'part/assign/list?projectFileId={{projectFileId}}', //区块分配接口,返回某文件的全部句子
         partSave               : USER_API + 'part/save', //保存区块分配结果
-        getPartList            : USER_API + 'part/list?projectFileId={{projectFileId}}&projectId={{projectId}}', //区块列表
+        getPartList            : USER_API + 'part/list{{arguments}}', //区块列表
         getPartDetails         : USER_API + 'part/detail?partId={{partId}}', // 区块详情获取单个区块内容 /
         /////////////////////////////攻略
         fileUpload             : USER_API + 'file/upload',

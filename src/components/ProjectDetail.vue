@@ -46,16 +46,7 @@
                 <el-progress :text-inside="true" :stroke-width="18" :percentage="0" color="rgba(142, 113, 199, 0.7)"></el-progress>
             </el-form-item>
             <el-form-item label="起止时间：">
-                <el-date-picker
-                    v-model="value2"
-                    type="daterange"
-                    align="right"
-                    unlink-panels
-                    range-separator="至"
-                    start-placeholder="开始日期"
-                    end-placeholder="结束日期"
-                    :picker-options="pickerOptions">
-                </el-date-picker>
+                {{pickerOptions}}
             </el-form-item>
             <el-form-item label="上传文件：">
                 <el-upload
@@ -95,21 +86,16 @@
                         <td><el-progress :text-inside="true" :stroke-width="18" :percentage="detail_datas.process"></el-progress></td>
                         <td>{{detail_datas.projectManager.nickName}}</td>
                         <td>
-                            <router-link :to="{path:`/blockarticle/${projectId}/${item.file.id}`}" class="btn btn-link">分配区块</router-link>
-                            <el-dropdown split-button type="primary" @click="handleClick">
+                            <router-link :to="{path:`/blockarticle/${projectId}/${item.id}`}" class="btn btn-link">分配区块</router-link>
+                            <router-link :to="{path:`/partlist/${projectId}/${item.id}`}" class="btn btn-link">区块列表</router-link>
+                            <el-dropdown split-button type="primary" @command="handleCommand">
                                 更多操作
                                 <el-dropdown-menu slot="dropdown">
-                                    <el-dropdown-item>导出原文</el-dropdown-item>
-                                    <el-dropdown-item>导出初译译文</el-dropdown-item>
-                                    <el-dropdown-item>导出审校译文</el-dropdown-item>
-                                    <el-dropdown-item>导出离线文件</el-dropdown-item>
-                                    <el-dropdown-item>导入离线文件</el-dropdown-item>
-                                    <el-dropdown-item>导出最终译文</el-dropdown-item>
-                                    <el-dropdown-item>导出原-译对照</el-dropdown-item>
-                                    <el-dropdown-item>导出译-原对照</el-dropdown-item>
+                                    <el-dropdown-item :command="menus_datas[$index][0]" :data-data="$index">导出原文</el-dropdown-item>
+                                    <el-dropdown-item :command="menus_datas[$index][1]" :data-data="$index">导出译文</el-dropdown-item>
+                                    <el-dropdown-item :command="menus_datas[$index][2]" :data-data="$index">导出审校</el-dropdown-item>
                                 </el-dropdown-menu>
                             </el-dropdown>
-                            <button type="button" class="btn btn-link">删除</button>
                         </td>
                     </tr>
                 </tbody>
@@ -130,6 +116,11 @@
             ...mapGetters({
                 error_datas: 'error_datas',
                 del_status: 'del_status',
+                export_source_datas: 'export_source_datas',
+                export_target_datas: 'export_target_datas',
+                export_review_datas: 'export_review_datas',
+                save_project_status: 'save_project_status',
+                part_sentence_list_datas: 'part_sentence_list_datas',
                 project_detail_datas: 'project_detail_datas'
             })
         },
@@ -137,20 +128,62 @@
             error_datas: function () {
                 console.log("error_datas:", this.error_datas)
             },
+            part_sentence_list_datas: function() {
+                if (this.part_sentence_list_datas.length <= 0) {
+                    partList.push(false)
+                } else {
+                    partList.push(true)
+                }
+            },
+            save_project_status: function() {
+                this.$store.dispatch('getPorjectDetails', this.$data.projectId)
+            },
+            export_review_datas: function() {
+                console.log("export_review_datas:", this.export_review_datas)
+            },
+            export_target_datas: function() {
+                console.log("export_target_datas:", this.export_target_datas)
+            },
+            export_source_datas: function() {
+                console.log("export_source_datas:", this.export_source_datas)
+            },
             del_status: function() {
-
+                this.$store.dispatch('getPorjectDetails', this.$data.projectId)
             },
             project_detail_datas: function() {
                 this.$data.fileList = []
                 let fileskeys = {}
+                let menus_data = {}
+                let menus_data_arr = []
+                let str_data = ''
+                let partInfoArguments = ''
                 this.$data.detail_datas = this.project_detail_datas
                 this.$data.detail_datas.process = this.project_detail_datas.translateProgress === null ? 0 : parseInt(this.project_detail_datas.translateProgress, 10)
+                this.$data.pickerOptions = `${this.$data.detail_datas.startTime}~${this.$data.detail_datas.endTime}`
                 for (let keys of this.$data.detail_datas.sourceFiles) {
                     fileskeys = {}
                     fileskeys.name = keys.file.fileName
                     fileskeys.url = keys.file.filePath
                     fileskeys.id = keys.file.id
+                    menus_data_arr = []
+                    menus_data = {}
+                    menus_data.projectFileId = keys.id
+                    menus_data.index = 0
+                    str_data = JSON.stringify(menus_data)
+                    menus_data_arr.push(str_data)
+                    menus_data.projectFileId = keys.id
+                    menus_data.index = 1
+                    str_data = JSON.stringify(menus_data)
+                    menus_data_arr.push(str_data)
+                    menus_data.projectFileId = keys.id
+                    menus_data.index = 2
+                    str_data = JSON.stringify(menus_data)
+                    menus_data_arr.push(str_data)
+                    this.$data.menus_datas.push(menus_data_arr)
                     this.$data.fileList.push(fileskeys)
+                    partInfoArguments = `?projectFileId=${keys.id}`
+                    
+                    this.$store.dispatch('getPartSentenceList', partInfoArguments)
                 }
                 console.log("project_detail_datas: ", this.$data.detail_datas.sourceFiles, this.$data.fileList)
             }
@@ -164,36 +197,12 @@
                     process: 0,
                     sourceFiles: []
                 },
+                partList:[],
+                menus_datas: [],
                 form: {},
                 value2:'',
                 projectId:-1,
-                pickerOptions: {
-                    shortcuts: [{
-                        text: '最近一周',
-                        onClick(picker) {
-                          const end = new Date();
-                          const start = new Date();
-                          start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
-                          picker.$emit('pick', [start, end]);
-                        }
-                    }, {
-                        text: '最近一个月',
-                        onClick(picker) {
-                            const end = new Date();
-                            const start = new Date();
-                            start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-                            picker.$emit('pick', [start, end]);
-                        }
-                    }, {
-                        text: '最近三个月',
-                        onClick(picker) {
-                            const end = new Date();
-                            const start = new Date();
-                            start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
-                            picker.$emit('pick', [start, end]);
-                        }
-                    }]
-                },
+                pickerOptions: '',
                 activeName: 'second'
             }    
         },
@@ -204,10 +213,16 @@
         },
         methods: {
             handleRemove(file, fileList) {
+                let fileDatas = this.$data.detail_datas.sourceFiles
                 let datas = {}
-                datas.projectFileId = file.id
+                let datasID = -1
+                for (let keys of fileDatas) {
+                    if (keys.file.id === file.id) {
+                        datas.projectFileId = keys.id
+                    }
+                }
                 datas.projectId = this.$route.params.id || 1
-                console.log("fileList, file:", fileList, file)
+                console.log("fileList, file:", datas)
                 if (fileList.length <= 1) {
                     return false
                 } else {
@@ -240,27 +255,34 @@
             },
             beforeRemove(file, fileList) {
                 let datas = {}
-                console.log("fileList, file:", fileList, file)
-                datas.projectFileId = file.id
+                let fileDatas = this.$data.detail_datas.sourceFiles
+                let datasID = -1
+                for (let keys of fileDatas) {
+                    if (keys.file.id === file.id) {
+                        datas.projectFileId = keys.id
+                    }
+                }
                 datas.projectId = this.$route.params.id || 1
                 if (fileList.length <= 1) {
                     this.$confirm(`不能删除最后一个文件 ${ file.name }？`)
                     return false
                 } else {
-                    for (let i = 0, lens = fileList.length;  i < lens; i++) {
-                        if (fileList[i].id === file.id) {
-                            this.$data.fileList.splice(i, 1)
-                        }
-                    }
                     this.$store.dispatch('delProjectFiles', datas)
                     return false
                 }
             },
-            handleClick(event) {
-                let eles = event.target
-                let index = parseInt(eles.getAttribute("data-index"), 10)
-                let datas = [this.$data.categoryDatas, index]
-                this.$store.dispatch('changeServiceMenusInfo', datas)
+            handleCommand(command) {
+                let datas = JSON.parse(command)
+                if (datas.index === 0) {
+                    this.$store.dispatch('getExportSource', datas)
+                }
+                if (datas.index === 1) {
+                    this.$store.dispatch('getExportTarget', datas)
+                }
+                if (datas.index === 2) {
+                    this.$store.dispatch('getExportReviewed', datas)
+                }
+                this.$message('click on item ' + command);
             }
         }
     }
