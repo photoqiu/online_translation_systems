@@ -76,10 +76,10 @@
     <div class="bd">
         <div class="row">
             <el-steps :active="1" align-center>
-                <el-step title="创建新项目" description="这是一段很长很长很长的描述性文字"></el-step>
-                <el-step title="分配区块" description="这是一段很长很长很长的描述性文字"></el-step>
-                <el-step title="分配任务" description="这是一段很长很长很长的描述性文字"></el-step>
-                <el-step title="完成" description="这是一段很长很长很长的描述性文字"></el-step>
+                <el-step title="创建新项目" description="新建一个项目并上传附件"></el-step>
+                <el-step title="分配区块" description="对上传附件进行区块分配"></el-step>
+                <el-step title="分配任务" description="分配完成后，相关人员开发翻译与审校"></el-step>
+                <el-step title="完成" description="完成项目"></el-step>
             </el-steps>
         </div>
         <div class="row">

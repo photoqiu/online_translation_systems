@@ -199,6 +199,7 @@
                 color2: '',
                 values : [],
                 valuex : [],
+                partId : [0],
                 projectId: 0,
                 fileId: '',
                 activeName: 'second',
@@ -224,7 +225,7 @@
                 console.log("error_datas:", this.error_datas)
             },
             save_part_status: function() {
-
+                window.location.href = `/#/projectdetail/${this.$route.params.id}`
             },
             translator_models_datas: function() {
                 let datas = {}
@@ -257,8 +258,9 @@
                         this.$data.beginNums[dataindex] = keys.partEnd - keys.partBegin
                         this.$data.sTime[index] = [new Date(keys.startTime), new Date(keys.endTime)]
                         this.$data.num[index] = keys.partEnd - keys.partBegin
-                        this.$data.valuex[index] = keys.reviewer.name
-                        this.$data.values[index] = keys.translator.name
+                        this.$data.valuex[index] = keys.reviewer.id
+                        this.$data.values[index] = keys.translator.id
+                        this.$data.partId.push(keys.id)
                         dataindex += 1
                         index += 1
                     }
@@ -331,10 +333,10 @@
                 this.$data.sxoptions.push(this.$data.translators)
                 this.$data.sTime.push(arr)
                 this.$data.num.push(1)
+                this.$data.partId.push(0)
                 this.$data.beginNums.push(0)
             },
             applyAverageDatas() {
-                console.log("this.$data.grid.data:", this.$data.grid.data)
                 let total = this.$data.grid.data.length
                 let lens = this.$data.num.length
                 let sr_nums = Math.ceil(total / lens)
@@ -353,7 +355,6 @@
                     endTime[i] = moment(this.$data.sTime[i][1], "YYYY-MM-DD HH:mm:ss").format().replace("T", ' ').split("+")[0]
                 }
                 this.$data.beginNums[lens] = total
-                console.log("this.$data.beginNums:", this.$data.num.length, this.$data.beginNums)
                 for (let keys of this.$data.gridDatas) {
                     if (this.$data.beginNums[sr_index] > orderIndex) {
                         this.$data.grid.data[orderIndex] = {'原文': `${keys.source}`, '状态(未翻译)': '待翻译', '开始时间': `${startTime[index]}`, '结束时间': `${endTime[index]}`, '初译译员': `${this.$data.values[index]}`, '审校译员': `${this.$data.valuex[index]}`}
@@ -364,6 +365,7 @@
                     }
                     orderIndex += 1
                 }
+                this.$message('分配完成.');
             },
             applydatas(event) {
                 let elements = event.currentTarget
@@ -396,6 +398,8 @@
                 this.$data.sTime.splice(index, 1)
                 this.$data.num.splice(index, 1)
                 this.$data.beginNums.splice(index, 1)
+                this.$data.partId.splice(index, 1)
+                this.$data.order -= 1
             },
             onSubmit(event) {
                 let datas = []
@@ -404,7 +408,6 @@
                 let beginIndex = 0
                 let tmpArray = []
                 let keys = {}
-                console.log("this.$data.beginNums:", this.$data.beginNums)
                 for (var i = 0, lens = this.$data.beginNums.length; i < lens; i++) {
                     tmpArray = []
                     let index = this.$data.beginNums[i]
@@ -415,7 +418,7 @@
                     console.log("timer:", this.$data.sTime[i]);
                     keys.startTime = moment(this.$data.sTime[i][0], "YYYY-MM-DD HH:mm:ss").format().replace("T", ' ').split("+")[0]
                     keys.endTime = moment(this.$data.sTime[i][1], "YYYY-MM-DD HH:mm:ss").format().replace("T", ' ').split("+")[0]
-                    keys.partId = 0
+                    keys.partId = this.$data.partId[i] || 0
                     keys.id = 0
                     keys.projectId = this.$data.projectId
                     keys.projectFileId = this.$data.fileId
