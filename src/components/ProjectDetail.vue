@@ -273,16 +273,23 @@
             },
             handleCommand(command) {
                 let datas = JSON.parse(command)
+                let messages = ''
                 if (datas.index === 0) {
-                    this.$store.dispatch('getExportSource', datas)
+                    window.location.href = `http://127.0.0.1:9000/atreus/export/source?projectFileId=${datas.projectFileId}`
+                    messages = '导出原文'
+                    // this.$store.dispatch('getExportSource', datas)
                 }
                 if (datas.index === 1) {
-                    this.$store.dispatch('getExportTarget', datas)
+                    window.location.href = `http://127.0.0.1:9000/atreus/export/target?projectFileId=${datas.projectFileId}`
+                    messages = '导出译文'
+                    // this.$store.dispatch('getExportTarget', datas)
                 }
                 if (datas.index === 2) {
-                    this.$store.dispatch('getExportReviewed', datas)
+                    window.location.href = `http://127.0.0.1:9000/atreus/export/reviewed?projectFileId=${datas.projectFileId}`
+                    messages = '导出审校'
+                    // this.$store.dispatch('getExportReviewed', datas)
                 }
-                this.$message('click on item ' + command);
+                this.$message(`正在${messages}中...`);
             }
         }
     }

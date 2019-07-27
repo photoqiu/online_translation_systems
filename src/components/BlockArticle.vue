@@ -104,7 +104,7 @@
                             </el-select>
                         </div>
                         <div class="col-lg-3 col-3 col-sm-3 rowset" >
-                            <el-button type="warning" :data-index="$index" icon="el-icon-video-play" v-show="isConUsed[$index]" @click="applydatas" circle></el-button>
+                            <el-button type="warning" :data-index="$index" icon="el-icon-video-play" @click="applydatas" circle></el-button>
                             <el-button type="danger" :data-index="$index" icon="el-icon-delete" @click="delUserControllers" circle></el-button>
                         </div>
                     </div>
@@ -145,7 +145,6 @@
                             const end = new Date();
                             const start = new Date();
                             start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
-                            console.log("0 -----------> datas : ", start, end)
                             picker.$emit('pick', [start, end]);
                         }
                     }, {
@@ -154,7 +153,6 @@
                             const end = new Date();
                             const start = new Date();
                             start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-                            console.log("1 -----------> datas : ", start, end)
                             picker.$emit('pick', [start, end]);
                         }
                     }, {
@@ -163,7 +161,6 @@
                             const end = new Date();
                             const start = new Date();
                             start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
-                            console.log("2 -----------> datas : ", start, end)
                             picker.$emit('pick', [start, end]);
                         }
                     }]
@@ -248,8 +245,43 @@
                 }
             },
             part_sentence_list_datas: function() {
-                if (this.part_sentence_list_datas.length <= 0) {
-
+                if (this.part_sentence_list_datas.length > 0) {
+                    this.$data.beginNums[0] = 0
+                    let dataindex = 1
+                    let index = 0
+                    let modelsIndex = 0
+                    let orderIndex = 0
+                    this.$data.order = this.part_sentence_list_datas.length
+                    for (let keys of this.part_sentence_list_datas) {
+                        orderIndex = keys.partEnd - keys.partBegin
+                        this.$data.beginNums[dataindex] = keys.partEnd - keys.partBegin
+                        this.$data.sTime[index] = [new Date(keys.startTime), new Date(keys.endTime)]
+                        this.$data.num[index] = keys.partEnd - keys.partBegin
+                        this.$data.valuex[index] = keys.reviewer.name
+                        this.$data.values[index] = keys.translator.name
+                        dataindex += 1
+                        index += 1
+                    }
+                    dataindex = 1
+                    index = 0
+                    orderIndex = this.$data.beginNums[dataindex]
+                    for (let key of this.$data.grid.data) {
+                        if (orderIndex > modelsIndex) {
+                            key['开始时间'] = this.part_sentence_list_datas[index].startTime
+                            key['结束时间'] = this.part_sentence_list_datas[index].endTime
+                            key['初译译员'] = this.$data.values[index]
+                            key['审校译员'] = this.$data.valuex[index]
+                        } else {
+                            dataindex += 1
+                            index += 1
+                            orderIndex += this.$data.beginNums[dataindex]
+                            key['开始时间'] = this.part_sentence_list_datas[index].startTime
+                            key['结束时间'] = this.part_sentence_list_datas[index].endTime
+                            key['初译译员'] = this.$data.values[index]
+                            key['审校译员'] = this.$data.valuex[index]
+                        }
+                        modelsIndex += 1
+                    }
                 }
             },
             project_detail_datas: function() {
