@@ -104,7 +104,7 @@
                             v-for="(item, $index) in customer_datas"
                             :key="$index"
                             :data-datas="item.json_datas"
-                            :label="item.customerName"
+                            :label="item.labelName"
                             :value="item.json_datas">
                         </el-option>
                     </el-select>
@@ -490,6 +490,7 @@
             },
             customer_info_datas: function() {
                 for (let keys of this.customer_info_datas.list) {
+                    keys.labelName = `${keys.customerName}--${keys.organName}`
                     this.$data.customer_datas.push(keys)
                 }
                 if (!!this.customer_info_datas.isLastPage) {
@@ -549,12 +550,13 @@
                 let elements = event.target
                 this.$data.addFileOrder += 1
                 for (var i = 0; i < this.$data.addFileOrder; i++) {
-                    if (i === this.$data.currentIndex) {
+                    if (i === 0) {
                         this.$data.titleStyle[i] = 'list-group-item list-group-item-action active'
                     } else {
                         this.$data.titleStyle[i] = 'list-group-item list-group-item-action'
                     }
                 }
+                this.$data.currentIndex = 0
                 this.$data.form.fileList.push(datas)
             },
             substructionEvent(event) {
@@ -569,7 +571,7 @@
                 this.$data.titleStyle.splice(lastIndex, 1)
                 this.$data.hiddenStyles.length = 0
                 for (let i = 0, len = this.$data.titleStyle.length; i < len; i ++) {
-                    if (i === index) {
+                    if (i === 0) {
                         this.$data.hiddenStyles.push("show card")
                         this.$data.titleStyle[i] = 'list-group-item list-group-item-action active'
                     } else {
