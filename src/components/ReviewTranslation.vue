@@ -222,6 +222,27 @@
         data() {
             return {
                 grid: {
+                    schema: [
+                        {
+                            name: '原文'
+                        },
+                        {
+                            name: '译文' 
+                        },
+                        {
+                            name: '审校',
+                            enum: [
+                                '正确',
+                                '错误'
+                            ]
+                        },
+                        {
+                            name: '状态'
+                        },
+                        {
+                            name: '备注'
+                        }
+                    ],
                     data: []
                 },
                 input_memory: '',
@@ -281,6 +302,7 @@
                 this.$data.grid.data = []
                 let _self = this
                 let status = ''
+                let reviewed = ''
                 let datas = {}
                 for (let keys of this.translate_unit_datas.result) {
                     if (keys.status === 1) {
@@ -290,14 +312,15 @@
                     } else if (keys.status === 3) {
                         status = '已审校'
                     }
-                    datas = {'原文': `${keys.source}`, '译文': `${keys.target}`, '审校': `${keys.reviewed}`, '状态': `${status}`, '备注': `${keys.remarks}`}
+                    reviewed = keys.reviewed === null ? '' : keys.reviewed
+                    datas = {'原文': `${keys.source}`, '译文': `${keys.target}`, '审校': `${reviewed}`, '状态': `${status}`, '备注': `${keys.remarks}`}
                     this.$data.grid.data.push(datas)
                 }
                 setInterval(function() {
                     let index = 0
                     for (let key of _self.$data.grid.data) {
                         console.log('审校', key['审校'])
-                        if (key['审校'] !== 'null') {
+                        if (key['审校'].length >= 2) {
                             _self.translate_unit_datas.result[index].reviewed = key['审校']
                             _self.translate_unit_datas.result[index].remarks = key['备注']
                             _self.translate_unit_datas.result[index].status = 3

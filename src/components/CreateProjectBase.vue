@@ -462,7 +462,6 @@
                 this.$data.sub_industry_models_2 = this.sub_two_industry_models_datas
             },
             sub_there_industry_models_datas: function() {
-                console.log("this.sub_there_industry_models_datas : ", this.sub_there_industry_models_datas)
                 this.$data.sub_industry_models_3 = this.sub_there_industry_models_datas
             },
             users_list_datas: function() {
