@@ -8,6 +8,7 @@ const state = {
     save_project_status: {},
     save_part_status: {},
     save_translate_unit_status: {},
+    save_corpus_status: {},
     save_term_status: {}
 }
 
@@ -18,6 +19,7 @@ const getters = {
     save_project_status: state => state.save_project_status,
     save_part_status: state => state.save_part_status,
     save_translate_unit_status: state => state.save_translate_unit_status,
+    save_corpus_status: state => state.save_corpus_status,
     save_term_status: state => state.save_term_status
 }
 
@@ -51,6 +53,13 @@ const actions = {
             (datas) => commit(types.HTTP_STATUS_ERROR, datas)
         );
     },
+    doSaveCorpus({commit}, datas) { //保存语料库
+        let url = Constant.API.corpusSave
+        asyncAPI.doPostDatas(url, datas,
+            (datas) => commit(types.DO_CORPUS_SAVE, datas),
+            (datas) => commit(types.HTTP_STATUS_ERROR, datas)
+        );
+    },
     doSaveTerm({commit}, datas) {
         let url = Constant.API.termSave
         asyncAPI.doPostDatas(url, datas,
@@ -64,6 +73,14 @@ const actions = {
 const mutations = {
     [types.HTTP_STATUS_ERROR] (state, datas) {
         state.error_datas = {"data": "请求错误"}
+    },
+    [types.DO_CORPUS_SAVE] (state, datas) {
+        if (!!datas.data.status) {
+
+            state.save_corpus_status = datas.data.result
+        } else {
+            state.error_datas = {"data": "系统错误"}
+        }
     },
     [types.DO_TRANSLATE_UNIT_SAVE] (state, datas) {
         if (!!datas.data.status) {
@@ -88,7 +105,7 @@ const mutations = {
     },
     [types.DO_PROJECT_SAVE] (state, datas) {
         if (!!datas.data.status) {
-            state.save_project_status = datas.data.result
+            state.save_project_status = datas.data
         } else {
             state.error_datas = {"data": "系统错误"}
         }

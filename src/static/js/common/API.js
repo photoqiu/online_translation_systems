@@ -37,9 +37,11 @@ const Constant = {
         exportReviewedArticle  : USER_API + 'export/reviewed?projectFileId={{projectFileId}}',
         /////////////////////////////////////////////////////////////
         corpusSave             : USER_API + 'corpus/save', // 新增语料
-        corpusBatchSave        : USER_API + 'corpus/item/batch/save',
+        corpusBatchSave        : USER_API + 'corpus/item/batch/save', // 批量添加语料库 通过文件上传
         corpusItemSave         : USER_API + 'corpus/item/list?pageNum={{pageIndex}}&pageSize={{pageSize}}',
-        corpusList             : USER_API + 'corpus/list?pageNum={{pageIndex}}&pageSize={{pageSize}}'
+        corpusList             : USER_API + 'corpus/list?pageNum={{pageIndex}}&pageSize={{pageSize}}',
+        corpusEdit             : USER_API + 'corpus/item/save',
+        getOrganList           : USER_API + 'organ/list?pageNum={{pageIndex}}&pageSize={{pageSize}}'
     }
 };
 export default Constant;

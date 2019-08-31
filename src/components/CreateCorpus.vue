@@ -67,15 +67,15 @@
         <div class="row">
             <el-form ref="form" :model="form" label-width="180px">
                 <el-form-item label="语料名称">
-                    <el-input v-model="form.termName"></el-input>
+                    <el-input v-model="form.corpusName"></el-input>
                 </el-form-item>
                 <el-form-item label="机构名称">
-                    <el-select v-model="form.customer" filterable placeholder="请选择或输入">
+                    <el-select v-model="form.organ" filterable placeholder="请选择或输入">
                         <el-option
                             v-for="(item, $index) in customer_datas"
                             :key="$index"
                             :data-datas="item.json_datas"
-                            :label="item.customerName"
+                            :label="item.organName"
                             :value="item.json_datas">
                         </el-option>
                     </el-select>
@@ -110,7 +110,7 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item label="语言级别">
-                    <el-select v-model="form.termLevel" placeholder="请选择">
+                    <el-select v-model="form.corpusLevel" placeholder="请选择">
                         <el-option
                           v-for="item in levels"
                           :key="item.value"
@@ -198,16 +198,16 @@
                 isUsedFaster:false,
                 form : {
                     id:0,
-                    termName: '',
+                    corpusName: '',
                     languageFrom: '',
                     languageTo: '',
-                    termLevel:'',
-                    customer: '',
+                    corpusLevel:'',
                     industry1:'',
                     industry2:'',
                     industry3:'',
                     industry4:'',
-                    termFile: '',
+                    corpusFile: '',
+                    organ: '',
                     type: ''
                 },
                 fromdata:{},
@@ -305,6 +305,7 @@
                     label: '中国汽车工程学会'
                 }],
                 file_datas: [],
+                listPageIndex:1,
                 activeName: 'second'
             }    
         },
@@ -317,12 +318,16 @@
                 get_language_datas: 'get_language_datas',
                 customer_info_datas: 'customer_info_datas',
                 uploaders_file_status: 'uploaders_file_status',
+                get_organ_list_datas: 'get_organ_list_datas',
                 sub_there_industry_models_datas: 'sub_there_industry_models_datas'
             })
         },
         watch: {
             error_datas: function () {
                 console.log("error_datas:", this.error_datas)
+            },
+            save_corpus_status: function() {
+                console.log("this.save_corpus_status : ", this.save_corpus_status)
             },
             main_industry_models_datas: function() {
                 this.$data.main_industry_models_0 = this.main_industry_models_datas
@@ -346,6 +351,23 @@
                 this.$data.customer_indexpage += 1
                 this.$store.dispatch('getCustomerInfo', this.$data.customer_indexpage)
             },
+            get_organ_list_datas: function() {
+                console.log("this.getlist:", this.get_organ_list_datas)
+                if (this.$data.listPageIndex === 1) {
+                    this.$data.customer_datas = this.get_organ_list_datas.list
+                } else {
+                    for (let keys of this.get_organ_list_datas.list) {
+                        this.$data.customer_datas.push(keys)
+                    }
+                }
+                
+                if (!!!this.get_organ_list_datas.isLastPage) {
+                    this.$data.listPageIndex += 1
+                    let data = {}
+                    data.pageIndex = this.$data.listPageIndex
+                    this.$store.dispatch('getDataOrganList', data)
+                }
+            },
             uploaders_file_status: function() {
                 let datas = {}
                 datas.file_name = this.uploaders_file_status.fileName
@@ -353,7 +375,7 @@
                 datas.uuid = this.uploaders_file_status.uuid
                 datas.data = JSON.stringify(this.uploaders_file_status)
                 this.$data.file_datas.push(datas)
-                this.$data.form.termFile = datas.data
+                this.$data.form.corpusFile = datas.data
             },
             get_language_datas: function() {
                 let datas = {}
@@ -369,8 +391,9 @@
             let datas = ''
             this.$store.dispatch('getIndustryInfo', datas)
             this.$store.dispatch('getLanguage', datas)
-            datas = '1'
-            this.$store.dispatch('getCustomerInfo', datas)
+            let data = {}
+            data.pageIndex = this.$data.listPageIndex
+            this.$store.dispatch('getDataOrganList', data)
         },
         methods: {
             uploaderFiles(event) {
@@ -403,19 +426,18 @@
             onSubmit(event) {
                 let datas = {}
                 datas.id = this.$data.form.id
-                datas.termName = this.$data.form.termName
+                datas.corpusName = this.$data.form.corpusName
                 datas.languageFrom = this.$data.form.languageFrom
                 datas.languageTo = this.$data.form.languageTo
-                datas.termLevel = parseInt(this.$data.form.termLevel, 10)
-                datas.customer = JSON.parse(this.$data.form.customer)
+                datas.corpusLevel = parseInt(this.$data.form.corpusLevel, 10)
+                datas.organ = JSON.parse(this.$data.form.organ)
                 datas.industry1 = JSON.parse(this.$data.form.industry1)
                 datas.industry2 = JSON.parse(this.$data.form.industry2)
                 datas.industry3 = JSON.parse(this.$data.form.industry3 || '{}')
                 datas.industry4 = JSON.parse(this.$data.form.industry4 || '{}')
-                datas.termFile = JSON.parse(this.$data.form.termFile)
-                datas.owner = 1
+                datas.corpusFile = JSON.parse(this.$data.form.corpusFile)
                 console.log("datas : ", datas)
-                this.$store.dispatch('doSaveTerm', datas)
+                this.$store.dispatch('doSaveCorpus', datas)
             }
         }
     }

@@ -205,6 +205,7 @@
                 this.$data.sub_industry_models_3 = this.sub_there_industry_models_datas
             },
             save_project_status: function() {
+                this.$message('添加新文件成功');
                 this.$store.dispatch('getPorjectDetails', this.$data.projectId)
             },
             export_review_datas: function() {
@@ -221,6 +222,7 @@
             },
             project_detail_datas: function() {
                 this.$data.fileList = []
+                this.$data.menus_datas = []
                 let fileskeys = {}
                 let menus_data = {}
                 let menus_data_arr = []
@@ -240,18 +242,16 @@
                     menus_data.index = 0
                     str_data = JSON.stringify(menus_data)
                     menus_data_arr.push(str_data)
-                    menus_data.projectFileId = keys.id
                     menus_data.index = 1
                     str_data = JSON.stringify(menus_data)
                     menus_data_arr.push(str_data)
-                    menus_data.projectFileId = keys.id
                     menus_data.index = 2
                     str_data = JSON.stringify(menus_data)
                     menus_data_arr.push(str_data)
                     this.$data.menus_datas.push(menus_data_arr)
+                    console.log("this.$data.menus_datas : ", this.$data.menus_datas)
                     this.$data.fileList.push(fileskeys)
                     partInfoArguments = `?projectFileId=${keys.id}`
-                    
                     this.$store.dispatch('getPartSentenceList', partInfoArguments)
                 }
                 console.log("project_detail_datas: ", this.$data.detail_datas.sourceFiles, this.$data.fileList)
@@ -357,9 +357,10 @@
                 this.$data.fileList.push(fileDatas)
                 let datas = this.$data.detail_datas
                 let filesdatas = {}
+                console.log("datas: ", datas, response.data.result);
                 filesdatas.file = response.data.result
-                filesdatas.id = datas.sourceFiles[0].id
-                filesdatas.projectId = datas.sourceFiles[0].projectId
+                filesdatas.id = fileDatas.id
+                filesdatas.projectId = this.$route.params.id || 1
                 filesdatas.industry1 = JSON.parse(this.$data.form.fileList[0].industry1)
                 filesdatas.industry2 = JSON.parse(this.$data.form.fileList[0].industry2)
                 filesdatas.industry3 = JSON.parse(this.$data.form.fileList[0].industry3)

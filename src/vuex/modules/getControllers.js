@@ -22,6 +22,7 @@ const state = {
     export_source_datas: {},
     export_target_datas: {},
     export_review_datas: {},
+    get_organ_list_datas: [],
     error_datas: {}
 }
 
@@ -46,6 +47,7 @@ const getters = {
     export_source_datas: state => state.translate_unit_datas,
     export_target_datas: state => state.translate_unit_datas,
     export_review_datas: state => state.translate_unit_datas,
+    get_organ_list_datas: state => state.get_organ_list_datas,
     error_datas: state => state.error_datas
 }
 
@@ -64,6 +66,15 @@ const actions = {
         url = url.replace("{{projectFileId}}", datas.projectFileId)
         asyncAPI.doGetDatas(url,
             (datas) => commit(types.EXPORT_SOURCE_ARTICLE, datas),
+            (datas) => commit(types.HTTP_STATUS_ERROR, datas)
+        );
+    },
+    getDataOrganList({commit}, datas) {
+        let url = Constant.API.getOrganList
+        url = url.replace("{{pageIndex}}", datas.pageIndex)
+        url = url.replace("{{pageSize}}", 30)
+        asyncAPI.doGetDatas(url,
+            (datas) => commit(types.GET_ORGAN_LIST_DATAS, datas),
             (datas) => commit(types.HTTP_STATUS_ERROR, datas)
         );
     },
@@ -211,6 +222,17 @@ const actions = {
 const mutations = {
     [types.HTTP_STATUS_ERROR] (state, datas) {
         state.error_datas = {"data": "请求错误"}
+    },
+    [types.GET_ORGAN_LIST_DATAS] (state, datas) {
+        if (!!datas.data.status) {
+            let json_datas = datas.data.organs
+            for (let keys of json_datas.list) {
+                keys["json_datas"] = JSON.stringify(keys)
+            }
+            state.get_organ_list_datas = json_datas || []
+        } else {
+            state.error_datas = {"data": "系统错误"}
+        }
     },
     [types.TRANSLATE_UNIT] (state, datas) {
         if (!!datas.data.status) {

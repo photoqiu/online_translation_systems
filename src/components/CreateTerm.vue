@@ -75,7 +75,7 @@
                             v-for="(item, $index) in customer_datas"
                             :key="$index"
                             :data-datas="item.json_datas"
-                            :label="item.customerName"
+                            :label="item.organName"
                             :value="item.json_datas">
                         </el-option>
                     </el-select>
@@ -305,6 +305,7 @@
                     label: '中国汽车工程学会'
                 }],
                 file_datas: [],
+                listPageIndex:1,
                 activeName: 'second'
             }    
         },
@@ -317,6 +318,7 @@
                 get_language_datas: 'get_language_datas',
                 customer_info_datas: 'customer_info_datas',
                 uploaders_file_status: 'uploaders_file_status',
+                get_organ_list_datas: 'get_organ_list_datas',
                 sub_there_industry_models_datas: 'sub_there_industry_models_datas'
             })
         },
@@ -335,6 +337,23 @@
             },
             sub_there_industry_models_datas: function() {
                 this.$data.sub_industry_models_3 = this.sub_there_industry_models_datas
+            },
+            get_organ_list_datas: function() {
+                console.log("this.getlist:", this.get_organ_list_datas)
+                if (this.$data.listPageIndex === 1) {
+                    this.$data.customer_datas = this.get_organ_list_datas.list
+                } else {
+                    for (let keys of this.get_organ_list_datas.list) {
+                        this.$data.customer_datas.push(keys)
+                    }
+                }
+                
+                if (!!!this.get_organ_list_datas.isLastPage) {
+                    this.$data.listPageIndex += 1
+                    let data = {}
+                    data.pageIndex = this.$data.listPageIndex
+                    this.$store.dispatch('getDataOrganList', data)
+                }
             },
             customer_info_datas: function() {
                 for (let keys of this.customer_info_datas.list) {
@@ -369,8 +388,9 @@
             let datas = ''
             this.$store.dispatch('getIndustryInfo', datas)
             this.$store.dispatch('getLanguage', datas)
-            datas = '1'
-            this.$store.dispatch('getCustomerInfo', datas)
+            let data = {}
+            data.pageIndex = this.$data.listPageIndex
+            this.$store.dispatch('getDataOrganList', data)
         },
         methods: {
             uploaderFiles(event) {
