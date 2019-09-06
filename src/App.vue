@@ -25,7 +25,6 @@ ul, li{padding:0;margin:0;list-style: none;}
     background-color: #E9EEF3;
     color: #333;
     text-align: center;
-    line-height: 160px;
 }
 body > .el-container {
     height:100%;
@@ -87,11 +86,17 @@ body > .el-container {
                                 <el-menu-item index="1-4-1" :route="{path: '/createcorpus', activeClass: 'active'}">
                                     新建语料库
                                 </el-menu-item>
+                                <el-menu-item index="1-4-2" :route="{path: '/corpuslist', activeClass: 'active'}">
+                                    语料库-列表
+                                </el-menu-item>
                             </el-submenu>
                             <el-submenu index="1-8">
                                 <span slot="title">术语库</span>
                                 <el-menu-item index="1-5-1" :route="{path: '/createterm', activeClass: 'active'}">
                                     新建术语库
+                                </el-menu-item>
+                                <el-menu-item index="1-5-2" :route="{path: '/termlist', activeClass: 'active'}">
+                                    术语库-列表
                                 </el-menu-item>
                             </el-submenu>
                         </el-submenu>

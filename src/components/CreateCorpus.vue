@@ -424,6 +424,7 @@
                 this.$data.form.termFile.splice(index, 1)
             },
             onSubmit(event) {
+                console.log("corpusLevel : ", parseInt(this.$data.form.corpusLevel, 10))
                 let datas = {}
                 datas.id = this.$data.form.id
                 datas.corpusName = this.$data.form.corpusName

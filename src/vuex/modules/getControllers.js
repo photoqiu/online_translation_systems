@@ -23,6 +23,7 @@ const state = {
     export_target_datas: {},
     export_review_datas: {},
     get_organ_list_datas: [],
+    get_corpus_list_datas: {},
     error_datas: {}
 }
 
@@ -48,6 +49,7 @@ const getters = {
     export_target_datas: state => state.translate_unit_datas,
     export_review_datas: state => state.translate_unit_datas,
     get_organ_list_datas: state => state.get_organ_list_datas,
+    get_corpus_list_datas: state => state.get_corpus_list_datas,
     error_datas: state => state.error_datas
 }
 
@@ -58,6 +60,14 @@ const actions = {
         url = url.replace("{{pageIndex}}", datas)
         asyncAPI.doGetDatas(url,
             (datas) => commit(types.TRANSLATOR, datas),
+            (datas) => commit(types.HTTP_STATUS_ERROR, datas)
+        );
+    },
+    getCorpusItemList({commit}, datas) {
+        let url = Constant.API.corpusItemList
+        url = url.replace("{{querydatas}}", datas)
+        asyncAPI.doGetDatas(url,
+            (datas) => commit(types.GET_CORPUS_ITEM_LIST, datas),
             (datas) => commit(types.HTTP_STATUS_ERROR, datas)
         );
     },
@@ -156,7 +166,7 @@ const actions = {
     getCorpusList({commit}, datas) {
         let url = Constant.API.corpusList
         url = url.replace("{{pageIndex}}", datas)
-        url = url.replace("{{pageSize}}", 15)
+        url = url.replace("{{pageSize}}", 30)
         asyncAPI.doGetDatas(url,
             (datas) => commit(types.GET_CORPUS_LIST, datas),
             (datas) => commit(types.HTTP_STATUS_ERROR, datas)
@@ -230,6 +240,13 @@ const mutations = {
                 keys["json_datas"] = JSON.stringify(keys)
             }
             state.get_organ_list_datas = json_datas || []
+        } else {
+            state.error_datas = {"data": "系统错误"}
+        }
+    },
+    [types.GET_CORPUS_ITEM_LIST] (state, datas) {
+        if (!!datas.data.status) {
+            state.get_corpus_list_datas = datas.data.result || []
         } else {
             state.error_datas = {"data": "系统错误"}
         }

@@ -9,6 +9,7 @@ const state = {
     save_part_status: {},
     save_translate_unit_status: {},
     save_corpus_status: {},
+    save_corpus_item_status: {},
     save_term_status: {}
 }
 
@@ -20,6 +21,7 @@ const getters = {
     save_part_status: state => state.save_part_status,
     save_translate_unit_status: state => state.save_translate_unit_status,
     save_corpus_status: state => state.save_corpus_status,
+    save_corpus_item_status: state => state.save_corpus_item_status,
     save_term_status: state => state.save_term_status
 }
 
@@ -29,6 +31,13 @@ const actions = {
         let url = Constant.API.fileUpload
         asyncAPI.jQueryPostDatas(url, datas,
             (datas) => commit(types.FILE_UPLOADER, datas),
+            (datas) => commit(types.HTTP_STATUS_ERROR, datas)
+        );
+    },
+    doSaveItemCoups({commit}, datas) {
+        let url = Constant.API.corpusEdit
+        asyncAPI.doPostDatas(url, datas,
+            (datas) => commit(types.SAVE_ITEM_CORPUS_DATAS, datas),
             (datas) => commit(types.HTTP_STATUS_ERROR, datas)
         );
     },
@@ -74,9 +83,15 @@ const mutations = {
     [types.HTTP_STATUS_ERROR] (state, datas) {
         state.error_datas = {"data": "请求错误"}
     },
+    [types.SAVE_ITEM_CORPUS_DATAS] (state, datas) {
+        if (!!datas.data.status) {
+            state.save_corpus_item_status = datas.data.result
+        } else {
+            state.error_datas = {"data": "系统错误"}
+        }
+    },
     [types.DO_CORPUS_SAVE] (state, datas) {
         if (!!datas.data.status) {
-
             state.save_corpus_status = datas.data.result
         } else {
             state.error_datas = {"data": "系统错误"}

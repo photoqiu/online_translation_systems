@@ -19,6 +19,8 @@ import TermList from './components/TermList.vue'
 import UploaderTerm from './components/UploaderTerm.vue'
 import QAReport from './components/QAReport.vue'
 import PartList from'./components/PartList.vue'
+import CorpusList from './components/CorpusList.vue'
+import CorpusDetails from './components/CorpusDetails.vue'
 import NotFound from './components/NotFound.vue'
 
 Vue.use(VueRouter)
@@ -32,6 +34,14 @@ const router = new VueRouter({
             path: '/createcorpus',
             name: 'CreateCorpus',
             component: CreateCorpus
+        }, {
+            path: '/corpusdetails/:id',
+            name: 'CorpusDetails',
+            component: CorpusDetails
+        }, {
+            path: '/corpuslist',
+            name: 'CorpusList',
+            component: CorpusList
         }, {
             path: '/userguide',
             name: 'userguide',
