@@ -70,33 +70,35 @@ body > .el-container {
                                 <el-menu-item index="1-1-1" :route="{path: '/createbase', activeClass: 'active'}">新建项目</el-menu-item>
                                 <el-menu-item index="1-2" :route="{path: '/', activeClass: 'active'}">进行中的项目..</el-menu-item>
                                 <el-menu-item index="1-3" :route="{path: '/', activeClass: 'active'}">已完成项目</el-menu-item>
-                                
-                            </el-menu-item-group>
-                            <el-menu-item-group title="审校相关">
-                                <el-menu-item index="1-4" :route="{path: '/statistics', activeClass: 'active'}">
-                                    初审审校
-                                </el-menu-item>
-                                <el-menu-item index="1-4-1" :route="{path: '/qareport', activeClass: 'active'}">
+                                <el-menu-item index="1-4" :route="{path: '/qareport', activeClass: 'active'}">
                                     QA报告
                                 </el-menu-item>
-                                <el-menu-item index="1-4-1" :route="{path: '/projectdetail', activeClass: 'active'}">稿件分析报告 </el-menu-item>
                             </el-menu-item-group>
                             <el-submenu index="1-7">
                                 <span slot="title">语料库</span>
-                                <el-menu-item index="1-4-1" :route="{path: '/createcorpus', activeClass: 'active'}">
+                                <el-menu-item index="1-7-1" :route="{path: '/createcorpus', activeClass: 'active'}">
                                     新建语料库
                                 </el-menu-item>
-                                <el-menu-item index="1-4-2" :route="{path: '/corpuslist', activeClass: 'active'}">
+                                <el-menu-item index="1-7-2" :route="{path: '/corpuslist', activeClass: 'active'}">
                                     语料库-列表
                                 </el-menu-item>
                             </el-submenu>
                             <el-submenu index="1-8">
                                 <span slot="title">术语库</span>
-                                <el-menu-item index="1-5-1" :route="{path: '/createterm', activeClass: 'active'}">
+                                <el-menu-item index="1-8-1" :route="{path: '/createterm', activeClass: 'active'}">
                                     新建术语库
                                 </el-menu-item>
-                                <el-menu-item index="1-5-2" :route="{path: '/termlist', activeClass: 'active'}">
+                                <el-menu-item index="1-8-2" :route="{path: '/termlist', activeClass: 'active'}">
                                     术语库-列表
+                                </el-menu-item>
+                            </el-submenu>
+                            <el-submenu index="1-9">
+                                <span slot="title">禁用语</span>
+                                <el-menu-item index="1-9-1" :route="{path: '/createbanned', activeClass: 'active'}">
+                                    新建禁用语
+                                </el-menu-item>
+                                <el-menu-item index="1-9-2" :route="{path: '/termlist', activeClass: 'active'}">
+                                    禁用语-列表
                                 </el-menu-item>
                             </el-submenu>
                         </el-submenu>

@@ -17,13 +17,16 @@ const Constant = {
         getFilePartList        : USER_API + 'part/assign/list?projectFileId={{projectFileId}}', //区块分配接口,返回某文件的全部句子
         partSave               : USER_API + 'part/save', //保存区块分配结果
         getPartList            : USER_API + 'part/list{{arguments}}', //区块列表
+        setPartEqualization    : USER_API + 'part/assign/even?projectFileId={{projectFileId}}&partNum={{partNum}}',
         getPartDetails         : USER_API + 'part/detail?partId={{partId}}', // 区块详情获取单个区块内容 /
         /////////////////////////////攻略
         fileUpload             : USER_API + 'file/upload',
         fileDetail             : USER_API + 'file/detail',
-        termList               : USER_API + 'term/list?pageNum={{pageIndex}}', /// 获取所有术语库数据
-        getTermList            : USER_API + 'term/item/list?pageNum={{pageIndex}}', /// 获取术语项列表
+        termList               : USER_API + 'term/list?pageNum={{pageIndex}}&pageSize={{pageSize}}', /// 获取所有术语库数据
+        getItemTermList        : USER_API + 'term/item/list?{{querydatas}}', /// 获取术语项列表
         termSave               : USER_API + 'term/save', // 新增术语
+        termBatchSave          : USER_API + 'term/item/batch/save',
+        termItemSave           : USER_API + 'term/item/save',
         /////////////////////////////////////////////////////////////
         getProject             : USER_API + 'project/list?pageNum={{pageIndex}}',
         projectDetail          : USER_API + 'project/detail?projectId={{id}}',
@@ -41,7 +44,11 @@ const Constant = {
         corpusItemList         : USER_API + 'corpus/item/list?{{querydatas}}',
         corpusList             : USER_API + 'corpus/list?pageNum={{pageIndex}}&pageSize={{pageSize}}',
         corpusEdit             : USER_API + 'corpus/item/save',
-        getOrganList           : USER_API + 'organ/list?pageNum={{pageIndex}}&pageSize={{pageSize}}'
+        getOrganList           : USER_API + 'organ/list?pageNum={{pageIndex}}&pageSize={{pageSize}}',
+        ///////////////////////////////////////////////////////////// 禁用语
+        bannedList             : USER_API + 'banned/list?pageNum={{pageIndex}}&pageSize={{pageSize}}',
+        queryBannedList        : USER_API + 'banned/list?pageNum={{pageIndex}}&pageSize={{pageSize}}&{{query}}',
+        bannedSave             : USER_API + 'banned/save'
     }
 };
 export default Constant;

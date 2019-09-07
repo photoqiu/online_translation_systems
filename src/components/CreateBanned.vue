@@ -62,12 +62,12 @@
 
 <template>
 <div class="container_bd">
-    <h1>新建术语库</h1>
+    <h1>新建禁用语</h1>
     <div class="bd">
         <div class="row">
             <el-form ref="form" :model="form" label-width="180px">
                 <el-form-item label="语料名称">
-                    <el-input v-model="form.termName"></el-input>
+                    <el-input v-model="form.bannedName"></el-input>
                 </el-form-item>
                 <el-form-item label="机构名称">
                     <el-select v-model="form.organ" filterable placeholder="请选择或输入">
@@ -81,75 +81,12 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item label="语言">
-                    <el-select v-model="form.languageFrom" placeholder="请选择">
+                    <el-select v-model="form.language" placeholder="请选择">
                         <el-option
                           v-for="(item, $index) in languagedatas"
                           :key="$index"
                           :label="item.label"
                           :value="item.value">
-                        </el-option>
-                    </el-select>
-                    <i class="fas fa-arrows-alt-h" style="font-size:18px;"></i>
-                    <el-select v-model="form.languageTo" placeholder="请选择">
-                        <el-option
-                          v-for="(item, $index) in languagedatas"
-                          :key="$index"
-                          :label="item.label"
-                          :value="item.value">
-                        </el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="语言级别">
-                    <el-select v-model="form.termLevel" placeholder="请选择">
-                        <el-option
-                          v-for="item in levels"
-                          :key="item.value"
-                          :label="item.label"
-                          :value="item.value">
-                        </el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="一级行业">
-                    <el-select v-model="form.industry1" filterable @change="getOneLevelDatas" placeholder="请选择">
-                        <el-option
-                          v-for="item in main_industry_models_0"
-                          :key="item.code"
-                          :data-id="item.id"
-                          :label="item.name"
-                          :value="item.json_data">
-                        </el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="二级行业">
-                    <el-select v-model="form.industry2" filterable @change="getTwoLevelDatas" placeholder="请选择">
-                        <el-option
-                          v-for="item in sub_industry_models_1"
-                          :key="item.code"
-                          :data-id="item.id"
-                          :label="item.name"
-                          :value="item.json_data">
-                        </el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="三级行业">
-                    <el-select v-model="form.industry3" filterable @change="getThereLevelDatas" placeholder="请选择">
-                        <el-option
-                          v-for="item in sub_industry_models_2"
-                          :key="item.code"
-                          :data-id="item.id"
-                          :label="item.name"
-                          :value="item.json_data">
-                        </el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="四级行业">
-                    <el-select v-model="form.industry4" filterable placeholder="请选择">
-                        <el-option
-                          v-for="item in sub_industry_models_3"
-                          :key="item.code"
-                          :data-id="item.id"
-                          :label="item.name"
-                          :value="item.json_data">
                         </el-option>
                     </el-select>
                 </el-form-item>
@@ -182,22 +119,16 @@
     import {mapGetters} from 'vuex'
     
     export default {
-        name: "CreateProjectBase",
+        name: "CreateBanned",
         data() {
             return {
                 isUsedFaster:false,
                 form : {
                     id:0,
-                    termName: '',
-                    languageFrom: '',
-                    languageTo: '',
-                    termLevel:'',
-                    organ: '',
-                    industry1:'',
-                    industry2:'',
-                    industry3:'',
-                    industry4:'',
-                    termFile: ''
+                    bannedName: '',
+                    language: '',
+                    bannedFile: '',
+                    organ: ''
                 },
                 fromdata:{},
                 customer_datas:[],
@@ -308,12 +239,16 @@
                 customer_info_datas: 'customer_info_datas',
                 uploaders_file_status: 'uploaders_file_status',
                 get_organ_list_datas: 'get_organ_list_datas',
+                save_banned_status: 'save_banned_status',
                 sub_there_industry_models_datas: 'sub_there_industry_models_datas'
             })
         },
         watch: {
             error_datas: function () {
                 console.log("error_datas:", this.error_datas)
+            },
+            save_banned_status: function() {
+                console.log("this.save_banned_status : ", this.save_banned_status)
             },
             main_industry_models_datas: function() {
                 this.$data.main_industry_models_0 = this.main_industry_models_datas
@@ -326,6 +261,16 @@
             },
             sub_there_industry_models_datas: function() {
                 this.$data.sub_industry_models_3 = this.sub_there_industry_models_datas
+            },
+            customer_info_datas: function() {
+                for (let keys of this.customer_info_datas.list) {
+                    this.$data.customer_datas.push(keys)
+                }
+                if (!!this.customer_info_datas.isLastPage) {
+                    return false
+                }
+                this.$data.customer_indexpage += 1
+                this.$store.dispatch('getCustomerInfo', this.$data.customer_indexpage)
             },
             get_organ_list_datas: function() {
                 console.log("this.getlist:", this.get_organ_list_datas)
@@ -344,16 +289,6 @@
                     this.$store.dispatch('getDataOrganList', data)
                 }
             },
-            customer_info_datas: function() {
-                for (let keys of this.customer_info_datas.list) {
-                    this.$data.customer_datas.push(keys)
-                }
-                if (!!this.customer_info_datas.isLastPage) {
-                    return false
-                }
-                this.$data.customer_indexpage += 1
-                this.$store.dispatch('getCustomerInfo', this.$data.customer_indexpage)
-            },
             uploaders_file_status: function() {
                 let datas = {}
                 datas.file_name = this.uploaders_file_status.fileName
@@ -361,7 +296,7 @@
                 datas.uuid = this.uploaders_file_status.uuid
                 datas.data = JSON.stringify(this.uploaders_file_status)
                 this.$data.file_datas.push(datas)
-                this.$data.form.termFile = datas.data
+                this.$data.form.bannedFile = datas.data
             },
             get_language_datas: function() {
                 let datas = {}
@@ -410,21 +345,15 @@
                 this.$data.form.termFile.splice(index, 1)
             },
             onSubmit(event) {
+                console.log("corpusLevel : ", parseInt(this.$data.form.corpusLevel, 10))
                 let datas = {}
                 datas.id = this.$data.form.id
-                datas.termName = this.$data.form.termName
-                datas.languageFrom = this.$data.form.languageFrom
-                datas.languageTo = this.$data.form.languageTo
-                datas.termLevel = parseInt(this.$data.form.termLevel, 10)
+                datas.bannedName = this.$data.form.bannedName
                 datas.organ = JSON.parse(this.$data.form.organ)
-                datas.industry1 = JSON.parse(this.$data.form.industry1)
-                datas.industry2 = JSON.parse(this.$data.form.industry2)
-                datas.industry3 = JSON.parse(this.$data.form.industry3 || '{}')
-                datas.industry4 = JSON.parse(this.$data.form.industry4 || '{}')
-                datas.termFile = JSON.parse(this.$data.form.termFile)
-                datas.owner = 1
+                datas.language = this.$data.form.language
+                datas.bannedFile = JSON.parse(this.$data.form.bannedFile)
                 console.log("datas : ", datas)
-                this.$store.dispatch('doSaveTerm', datas)
+                this.$store.dispatch('doSaveBanned', datas)
             }
         }
     }

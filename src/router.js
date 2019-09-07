@@ -21,6 +21,10 @@ import QAReport from './components/QAReport.vue'
 import PartList from'./components/PartList.vue'
 import CorpusList from './components/CorpusList.vue'
 import CorpusDetails from './components/CorpusDetails.vue'
+import TermDetails from './components/TermDetails.vue'
+import CreateBanned from './components/CreateBanned.vue'
+import BannedList from './components/BannedList.vue'
+import BannedDetails from './components/BannedDetails.vue'
 import NotFound from './components/NotFound.vue'
 
 Vue.use(VueRouter)
@@ -38,6 +42,22 @@ const router = new VueRouter({
             path: '/corpusdetails/:id',
             name: 'CorpusDetails',
             component: CorpusDetails
+        }, {
+            path: '/bannedlist',
+            name: 'BannedList',
+            component: BannedList
+        }, {
+            path: '/banneddetails/:id',
+            name: 'BannedDetails',
+            component: BannedDetails
+        }, {
+            path: '/createbanned',
+            name: 'CreateBanned',
+            component: CreateBanned
+        }, {
+            path: '/termdetails/:id',
+            name: 'TermDetails',
+            component: TermDetails
         }, {
             path: '/corpuslist',
             name: 'CorpusList',

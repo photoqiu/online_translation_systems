@@ -217,12 +217,28 @@
                 save_part_status: 'save_part_status',
                 part_sentence_list_datas: 'part_sentence_list_datas',
                 project_detail_datas: 'project_detail_datas',
+                do_part_equalization_status: 'do_part_equalization_status',
                 assign_part_list_datas: 'assign_part_list_datas'
             })
         },
         watch: {
             error_datas: function () {
                 console.log("error_datas:", this.error_datas)
+            },
+            do_part_equalization_status: function() {
+                let results = this.do_part_equalization_status.data.result
+                let index = 0
+                let deIndex = 0
+                for (let keys of results) {
+                    this.$set(this.$data.beginNums, deIndex, keys.partBegin)
+                    deIndex += 1
+                    this.$set(this.$data.beginNums, deIndex, keys.partEnd)
+                    deIndex += 1
+                    this.$set(this.$data.num, index, keys.partEnd - keys.partBegin)
+                    index += 1
+                }
+                console.log("this.$data.num:", this.$data.num, this.$data.beginNums)
+                this.$message('分配完成.')
             },
             save_part_status: function() {
                 window.location.href = `/#/projectdetail/${this.$route.params.id}`
@@ -246,6 +262,7 @@
                 }
             },
             part_sentence_list_datas: function() {
+                console.log("this.part_sentence_list_datas : ", this.part_sentence_list_datas)
                 if (this.part_sentence_list_datas.length > 0) {
                     this.$data.beginNums[0] = 0
                     let dataindex = 1
@@ -254,11 +271,12 @@
                     let orderIndex = 0
                     this.$data.order = this.part_sentence_list_datas.length
                     for (let keys of this.part_sentence_list_datas) {
+                        console.log("keys:", keys)
                         orderIndex = keys.partEnd - keys.partBegin
                         this.$data.beginNums[dataindex] = keys.partEnd - keys.partBegin
                         this.$data.sTime[index] = [new Date(keys.startTime), new Date(keys.endTime)]
                         this.$data.num[index] = keys.partEnd - keys.partBegin
-                        this.$data.valuex[index] = keys.reviewer.id
+                        this.$data.valuex[index] = keys.reviewer === null ? '暂无' : keys.reviewer.id
                         this.$data.values[index] = keys.translator.id
                         this.$data.partId.push(keys.id)
                         dataindex += 1
@@ -320,7 +338,7 @@
             let pages = `?pageindex=${this.$data.pageIndex}`
             let partInfoArguments = `?projectFileId=${this.$route.params.fid}`
             this.$store.dispatch('getPartInfo', this.$data.fileId)
-            this.$store.dispatch('getPartSentenceList', partInfoArguments)
+            // this.$store.dispatch('getPartSentenceList', partInfoArguments)
             this.$store.dispatch('getTranslatorInfo', pages)
             this.$store.dispatch('getPorjectDetails', datas)
         },
@@ -339,33 +357,11 @@
             applyAverageDatas() {
                 let total = this.$data.grid.data.length
                 let lens = this.$data.num.length
-                let sr_nums = Math.ceil(total / lens)
-                let startTime = []
-                let endTime = []
-                let orderIndex = 0
-                let index = 0
-                let sr_index = 1
-                for (var i = 0; i < lens; i++) {
-                    if (i < lens) {
-                        this.$data.beginNums[i] = sr_nums * i
-                    }
-                    this.$data.beginNums[lens] = total
-                    this.$data.num[i] = sr_nums
-                    startTime[i] = moment(this.$data.sTime[i][0], "YYYY-MM-DD HH:mm:ss").format().replace("T", ' ').split("+")[0]
-                    endTime[i] = moment(this.$data.sTime[i][1], "YYYY-MM-DD HH:mm:ss").format().replace("T", ' ').split("+")[0]
-                }
-                this.$data.beginNums[lens] = total
-                for (let keys of this.$data.gridDatas) {
-                    if (this.$data.beginNums[sr_index] > orderIndex) {
-                        this.$data.grid.data[orderIndex] = {'原文': `${keys.source}`, '状态(未翻译)': '待翻译', '开始时间': `${startTime[index]}`, '结束时间': `${endTime[index]}`, '初译译员': `${this.$data.values[index]}`, '审校译员': `${this.$data.valuex[index]}`}
-                    } else {
-                        sr_index += 1
-                        index += 1
-                        this.$data.grid.data[orderIndex] = {'原文': `${keys.source}`, '状态(未翻译)': '待翻译', '开始时间': `${startTime[index]}`, '结束时间': `${endTime[index]}`, '初译译员': `${this.$data.values[index]}`, '审校译员': `${this.$data.valuex[index]}`}
-                    }
-                    orderIndex += 1
-                }
-                this.$message('分配完成.');
+                let datas = {}
+                datas.projectFileId = this.$data.fileId
+                datas.partNum = lens
+                this.$store.dispatch("doPartEqualization", datas)
+                
             },
             applydatas(event) {
                 let elements = event.currentTarget
@@ -408,10 +404,9 @@
                 let beginIndex = 0
                 let tmpArray = []
                 let keys = {}
-                for (var i = 0, lens = this.$data.beginNums.length; i < lens; i++) {
+                let eindex = 0
+                for (var i = 0, lens = this.$data.num.length; i < lens; i++) {
                     tmpArray = []
-                    let index = this.$data.beginNums[i]
-                    let eindex = i + 1
                     keys = {}
                     keys.translateWordCount = 0
                     keys.reviewWordCount = 0
@@ -422,15 +417,17 @@
                     keys.id = 0
                     keys.projectId = this.$data.projectId
                     keys.projectFileId = this.$data.fileId
-                    keys.partBegin = this.$data.beginNums[i]
+                    keys.partBegin = this.$data.beginNums[eindex]
+                    eindex += 1
                     keys.partEnd = this.$data.beginNums[eindex]
+                    eindex += 1
                     keys.translator = {
                         id: this.$data.values[i]
                     }
                     keys.reviewer = {
-                        id: this.$data.valuex[i]
+                        id: this.$data.valuex[i] === "暂无" ? -1 : this.$data.valuex[i]
                     }
-                    if (eindex === (lens - 1)) {
+                    if (i === (lens - 1)) {
                         datas.push(keys)
                         this.$store.dispatch('doSavePart', datas)
                         return false

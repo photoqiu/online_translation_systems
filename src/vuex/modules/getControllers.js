@@ -24,6 +24,8 @@ const state = {
     export_review_datas: {},
     get_organ_list_datas: [],
     get_corpus_list_datas: {},
+    term_item_datas: {},
+    banned_list_datas: {},
     error_datas: {}
 }
 
@@ -50,6 +52,8 @@ const getters = {
     export_review_datas: state => state.translate_unit_datas,
     get_organ_list_datas: state => state.get_organ_list_datas,
     get_corpus_list_datas: state => state.get_corpus_list_datas,
+    term_item_datas: state => state.term_item_datas,
+    banned_list_datas: state => state.banned_list_datas,
     error_datas: state => state.error_datas
 }
 
@@ -158,8 +162,26 @@ const actions = {
     getTermList({commit}, datas) {
         let url = Constant.API.termList
         url = url.replace("{{pageIndex}}", datas)
+        url = url.replace("{{pageSize}}", 30)
         asyncAPI.doGetDatas(url,
             (datas) => commit(types.GET_TERM_LIST, datas),
+            (datas) => commit(types.HTTP_STATUS_ERROR, datas)
+        );
+    },
+    getBannedItemsList({commit}, datas) {
+        let url = Constant.API.bannedList
+        url = url.replace("{{pageIndex}}", datas)
+        url = url.replace("{{pageSize}}", 30)
+        asyncAPI.doGetDatas(url,
+            (datas) => commit(types.GET_BANNED_ITEMS_LIST, datas),
+            (datas) => commit(types.HTTP_STATUS_ERROR, datas)
+        );
+    },
+    getItemsTermList({commit}, datas) {
+        let url = Constant.API.getItemTermList
+        url = url.replace("{{querydatas}}", datas)
+        asyncAPI.doGetDatas(url,
+            (datas) => commit(types.GET_TERM_ITEM_DATAS_LIST, datas),
             (datas) => commit(types.HTTP_STATUS_ERROR, datas)
         );
     },
@@ -169,6 +191,15 @@ const actions = {
         url = url.replace("{{pageSize}}", 30)
         asyncAPI.doGetDatas(url,
             (datas) => commit(types.GET_CORPUS_LIST, datas),
+            (datas) => commit(types.HTTP_STATUS_ERROR, datas)
+        );
+    },
+    getBannedList({commit}, datas) {
+        let url = Constant.API.bannedList
+        url = url.replace("{{pageIndex}}", datas)
+        url = url.replace("{{pageSize}}", 30)
+        asyncAPI.doGetDatas(url,
+            (datas) => commit(types.GET_BANNED_LIST, datas),
             (datas) => commit(types.HTTP_STATUS_ERROR, datas)
         );
     },
@@ -232,6 +263,20 @@ const actions = {
 const mutations = {
     [types.HTTP_STATUS_ERROR] (state, datas) {
         state.error_datas = {"data": "请求错误"}
+    },
+    [types.GET_TERM_ITEM_DATAS_LIST] (state, datas) {
+        if (!!datas.data.status) {
+            state.term_item_datas = datas.data.result || []
+        } else {
+            state.error_datas = {"data": "系统错误"}
+        }
+    },
+    [types.GET_BANNED_LIST] (state, datas) {
+        if (!!datas.data.status) {
+            state.banned_list_datas = datas.data || []
+        } else {
+            state.error_datas = {"data": "系统错误"}
+        }
     },
     [types.GET_ORGAN_LIST_DATAS] (state, datas) {
         if (!!datas.data.status) {

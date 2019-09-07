@@ -10,6 +10,9 @@ const state = {
     save_translate_unit_status: {},
     save_corpus_status: {},
     save_corpus_item_status: {},
+    save_term_item_status: {},
+    save_banned_status: {},
+    do_part_equalization_status: {},
     save_term_status: {}
 }
 
@@ -22,6 +25,9 @@ const getters = {
     save_translate_unit_status: state => state.save_translate_unit_status,
     save_corpus_status: state => state.save_corpus_status,
     save_corpus_item_status: state => state.save_corpus_item_status,
+    save_term_item_status: state => state.save_term_item_status,
+    save_banned_status: state => state.save_banned_status,
+    do_part_equalization_status: state => state.do_part_equalization_status,
     save_term_status: state => state.save_term_status
 }
 
@@ -38,6 +44,29 @@ const actions = {
         let url = Constant.API.corpusEdit
         asyncAPI.doPostDatas(url, datas,
             (datas) => commit(types.SAVE_ITEM_CORPUS_DATAS, datas),
+            (datas) => commit(types.HTTP_STATUS_ERROR, datas)
+        );
+    },
+    doSaveItemTerm({commit}, datas) {
+        let url = Constant.API.termItemSave
+        asyncAPI.doPostDatas(url, datas,
+            (datas) => commit(types.SAVE_ITEM_TERM_DATAS, datas),
+            (datas) => commit(types.HTTP_STATUS_ERROR, datas)
+        );
+    },
+    doSaveBanned({commit}, datas) {
+        let url = Constant.API.bannedSave
+        asyncAPI.doPostDatas(url, datas,
+            (datas) => commit(types.DO_BANNED_SAVE, datas),
+            (datas) => commit(types.HTTP_STATUS_ERROR, datas)
+        );
+    },
+    doPartEqualization({commit}, datas) {
+        let url = Constant.API.setPartEqualization
+        url = url.replace("{{projectFileId}}", datas.projectFileId)
+        url = url.replace("{{partNum}}", datas.partNum)
+        asyncAPI.doGetDatas(url,
+            (datas) => commit(types.DO_SET_PART_EQUALIZATION, datas),
             (datas) => commit(types.HTTP_STATUS_ERROR, datas)
         );
     },
@@ -82,6 +111,27 @@ const actions = {
 const mutations = {
     [types.HTTP_STATUS_ERROR] (state, datas) {
         state.error_datas = {"data": "请求错误"}
+    },
+    [types.DO_BANNED_SAVE] (state, datas) {
+        if (!!datas.data.status) {
+            state.save_banned_status = datas.data.result
+        } else {
+            state.error_datas = {"data": "系统错误"}
+        }
+    },
+    [types.DO_SET_PART_EQUALIZATION] (state, datas) {
+        if (!!datas.data.status) {
+            state.do_part_equalization_status = datas
+        } else {
+            state.error_datas = {"data": "系统错误"}
+        }
+    },
+    [types.SAVE_ITEM_TERM_DATAS] (state, datas) {
+        if (!!datas.data.status) {
+            state.save_term_item_status = datas.data.result
+        } else {
+            state.error_datas = {"data": "系统错误"}
+        }
     },
     [types.SAVE_ITEM_CORPUS_DATAS] (state, datas) {
         if (!!datas.data.status) {

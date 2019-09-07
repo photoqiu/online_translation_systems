@@ -49,12 +49,18 @@
 <div class="container_bd">
     <el-row :gutter="20">
         <el-col :span="12">
-            
+            <div class="grid-content">
+                <el-form ref="form" :model="form" label-width="120px">
+                    <el-form-item label="禁用语名称:">
+                        <el-input placeholder="请输入内容" prefix-icon="el-icon-search" v-model="form.search_text"></el-input>
+                    </el-form-item>
+                </el-form>
+            </div>
         </el-col>
     </el-row>
     <el-row :gutter="20">
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-            <h1 class="h2">术语库列表</h1>
+            <h1 class="h2">禁用语列表</h1>
             <div class="btn-toolbar mb-2 mb-md-0">
                 <div class="btn-group mr-2">
                     <router-link class="btn btn-outline-info" role="button" :to="{path:'/createbase'}">新建项目</router-link>
@@ -69,7 +75,7 @@
         height="550">
         <el-table-column
           fixed
-          prop="termName"
+          prop="bannedName"
           label="语料库名称"
           width="420">
         </el-table-column>
@@ -79,22 +85,11 @@
           width="120">
         </el-table-column>
         <el-table-column
-          prop="levelName"
-          label="语言级别"
-          width="90">
-        </el-table-column>
-        <el-table-column
           prop="organName"
           label="从属行业名称"
-          width="220">
+          width="320">
         </el-table-column>
         <el-table-column
-          prop="industry"
-          label="行业分类"
-          width="440">
-        </el-table-column>
-        <el-table-column
-          fixed="right"
           label="操作"
           width="220">
           <template slot-scope="scope">
@@ -120,9 +115,14 @@
     import {mapGetters} from 'vuex'
 
     export default {
-        name: "corpuslist",
+        name: "BannedList",
         data() {
             return {
+                form : {
+                    search_text: "",
+                    region_users: "",
+                    status:""
+                },
                 project_datas: [],
                 tableData: [],
                 pageIndex : 1,
@@ -134,43 +134,34 @@
         computed: {
             ...mapGetters({
                 error_datas: 'error_datas',
-                term_list_datas: 'term_list_datas'
+                banned_list_datas: 'banned_list_datas'
             })
         },
         watch: {
             error_datas: function () {
                 console.log("error_datas:", this.error_datas)
             },
-            term_list_datas: function() {
-                console.log("this.term_list_datas:", this.term_list_datas)
-                this.$data.totalPage = this.term_list_datas.pages
+            banned_list_datas: function() {
+                this.$data.totalPage = this.banned_list_datas.bannedList.pages
                 let datas = {}
-                for (let keys of this.term_list_datas.list) {
+                for (let keys of this.banned_list_datas.bannedList.list) {
                     datas = {}
                     datas.id = keys.id
-                    datas.termName = keys.termName
-                    if (keys.termLevel === 3) {
-                        datas.levelName = "参考级"
-                    } else if (keys.termLevel === 2) {
-                        datas.levelName = "标准级"
-                    } else if (keys.termLevel === 1) {
-                        datas.levelName = "权威级"
-                    }
-                    datas.language = `${keys.languageFrom} ~ ${keys.languageTo}` 
+                    datas.bannedName = keys.bannedName
+                    datas.language = `${keys.language}` 
                     datas.organName = keys.organ.organName
-                    datas.industry = `${keys.industry1.name}->${keys.industry2.name}->${keys.industry3.name}->${keys.industry4.name}`
                     this.$data.tableData.push(datas)
                 }
                 console.log("this.tableData : ", this.$data.tableData)
-                if (!!this.term_list_datas.isLastPage) {
+                if (!!this.banned_list_datas.corpusList.isLastPage) {
                     return false
                 }
                 this.$data.pageIndex += 1
-                this.$store.dispatch('getTermList', this.$data.pageIndex)
+                this.$store.dispatch('getBannedList', this.$data.pageIndex)
             }
         },
         mounted() {
-            this.$store.dispatch('getTermList', this.$data.pageIndex)
+            this.$store.dispatch('getBannedList', this.$data.pageIndex)
         },
         methods: {
             handleClick(row) {
@@ -178,8 +169,8 @@
                 window.location.href = `/#/blockarticle/${row.baseId}`
             },
             handleDetailClick(row) {
-                console.log(row, `/#/termdetails/${row.id}`)
-                window.location.href = `/#/termdetails/${row.id}`
+                console.log(row, `/#/corpusdetails/${row.id}`)
+                window.location.href = `/#/banneddetails/${row.id}`
                 return false
             },
             handleOpen(key, keyPath) {

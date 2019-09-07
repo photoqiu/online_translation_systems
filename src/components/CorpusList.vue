@@ -147,7 +147,7 @@
     import {mapGetters} from 'vuex'
 
     export default {
-        name: "corpuslist",
+        name: "TermList",
         data() {
             return {
                 form : {
