@@ -184,6 +184,7 @@
         },
         mounted() {
             this.$data.loading = true
+            this.$data.editorIndex = 0
             let datas = `pageNum=${this.$data.pageIndex}&pageSize=${this.$data.pageSize}&corpusId=${this.$route.params.id}`
             this.$store.dispatch('getCorpusItemList', datas)
         },
@@ -198,7 +199,7 @@
                 this.$store.dispatch('doSaveItemCoups', datas)
             },
             handleClick(index, rows) {
-                this.$data.editorIndex = index - 1
+                this.$data.editorIndex = index
                 this.$data.textdatas.source = this.$data.tempDatas[this.$data.editorIndex].source
                 this.$data.textdatas.target = this.$data.tempDatas[this.$data.editorIndex].target
                 this.$data.centerDialogVisible = true

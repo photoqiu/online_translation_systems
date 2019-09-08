@@ -63,6 +63,16 @@
                 </button>
             </div>
             <el-form ref="form" :model="form" label-width="120px">
+                <el-form-item label="人员类型：">
+                    <el-select v-model="values" filterable placeholder="请选择人员类型">
+                        <el-option
+                          v-for="(items, $indexes) in addTypes[$index]"
+                          :key="$indexes"
+                          :label="items.name"
+                          :value="items.id">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
                 <el-form-item label="添加人员配置：">
                     <el-button type="primary" icon="el-icon-circle-plus-outline" @click="addUsers" circle></el-button>
                 </el-form-item>
@@ -138,6 +148,13 @@
                 num: [1],
                 beginNums:[0],
                 form: {},
+                addTypes: [{
+                    name:"添加初译员",
+                    id:1
+                }, {
+                    name:"添加审校",
+                    id:2
+                }],
                 pickerOptions: {
                     shortcuts: [{
                         text: '最近一周',
@@ -415,9 +432,11 @@
                     keys.endTime = moment(this.$data.sTime[i][1], "YYYY-MM-DD HH:mm:ss").format().replace("T", ' ').split("+")[0]
                     keys.partId = this.$data.partId[i] || 0
                     keys.id = 0
-                    keys.projectId = this.$data.projectId
+                    keys.projectId = parseInt(this.$data.projectId, 10)
                     keys.projectFileId = this.$data.fileId
                     keys.partBegin = this.$data.beginNums[eindex]
+                    //1 是初译  2 是审校 
+                    keys.partType = 1
                     eindex += 1
                     keys.partEnd = this.$data.beginNums[eindex]
                     eindex += 1

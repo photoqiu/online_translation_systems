@@ -172,8 +172,8 @@
                     datas.projectname = ''
                     datas.date = `${keys.startTime}~${keys.endTime}`
                     datas.pmname = ''
-                    datas.fyname = keys.translator.name
-                    datas.sxname = keys.reviewer.name
+                    datas.fyname = keys.translator === null ? "暂无" : keys.translator.name
+                    datas.sxname = keys.reviewer === null ? "暂无" : keys.reviewer.name
                     datas.numsdata = `${keys.partBegin}~${keys.partEnd}`
                     datas.language = ''
                     datas.fyprocess = keys.translateWordCount
@@ -216,7 +216,6 @@
             }
         },
         mounted() {
-            
             let fid = this.$route.params.fid || 1
             let partInfoArguments = `?projectFileId=${fid}`
             this.$store.dispatch('getPartSentenceList', partInfoArguments)
