@@ -42,7 +42,7 @@
                     }
                 }
             }
-            .datagrid {
+            canvas {
                 width:100%;
                 height:40rem;
             }
@@ -124,7 +124,7 @@
                     <el-button type="primary" @click="onSubmit">创建区块</el-button>
                 </el-form-item>
             </el-form>
-            <canvas-datagrid v-bind.prop="grid" class="datagrid"></canvas-datagrid>
+            <grid :grid-data="gridsdata" :columns="columns" showCheckbox columnSet></grid>
         </div>
     </div>
 </div>
@@ -134,13 +134,10 @@
     import $ from 'jQuery'
     import * as localForage from 'localforage'
     import {mapGetters} from 'vuex'
-    import canvasDatagrid from 'canvasDatagrid'
     
+
     export default {
         name: "BlockArticle",
-        componets : {
-            canvasDatagrid:canvasDatagrid
-        },
         data() {
             return {
                 isUsedFaster:false,
@@ -182,32 +179,30 @@
                         }
                     }]
                 },
-                grid: {
-                    schema: [
-                        {
-                            name: '原文'
+                columnSet: true,
+                showCheckbox: false,
+                gridsdata: [],
+                columns: [
+                    { title: '原文', key: 'source', width: 980 },
+                    { title: '状态', key: 'status', width: 50 },
+                    { title: '开始时间', key: 'begintime', width: 100 },
+                    { title: '结束时间', key: 'endtime', width: 100 },
+                    { title: '初译译员', key: 'unitmaker', width: 70 },
+                    { title: '审校译员', key: 'requiredQuantity', type: 'number', width: 70 },
+                    {
+                        title: '操作',
+                        width: 70,
+                        fixed: true,
+                        renderButton(rowData, index) {
+                            return [{
+                                title: '操作',
+                                click() {
+                                    console.log(rowData, index)  //eslint-disable-line
+                                },
+                            }]
                         },
-                        {
-                            name: '状态(未翻译)'
-                        },
-                        {
-                            name: '开始时间'
-                        },
-                        {
-                            name: '结束时间'
-                        },
-                        {
-                            name: '初译译员',
-                            enum: []
-                        },
-
-                        {
-                            name: '审校译员',
-                            enum: []
-                        }
-                    ],
-                    data: []
-                },
+                    },
+                ],
                 translators:[],
                 contents:[],
                 options: [],
@@ -304,18 +299,18 @@
                     orderIndex = this.$data.beginNums[dataindex]
                     for (let key of this.$data.grid.data) {
                         if (orderIndex > modelsIndex) {
-                            key['开始时间'] = this.part_sentence_list_datas[index].startTime
-                            key['结束时间'] = this.part_sentence_list_datas[index].endTime
-                            key['初译译员'] = this.$data.values[index]
-                            key['审校译员'] = this.$data.valuex[index]
+                            key['begintime'] = this.part_sentence_list_datas[index].startTime
+                            key['endtime'] = this.part_sentence_list_datas[index].endTime
+                            key['unitmaker'] = this.$data.values[index]
+                            key['requiredQuantity'] = this.$data.valuex[index]
                         } else {
                             dataindex += 1
                             index += 1
                             orderIndex += this.$data.beginNums[dataindex]
-                            key['开始时间'] = this.part_sentence_list_datas[index].startTime
-                            key['结束时间'] = this.part_sentence_list_datas[index].endTime
-                            key['初译译员'] = this.$data.values[index]
-                            key['审校译员'] = this.$data.valuex[index]
+                            key['begintime'] = this.part_sentence_list_datas[index].startTime
+                            key['endtime'] = this.part_sentence_list_datas[index].endTime
+                            key['unitmaker'] = this.$data.values[index]
+                            key['requiredQuantity'] = this.$data.valuex[index]
                         }
                         modelsIndex += 1
                     }
@@ -329,16 +324,16 @@
                 }
             },
             assign_part_list_datas: function() {
-                this.$data.grid.data = []
+                this.$data.gridsdata = []
                 this.$data.gridDatas = this.assign_part_list_datas.result
                 let ProjectFileId = 1
                 let ProjectId = 1
                 for (let keys of this.assign_part_list_datas.result) {
-                    let models = {'原文': `${keys.source}`, '状态(未翻译)': '', '开始时间': '', '结束时间': '', '初译译员': '', '审校译员': ''}
+                    let models = {'source': `${keys.source}`, 'status': '', 'begintime': '', 'endtime': '', 'unitmaker': '', 'requiredQuantity': ''}
                     this.$data.contents.push(keys.source)
                     ProjectFileId = keys.projectFileId
                     ProjectId = keys.projectId
-                    this.$data.grid.data.push(models)
+                    this.$data.gridsdata.push(models)
                 }
                 let objects = {}
                 objects.projectFileId = ProjectFileId
@@ -394,7 +389,7 @@
                 ////////////////////////////////////////
                 for (let keys of this.$data.gridDatas) {
                     if (totalIndex > orderIndex && sideIndex <= orderIndex) {
-                        this.$data.grid.data[orderIndex] = {'原文': `${keys.source}`, '状态(未翻译)': '待翻译', '开始时间': `${startTime}`, '结束时间': `${endTime}`, '初译译员': `${this.$data.values[index]}`, '审校译员': `${this.$data.valuex[index]}`}
+                        this.$data.grid.data[orderIndex] = {'source': `${keys.source}`, 'status': '待翻译', 'begintime': `${startTime}`, 'endtime': `${endTime}`, 'unitmaker': `${this.$data.values[index]}`, 'requiredQuantity': `${this.$data.valuex[index]}`}
                     }
                     orderIndex += 1
                 }
@@ -460,9 +455,9 @@
                 let endTime = moment(this.$data.sTime[1], "YYYY-MM-DD HH:mm:ss").format().replace("T", ' ').split("+")[0]
                 for (let keys of this.$data.grid.data) {
                     for(let key in keys) {
-                        console.log("key : ", key, key === '开始时间', key === '结束时间')
-                        keys.开始时间 = startTime
-                        keys.结束时间 = endTime
+                        console.log("key : ", key, key === 'begintime', key === 'endtime')
+                        keys.begintime = startTime
+                        keys.endtime = endTime
                     }
                 }
                 console.log("this.$data.grid.data : ", this.$data.grid.data)

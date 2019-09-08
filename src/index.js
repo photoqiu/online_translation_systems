@@ -13,6 +13,7 @@ import router from './router.js'
 import store from './vuex/store.js'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
+import Grid from 'vueCanvasGrid'
 import App from './App.vue'
 
 
@@ -36,6 +37,7 @@ const options = {
 }
 // https://elemefe.github.io/v-charts/#/props
 // this registers `store.state.route`
+
 Vue.use(VueLogger, options)
 Vue.use(VueWorker)
 Vue.use(VueTimeago, {
@@ -46,7 +48,7 @@ Vue.use(VueTimeago, {
     'ja': require('date-fns/locale/ja'),
   }
 })
-Vue.use(canvasDatagrid)
+
 Vue.use(ElementUI)
 
 sync(store, router)
@@ -59,6 +61,7 @@ localforage.config({
     description : 'photoqiu is localstorage.'
 })
 console.log("enter viewer datas.")
+Vue.component('grid', Grid)
 const app = new Vue({
   router,
   store,

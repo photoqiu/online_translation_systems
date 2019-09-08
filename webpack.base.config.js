@@ -71,6 +71,10 @@ let localforagePath = path.join(
     __dirname,
     './node_modules/localforage/dist/localforage.js'
 );
+let vueCanvasGridPath = path.join(
+    __dirname,
+    './node_modules/vue-grid-canvas/dist/vue-canvas-grid.js'
+);
 module.exports = {
 	context: SRC_PATH,
 	module: {
@@ -271,6 +275,7 @@ module.exports = {
             canvasDatagrid:canvasDatagridPath,
             moment: momentPath,
             fontAwesome: fontAwesomePath,
+            vueCanvasGrid: vueCanvasGridPath,
             localforage: localforagePath
         },
         enforceExtension: false
