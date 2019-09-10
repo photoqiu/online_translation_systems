@@ -66,7 +66,7 @@
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-lg-10 col-10 col-sm-12 rowset">
-                            <el-form-item label="新加初译员：">
+                            <el-form-item label="新加审校员：">
                                 <el-button type="primary" icon="el-icon-circle-plus-outline" @click="addUsers" circle></el-button>
                             </el-form-item>
                         </div>
@@ -77,7 +77,7 @@
                                 <tr>
                                     <th scope="col">#</th>
                                     <th scope="col">选择段落</th>
-                                    <th scope="col">初译员</th>
+                                    <th scope="col">审校员</th>
                                     <th scope="col">起止时间</th>
                                     <th scope="col">操作</th>
                                 </tr>
@@ -89,7 +89,7 @@
                                         <el-input-number size="medium" v-model="num[$index]" :step="1"></el-input-number>
                                     </td>
                                     <td>
-                                        <el-select v-model="values[$index]" filterable placeholder="请选择初译员">
+                                        <el-select v-model="valuex[$index]" filterable placeholder="请选择初译员">
                                             <el-option
                                                 v-for="(items, $indexes) in options"
                                                 :key="$indexes"
@@ -140,7 +140,7 @@
     
 
     export default {
-        name: "BlockArticle",
+        name: "BlockReviewArticle",
         data() {
             return {
                 isUsedFaster:false,
@@ -285,13 +285,15 @@
                     let index = 0
                     let modelsIndex = 0
                     let orderIndex = 0
-                    this.$data.order = this.part_sentence_list_datas.length
+                    this.$data.order = 1
                     for (let keys of this.part_sentence_list_datas) {
-                        console.log("keys:", keys)
                         orderIndex = keys.partEnd - keys.partBegin
                         this.$data.beginNums[dataindex] = keys.partEnd - keys.partBegin
                         this.$data.sTime[index] = [new Date(keys.startTime), new Date(keys.endTime)]
                         this.$data.num[index] = keys.partEnd - keys.partBegin
+                        if (keys.reviewer !== null) {
+                            this.$data.order += 1
+                        }
                         this.$data.valuex[index] = keys.reviewer === null ? '暂无' : keys.reviewer.id
                         this.$data.values[index] = keys.translator.id
                         this.$data.partId.push(keys.id)

@@ -63,6 +63,20 @@
         <div class="row">
             <div class="col-md-2"></div>
             <div class="col-md-8">
+                <el-form :inline="true" :model="formInline" class="demo-form-inline">
+                    <el-form-item label="搜索关键字">
+                        <el-input v-model="formInline.queryWord" placeholder="请输入关键字"></el-input>
+                    </el-form-item>
+                    <el-form-item>
+                        <el-button type="primary" @click="onSearchSubmit">查询</el-button>
+                    </el-form-item>
+                </el-form>
+            </div>
+            <div class="col-md-2"></div>
+        </div>
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
                 <el-table
                 :data="tableData"
                 v-loading="loading"
@@ -143,6 +157,9 @@
                     source: '2016-05-02',
                     target: '王小虎'
                 }],
+                formInline: {
+                    queryWord:''
+                },
                 tempDatas:[],
                 pageIndex: 1,
                 pageSize: 100,
@@ -186,9 +203,24 @@
             this.$data.loading = true
             this.$data.editorIndex = 0
             let datas = `pageNum=${this.$data.pageIndex}&pageSize=${this.$data.pageSize}&corpusId=${this.$route.params.id}`
-            this.$store.dispatch('getCorpusItemList', datas)
+            this.$store.dispatch('getBannedItemsList', datas)
         },
         methods: {
+            onSearchSubmit(event) {
+                this.$data.loading = true
+                this.$data.editorIndex = 0
+                if (this.$data.formInline.queryWord.length <= 0) {
+                    this.$message({
+                        message: '请输入搜索关键字',
+                        type: 'warning'
+                    })
+                    let datas = `pageNum=${this.$data.pageIndex}&pageSize=${this.$data.pageSize}&corpusId=${this.$route.params.id}`
+                    this.$store.dispatch('getBannedItemsList', datas)
+                    return false
+                }
+                let datas = `pageNum=${this.$data.pageIndex}&pageSize=${this.$data.pageSize}&corpusId=${this.$route.params.id}&queryWord=${this.$data.formInline.queryWord}`
+                this.$store.dispatch('getBannedItemsList', datas)
+            },
             SaveDatas(event) {
                 let datas = {}
                 let index = 0

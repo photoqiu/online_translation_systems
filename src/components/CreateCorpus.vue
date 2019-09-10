@@ -391,9 +391,7 @@
             let datas = ''
             this.$store.dispatch('getIndustryInfo', datas)
             this.$store.dispatch('getLanguage', datas)
-            let data = {}
-            data.pageIndex = this.$data.listPageIndex
-            this.$store.dispatch('getDataOrganList', data)
+            this.$store.dispatch('getDataOrganList', 1)
         },
         methods: {
             uploaderFiles(event) {

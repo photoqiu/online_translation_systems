@@ -138,7 +138,8 @@
                         <td><el-progress :text-inside="true" :stroke-width="18" :percentage="detail_datas.process"></el-progress></td>
                         <td>{{detail_datas.projectManager.nickName}}</td>
                         <td>
-                            <router-link :to="{path:`/blockarticle/${projectId}/${item.id}`}" class="btn btn-link">分配区块</router-link>
+                            <router-link :to="{path:`/blockarticle/${projectId}/${item.id}`}" class="btn btn-link">分配区块(初译)</router-link>
+                            <router-link :to="{path:`/blockreviewarticle/${projectId}/${item.id}`}" class="btn btn-link">分配区块(审校)</router-link>
                             <router-link :to="{path:`/partlist/${projectId}/${item.id}`}" class="btn btn-link">区块列表</router-link>
                             <el-dropdown split-button type="primary" @command="handleCommand">
                                 更多操作

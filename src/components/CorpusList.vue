@@ -51,28 +51,60 @@
         <el-col :span="12">
             <div class="grid-content">
                 <el-form ref="form" :model="form" label-width="80px">
-                    <el-form-item label="语料库名称:">
-                        <el-input placeholder="请输入内容" prefix-icon="el-icon-search" v-model="form.search_text"></el-input>
-                    </el-form-item>
-
-                    <el-form-item label="项目经理:">
-                        <el-select v-model="form.region_users" placeholder="请选择项目经理">
+                    <el-form-item label="机构名称:">
+                        <el-select v-model="form.region_users" placeholder="请选择机构名称">
                             <el-option
-                                v-for="(item, $index) in project_datas"
+                                v-for="(item, $index) in customer_datas"
                                 :key="$index"
                                 :data-datas="item.json_datas"
-                                :label="item.nickName"
+                                :label="item.organName"
                                 :value="item.json_datas">
                             </el-option>
                         </el-select>
                     </el-form-item>
 
-                    <el-form-item label="状态:">
-                        <el-select v-model="form.status" placeholder="请选择项目状态">
-                            <el-option label="未进行" value="shanghai"></el-option>
-                            <el-option label="进行中" value="beijing"></el-option>
-                            <el-option label="审核校对" value="beijing"></el-option>
-                            <el-option label="已完成" value="beijing"></el-option>
+                    <el-form-item label="一级行业">
+                        <el-select v-model="form.industry1" filterable @change="getOneLevelDatas" placeholder="请选择">
+                            <el-option
+                              v-for="item in main_industry_models_0"
+                              :key="item.code"
+                              :data-id="item.id"
+                              :label="item.name"
+                              :value="item.json_data">
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item label="二级行业">
+                        <el-select v-model="form.industry2" filterable @change="getTwoLevelDatas" placeholder="请选择">
+                            <el-option
+                              v-for="item in sub_industry_models_1"
+                              :key="item.code"
+                              :data-id="item.id"
+                              :label="item.name"
+                              :value="item.json_data">
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item label="三级行业">
+                        <el-select v-model="form.industry3" filterable @change="getThereLevelDatas" placeholder="请选择">
+                            <el-option
+                              v-for="item in sub_industry_models_2"
+                              :key="item.code"
+                              :data-id="item.id"
+                              :label="item.name"
+                              :value="item.json_data">
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item label="四级行业">
+                        <el-select v-model="form.industry4" filterable placeholder="请选择">
+                            <el-option
+                              v-for="item in sub_industry_models_3"
+                              :key="item.code"
+                              :data-id="item.id"
+                              :label="item.name"
+                              :value="item.json_data">
+                            </el-option>
                         </el-select>
                     </el-form-item>
                 </el-form>
@@ -153,12 +185,27 @@
                 form : {
                     search_text: "",
                     region_users: "",
+                    industry1:'',
+                    industry2:'',
+                    industry3:'',
+                    industry4:'',
                     status:""
                 },
                 project_datas: [],
                 tableData: [],
                 pageIndex : 1,
                 pageSize: 30,
+                customer_datas: [],
+                customer_indexpage: 1,
+                listPageIndex: 1,
+                main_industry_models_0 : [],
+                sub_industry_models_1 : [],
+                sub_industry_models_2 : [],
+                sub_industry_models_3 : [],
+                sub_industry_models_4 : [],
+                industry1:[],
+                industry2:[],
+                industry3:[],
                 totalPage:0,
                 project_indexpage : 1
             }
@@ -166,12 +213,39 @@
         computed: {
             ...mapGetters({
                 error_datas: 'error_datas',
+                customer_info_datas:'customer_info_datas',
+                main_industry_models_datas: 'main_industry_models_datas',
+                sub_one_industry_models_datas: 'sub_one_industry_models_datas',
+                sub_two_industry_models_datas: 'sub_two_industry_models_datas',
+                sub_there_industry_models_datas: 'sub_there_industry_models_datas',
                 corpus_list_datas: 'corpus_list_datas'
             })
         },
         watch: {
             error_datas: function () {
                 console.log("error_datas:", this.error_datas)
+            },
+            main_industry_models_datas: function() {
+                this.$data.main_industry_models_0 = this.main_industry_models_datas
+            },
+            sub_one_industry_models_datas: function() {
+                this.$data.sub_industry_models_1 = this.sub_one_industry_models_datas
+            },
+            sub_two_industry_models_datas: function() {
+                this.$data.sub_industry_models_2 = this.sub_two_industry_models_datas
+            },
+            sub_there_industry_models_datas: function() {
+                this.$data.sub_industry_models_3 = this.sub_there_industry_models_datas
+            },
+            customer_info_datas: function() {
+                for (let keys of this.customer_info_datas.list) {
+                    this.$data.customer_datas.push(keys)
+                }
+                if (!!this.customer_info_datas.isLastPage) {
+                    return false
+                }
+                this.$data.customer_indexpage += 1
+                this.$store.dispatch('getCustomerInfo', this.$data.customer_indexpage)
             },
             corpus_list_datas: function() {
                 this.$data.totalPage = this.corpus_list_datas.corpusList.pages
@@ -202,6 +276,8 @@
         },
         mounted() {
             this.$store.dispatch('getCorpusList', this.$data.pageIndex)
+            this.$store.dispatch('getCustomerInfo', 1)
+            this.$store.dispatch('getIndustryInfo', '')
         },
         methods: {
             handleClick(row) {
@@ -212,6 +288,18 @@
                 console.log(row, `/#/corpusdetails/${row.id}`)
                 window.location.href = `/#/corpusdetails/${row.id}`
                 return false
+            },
+            getOneLevelDatas(event) {
+                let datas = JSON.parse(this.$data.form.industry1)
+                this.$store.dispatch('getOneIndustryInfo', datas.code)
+            },
+            getTwoLevelDatas(event) {
+                let datas = JSON.parse(this.$data.form.industry2)
+                this.$store.dispatch('getTwoIndustryInfo', datas.code)
+            },
+            getThereLevelDatas(event) {
+                let datas = JSON.parse(this.$data.form.industry3)
+                this.$store.dispatch('getThereIndustryInfo', datas.code)
             },
             handleOpen(key, keyPath) {
                 console.log(key, keyPath)

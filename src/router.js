@@ -23,6 +23,7 @@ import CorpusList from './components/CorpusList.vue'
 import CorpusDetails from './components/CorpusDetails.vue'
 import TermDetails from './components/TermDetails.vue'
 import CreateBanned from './components/CreateBanned.vue'
+import BlockReviewArticle from './components/BlockReviewArticle.vue'
 import BannedList from './components/BannedList.vue'
 import BannedDetails from './components/BannedDetails.vue'
 import NotFound from './components/NotFound.vue'
@@ -78,6 +79,10 @@ const router = new VueRouter({
             path: '/blockarticle/:id/:fid',
             name: 'blockarticle',
             component: BlockArticle
+        }, {
+            path: '/blockreviewarticle/:id/:fid',
+            name: 'BlockReviewArticle',
+            component: BlockReviewArticle
         }, {
             path: '/partlist/:id/:fid',
             name: 'PartList',

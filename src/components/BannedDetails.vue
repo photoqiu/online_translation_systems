@@ -63,6 +63,20 @@
         <div class="row">
             <div class="col-md-2"></div>
             <div class="col-md-8">
+                <el-form :inline="true" :model="formInline" class="demo-form-inline">
+                    <el-form-item label="搜索禁用语关键字">
+                        <el-input v-model="formInline.queryWord" placeholder="请输入禁用语关键字"></el-input>
+                    </el-form-item>
+                    <el-form-item>
+                        <el-button type="primary" @click="onSearchSubmit">查询</el-button>
+                    </el-form-item>
+                </el-form>
+            </div>
+            <div class="col-md-2"></div>
+        </div>
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
                 <el-table
                 :data="tableData"
                 v-loading="loading"
@@ -73,11 +87,6 @@
                     fixed
                     prop="source"
                     label="原文"
-                    width="450">
-                </el-table-column>
-                <el-table-column
-                    prop="target"
-                    label="译文"
                     width="450">
                 </el-table-column>
                 <el-table-column
@@ -113,14 +122,11 @@
         :visible.sync="centerDialogVisible"
         width="30%"
         center>
-        <h4>原文：</h4>
-        <span>{{textdatas.source}}</span>
-        <h4>译文：</h4>
+        <h4>禁用语：</h4>
         <span>
             <div class="md-form">
                 <i class="fas fa-pencil-alt prefix"></i>
-                <textarea id="form10" class="md-textarea form-control" rows="3" v-model="textdatas.target"></textarea>
-                <label for="form10">Icon Prefix</label>
+                <textarea id="form10" class="md-textarea form-control" rows="3" v-model="textdatas.source"></textarea>
             </div>
         </span>
         <span slot="footer" class="dialog-footer">
@@ -150,6 +156,9 @@
                 centerDialogVisible: false,
                 textdatas: {},
                 editorIndex: 0,
+                formInline: {
+                    queryWord:''
+                },
                 loading: true
             }    
         },
@@ -157,7 +166,7 @@
             ...mapGetters({
                 error_datas: 'error_datas',
                 save_corpus_item_status: "save_corpus_item_status",
-                get_corpus_list_datas: 'get_corpus_list_datas'
+                banned_item_datas: 'banned_item_datas'
             })
         },
         watch: {
@@ -167,16 +176,15 @@
             save_corpus_item_status: function() {
                 this.$data.centerDialogVisible = false
             },
-            get_corpus_list_datas: function() {
+            banned_item_datas: function() {
                 let dataNumbers = this.$data.pageSize * this.$data.pageIndex
                 let tabledatas = {}
                 this.$data.tableData = []
-                this.$data.tempDatas = this.get_corpus_list_datas.data
-                this.$data.pageTotal = this.get_corpus_list_datas.total
+                this.$data.tempDatas = this.banned_item_datas.data
+                this.$data.pageTotal = this.banned_item_datas.total
                 for (let data of this.$data.tempDatas) {
                     tabledatas = {}
-                    tabledatas.source = data.source
-                    tabledatas.target = data.target
+                    tabledatas.source = data.bannedWord
                     this.$data.tableData.push(tabledatas)
                 }
                 this.$data.loading = false
@@ -184,30 +192,44 @@
         },
         mounted() {
             this.$data.loading = true
-            let datas = `pageNum=${this.$data.pageIndex}&pageSize=${this.$data.pageSize}&corpusId=${this.$route.params.id}`
-            this.$store.dispatch('getCorpusItemList', datas)
+            let datas = `pageNum=${this.$data.pageIndex}&pageSize=${this.$data.pageSize}&bannedId=${this.$route.params.id}`
+            this.$store.dispatch('getItemsBannedList', datas)
         },
         methods: {
+            onSearchSubmit(event) {
+                this.$data.loading = true
+                this.$data.editorIndex = 0
+                if (this.$data.formInline.queryWord.length <= 0) {
+                    this.$message({
+                        message: '请输入搜索关键字',
+                        type: 'warning'
+                    })
+                    let datas = `pageNum=${this.$data.pageIndex}&pageSize=${this.$data.pageSize}&bannedId=${this.$route.params.id}`
+                    this.$store.dispatch('getItemsBannedList', datas)
+                    return false
+                }
+                let datas = `pageNum=${this.$data.pageIndex}&pageSize=${this.$data.pageSize}&bannedId=${this.$route.params.id}&queryWord=${this.$data.formInline.queryWord}`
+                this.$store.dispatch('getItemsBannedList', datas)
+            },
             SaveDatas(event) {
                 let datas = {}
                 let index = 0
                 this.$data.centerDialogVisible = true
                 datas = this.$data.tempDatas[this.$data.editorIndex]
-                datas.target = this.$data.textdatas.target
+                datas.bannedWord = this.$data.textdatas.source
                 console.log("datas:", datas, this.$data.editorIndex)
                 this.$store.dispatch('doSaveItemCoups', datas)
             },
             handleClick(index, rows) {
-                this.$data.editorIndex = index - 1
+                this.$data.editorIndex = index
                 this.$data.textdatas.source = this.$data.tempDatas[this.$data.editorIndex].source
-                this.$data.textdatas.target = this.$data.tempDatas[this.$data.editorIndex].target
                 this.$data.centerDialogVisible = true
             },
             handleCurrentChange(val) {
                 this.$data.loading = true
                 this.$data.pageIndex = val
-                let datas = `pageNum=${this.$data.pageIndex}&pageSize=${this.$data.pageSize}&corpusId=${this.$route.params.id}`
-                this.$store.dispatch('getCorpusItemList', datas)
+                let datas = `pageNum=${this.$data.pageIndex}&pageSize=${this.$data.pageSize}&bannedId=${this.$route.params.id}`
+                this.$store.dispatch('getItemsBannedList', datas)
             }
         }
     }

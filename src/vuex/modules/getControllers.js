@@ -26,6 +26,7 @@ const state = {
     get_corpus_list_datas: {},
     term_item_datas: {},
     banned_list_datas: {},
+    banned_item_datas: {},
     error_datas: {}
 }
 
@@ -54,6 +55,7 @@ const getters = {
     get_corpus_list_datas: state => state.get_corpus_list_datas,
     term_item_datas: state => state.term_item_datas,
     banned_list_datas: state => state.banned_list_datas,
+    banned_item_datas: state => state.banned_item_datas,
     error_datas: state => state.error_datas
 }
 
@@ -177,11 +179,11 @@ const actions = {
             (datas) => commit(types.HTTP_STATUS_ERROR, datas)
         );
     },
-    getItemsTermList({commit}, datas) {
-        let url = Constant.API.getItemTermList
+    getItemsBannedList({commit}, datas) {
+        let url = Constant.API.bannedItemList
         url = url.replace("{{querydatas}}", datas)
         asyncAPI.doGetDatas(url,
-            (datas) => commit(types.GET_TERM_ITEM_DATAS_LIST, datas),
+            (datas) => commit(types.GET_BANNED_ITEM_DATAS_LIST, datas),
             (datas) => commit(types.HTTP_STATUS_ERROR, datas)
         );
     },
@@ -263,6 +265,13 @@ const actions = {
 const mutations = {
     [types.HTTP_STATUS_ERROR] (state, datas) {
         state.error_datas = {"data": "请求错误"}
+    },
+    [types.GET_BANNED_ITEM_DATAS_LIST] (state, datas) {
+        if (!!datas.data.status) {
+            state.banned_item_datas = datas.data.result || []
+        } else {
+            state.error_datas = {"data": "系统错误"}
+        }
     },
     [types.GET_TERM_ITEM_DATAS_LIST] (state, datas) {
         if (!!datas.data.status) {

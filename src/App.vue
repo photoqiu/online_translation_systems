@@ -97,7 +97,7 @@ body > .el-container {
                                 <el-menu-item index="1-9-1" :route="{path: '/createbanned', activeClass: 'active'}">
                                     新建禁用语
                                 </el-menu-item>
-                                <el-menu-item index="1-9-2" :route="{path: '/termlist', activeClass: 'active'}">
+                                <el-menu-item index="1-9-2" :route="{path: '/bannedlist', activeClass: 'active'}">
                                     禁用语-列表
                                 </el-menu-item>
                             </el-submenu>

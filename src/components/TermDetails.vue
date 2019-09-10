@@ -58,8 +58,22 @@
 </style>
 <template>
 <div class="container_bd">
-    <h1>修改语料库--详情</h1>
+    <h1>修改术语库--详情</h1>
     <div class="bd">
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+                <el-form :inline="true" :model="formInline" class="demo-form-inline">
+                    <el-form-item label="搜索术语关键字">
+                        <el-input v-model="formInline.queryWord" placeholder="请输入术语关键字"></el-input>
+                    </el-form-item>
+                    <el-form-item>
+                        <el-button type="primary" @click="onSearchSubmit">查询</el-button>
+                    </el-form-item>
+                </el-form>
+            </div>
+            <div class="col-md-2"></div>
+        </div>
         <div class="row">
             <div class="col-md-2"></div>
             <div class="col-md-8">
@@ -150,6 +164,9 @@
                 centerDialogVisible: false,
                 textdatas: {},
                 editorIndex: 0,
+                formInline: {
+                    queryWord:''
+                },
                 loading: true
             }    
         },
@@ -185,10 +202,25 @@
         },
         mounted() {
             this.$data.loading = true
-            let datas = `pageNum=${this.$data.pageIndex}&pageSize=${this.$data.pageSize}&corpusId=${this.$route.params.id}`
+            let datas = `pageNum=${this.$data.pageIndex}&pageSize=${this.$data.pageSize}&termId=${this.$route.params.id}`
             this.$store.dispatch('getItemsTermList', datas)
         },
         methods: {
+            onSearchSubmit() {
+                this.$data.loading = true
+                this.$data.editorIndex = 0
+                if (this.$data.formInline.queryWord.length <= 0) {
+                    this.$message({
+                        message: '请输入搜索关键字',
+                        type: 'warning'
+                    })
+                    let datas = `pageNum=${this.$data.pageIndex}&pageSize=${this.$data.pageSize}&termId=${this.$route.params.id}`
+                    this.$store.dispatch('getItemsTermList', datas)
+                    return false
+                }
+                let datas = `pageNum=${this.$data.pageIndex}&pageSize=${this.$data.pageSize}&termId=${this.$route.params.id}&queryWord=${this.$data.formInline.queryWord}`
+                this.$store.dispatch('getItemsTermList', datas)
+            },
             SaveDatas(event) {
                 let datas = {}
                 let index = 0

@@ -48,6 +48,7 @@ const Constant = {
         ///////////////////////////////////////////////////////////// 禁用语
         bannedList             : USER_API + 'banned/list?pageNum={{pageIndex}}&pageSize={{pageSize}}',
         queryBannedList        : USER_API + 'banned/list?pageNum={{pageIndex}}&pageSize={{pageSize}}&{{query}}',
+        bannedItemList         : USER_API + 'banned/item/list?{{querydatas}}',
         bannedSave             : USER_API + 'banned/save'
     }
 };
