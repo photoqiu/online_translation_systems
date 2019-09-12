@@ -27,6 +27,7 @@ const state = {
     term_item_datas: {},
     banned_list_datas: {},
     banned_item_datas: {},
+    get_project_report_datas: {},
     error_datas: {}
 }
 
@@ -56,6 +57,7 @@ const getters = {
     term_item_datas: state => state.term_item_datas,
     banned_list_datas: state => state.banned_list_datas,
     banned_item_datas: state => state.banned_item_datas,
+    get_project_report_datas: state => state.get_project_report_datas,
     error_datas: state => state.error_datas
 }
 
@@ -196,6 +198,30 @@ const actions = {
             (datas) => commit(types.HTTP_STATUS_ERROR, datas)
         );
     },
+    getQueryTermList({commit}, datas) {
+        let url = Constant.API.termQueryList
+        url = url.replace("{{querydatas}}", datas.arguments).replace("{{pageSize}}", 30).replace("{{pageIndex}}", datas.pageIndex)
+        asyncAPI.doGetDatas(url,
+            (datas) => commit(types.GET_TERM_LIST, datas),
+            (datas) => commit(types.HTTP_STATUS_ERROR, datas)
+        );
+    },
+    getProjectReportDatas({commit}, datas) {
+        let url = Constant.API.getProjectReport
+        url = url.replace("{{projectId}}", datas.projectId)
+        asyncAPI.doGetDatas(url,
+            (datas) => commit(types.GET_PROJECT_REPORT_DATAS, datas),
+            (datas) => commit(types.HTTP_STATUS_ERROR, datas)
+        );
+    },
+    getQueryCorpusList({commit}, datas) {
+        let url = Constant.API.corpusQueryList
+        url = url.replace("{{querydatas}}", datas.arguments).replace("{{pageSize}}", 30).replace("{{pageIndex}}", datas.pageIndex)
+        asyncAPI.doGetDatas(url,
+            (datas) => commit(types.GET_CORPUS_LIST, datas),
+            (datas) => commit(types.HTTP_STATUS_ERROR, datas)
+        );
+    },
     getBannedList({commit}, datas) {
         let url = Constant.API.bannedList
         url = url.replace("{{pageIndex}}", datas)
@@ -269,6 +295,13 @@ const mutations = {
     [types.GET_BANNED_ITEM_DATAS_LIST] (state, datas) {
         if (!!datas.data.status) {
             state.banned_item_datas = datas.data.result || []
+        } else {
+            state.error_datas = {"data": "系统错误"}
+        }
+    },
+    [types.GET_PROJECT_REPORT_DATAS] (state, datas) {
+        if (!!datas.data.status) {
+            state.get_project_report_datas = datas.data.result || []
         } else {
             state.error_datas = {"data": "系统错误"}
         }

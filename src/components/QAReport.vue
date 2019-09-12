@@ -148,12 +148,16 @@
         computed: {
             ...mapGetters({
                 error_datas: 'error_datas',
+                get_project_report_datas: 'get_project_report_datas',
                 assign_part_list_datas: 'assign_part_list_datas'
             })
         },
         watch: {
             error_datas: function () {
                 console.log("error_datas:", this.error_datas)
+            },
+            get_project_report_datas: function() {
+                console.log("get_project_report_datas : ", this.get_project_report_datas)
             },
             assign_part_list_datas: function() {
                 console.log("this.assign_part_list_datas : ", this.assign_part_list_datas)
@@ -173,7 +177,10 @@
         mounted() {
             let _self = this
             let datas = 2
+            let data = {}
+            data.projectId = this.$route.params.id
             this.$store.dispatch('getPartInfo', datas)
+            this.$store.dispatch('getProjectReportDatas', data)
         }
     }
 </script>

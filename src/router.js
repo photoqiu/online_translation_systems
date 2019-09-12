@@ -136,7 +136,7 @@ const router = new VueRouter({
             name: 'uploaderterm',
             component: UploaderTerm
         }, {
-            path: '/qareport',
+            path: '/qareport/:id',
             name: 'qareport',
             component: QAReport
         }

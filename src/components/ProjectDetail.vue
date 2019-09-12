@@ -141,6 +141,7 @@
                             <router-link :to="{path:`/blockarticle/${projectId}/${item.id}`}" class="btn btn-link">分配区块(初译)</router-link>
                             <router-link :to="{path:`/blockreviewarticle/${projectId}/${item.id}`}" class="btn btn-link">分配区块(审校)</router-link>
                             <router-link :to="{path:`/partlist/${projectId}/${item.id}`}" class="btn btn-link">区块列表</router-link>
+                            <router-link :to="{path:`/partlist/${projectId}/${item.id}`}" class="btn btn-link">查看文件报告</router-link>
                             <el-dropdown split-button type="primary" @command="handleCommand">
                                 更多操作
                                 <el-dropdown-menu slot="dropdown">

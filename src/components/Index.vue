@@ -141,10 +141,10 @@
           width="220">
           <template slot-scope="scope">
             <el-button @click="handleDetailClick(scope.row)" type="text" size="small">项目详情</el-button>
+            <el-button @click="handleReportClick(scope.row)" type="text" size="small">项目报告</el-button>
           </template>
         </el-table-column>
       </el-table>
-
     <el-pagination
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
@@ -245,6 +245,10 @@
             handleClick(row) {
                 console.log(row)
                 window.location.href = `/#/blockarticle/${row.baseId}`
+            },
+            handleReportClick(row) {
+                console.log(row)
+                window.location.href = `/#/qareport/${row.baseId}`
             },
             handleDetailClick(row) {
                 console.log(row)

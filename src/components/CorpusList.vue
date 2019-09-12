@@ -52,7 +52,7 @@
             <div class="grid-content">
                 <el-form ref="form" :model="form" label-width="80px">
                     <el-form-item label="机构名称:">
-                        <el-select v-model="form.region_users" placeholder="请选择机构名称">
+                        <el-select v-model="form.search_text" placeholder="请选择机构名称">
                             <el-option
                                 v-for="(item, $index) in customer_datas"
                                 :key="$index"
@@ -107,7 +107,9 @@
                             </el-option>
                         </el-select>
                     </el-form-item>
+                    <el-button type="primary" @click="submitdatas">查询</el-button>
                 </el-form>
+
             </div>
         </el-col>
     </el-row>
@@ -206,6 +208,7 @@
                 industry1:[],
                 industry2:[],
                 industry3:[],
+                pageIndex: 1,
                 totalPage:0,
                 project_indexpage : 1
             }
@@ -250,6 +253,7 @@
             corpus_list_datas: function() {
                 this.$data.totalPage = this.corpus_list_datas.corpusList.pages
                 let datas = {}
+                this.$data.tableData = []
                 for (let keys of this.corpus_list_datas.corpusList.list) {
                     datas = {}
                     datas.id = keys.id
@@ -283,6 +287,33 @@
             handleClick(row) {
                 console.log(row)
                 window.location.href = `/#/blockarticle/${row.baseId}`
+            },
+            submitdatas(event) {
+                let datas = {}
+                let jsonDatas = {}
+                datas.arguments = ''
+                if (!!this.$data.form.search_text) {
+                    jsonDatas = JSON.parse(this.$data.form.search_text)
+                    datas.arguments += `organId=${jsonDatas.organId}`
+                }
+                if (!!this.$data.form.industry1) {
+                    jsonDatas = JSON.parse(this.$data.form.industry1)
+                    datas.arguments += `&industry1=${jsonDatas.code}`
+                }
+                if (!!this.$data.form.industry2) {
+                    jsonDatas = JSON.parse(this.$data.form.industry2)
+                    datas.arguments += `&industry2=${jsonDatas.code}`
+                }
+                if (!!this.$data.form.industry3) {
+                    jsonDatas = JSON.parse(this.$data.form.industry3)
+                    datas.arguments += `&industry3=${jsonDatas.code}`
+                }
+                if (!!this.$data.form.industry4) {
+                    jsonDatas = JSON.parse(this.$data.form.industry4)
+                    datas.arguments += `&industry4=${jsonDatas.code}`
+                }
+                datas.pageIndex = this.$data.pageIndex
+                this.$store.dispatch('getQueryCorpusList', datas)
             },
             handleDetailClick(row) {
                 console.log(row, `/#/corpusdetails/${row.id}`)

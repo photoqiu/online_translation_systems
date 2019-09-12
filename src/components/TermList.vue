@@ -49,7 +49,68 @@
 <div class="container_bd">
     <el-row :gutter="20">
         <el-col :span="12">
-            
+            <div class="grid-content">
+                <el-form ref="form" :model="form" label-width="80px">
+                    <el-form-item label="机构名称:">
+                        <el-select v-model="form.search_text" placeholder="请选择机构名称">
+                            <el-option
+                                v-for="(item, $index) in customer_datas"
+                                :key="$index"
+                                :data-datas="item.json_datas"
+                                :label="item.organName"
+                                :value="item.json_datas">
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
+
+                    <el-form-item label="一级行业">
+                        <el-select v-model="form.industry1" filterable @change="getOneLevelDatas" placeholder="请选择">
+                            <el-option
+                              v-for="item in main_industry_models_0"
+                              :key="item.code"
+                              :data-id="item.id"
+                              :label="item.name"
+                              :value="item.json_data">
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item label="二级行业">
+                        <el-select v-model="form.industry2" filterable @change="getTwoLevelDatas" placeholder="请选择">
+                            <el-option
+                              v-for="item in sub_industry_models_1"
+                              :key="item.code"
+                              :data-id="item.id"
+                              :label="item.name"
+                              :value="item.json_data">
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item label="三级行业">
+                        <el-select v-model="form.industry3" filterable @change="getThereLevelDatas" placeholder="请选择">
+                            <el-option
+                              v-for="item in sub_industry_models_2"
+                              :key="item.code"
+                              :data-id="item.id"
+                              :label="item.name"
+                              :value="item.json_data">
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item label="四级行业">
+                        <el-select v-model="form.industry4" filterable placeholder="请选择">
+                            <el-option
+                              v-for="item in sub_industry_models_3"
+                              :key="item.code"
+                              :data-id="item.id"
+                              :label="item.name"
+                              :value="item.json_data">
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-button type="primary" @click="submitdatas">查询</el-button>
+                </el-form>
+
+            </div>
         </el-col>
     </el-row>
     <el-row :gutter="20">
@@ -123,17 +184,44 @@
         name: "corpuslist",
         data() {
             return {
+                form : {
+                    search_text: "",
+                    region_users: "",
+                    industry1:'',
+                    industry2:'',
+                    industry3:'',
+                    industry4:'',
+                    status:""
+                },
                 project_datas: [],
                 tableData: [],
-                pageIndex : 1,
                 pageSize: 30,
                 totalPage:0,
+                pageIndex : 1,
+                pageSize: 30,
+                customer_datas: [],
+                customer_indexpage: 1,
+                listPageIndex: 1,
+                main_industry_models_0 : [],
+                sub_industry_models_1 : [],
+                sub_industry_models_2 : [],
+                sub_industry_models_3 : [],
+                sub_industry_models_4 : [],
+                industry1:[],
+                industry2:[],
+                industry3:[],
+                pageIndex: 1,
                 project_indexpage : 1
             }
         },
         computed: {
             ...mapGetters({
                 error_datas: 'error_datas',
+                customer_info_datas:'customer_info_datas',
+                main_industry_models_datas: 'main_industry_models_datas',
+                sub_one_industry_models_datas: 'sub_one_industry_models_datas',
+                sub_two_industry_models_datas: 'sub_two_industry_models_datas',
+                sub_there_industry_models_datas: 'sub_there_industry_models_datas',
                 term_list_datas: 'term_list_datas'
             })
         },
@@ -141,10 +229,33 @@
             error_datas: function () {
                 console.log("error_datas:", this.error_datas)
             },
+            main_industry_models_datas: function() {
+                this.$data.main_industry_models_0 = this.main_industry_models_datas
+            },
+            sub_one_industry_models_datas: function() {
+                this.$data.sub_industry_models_1 = this.sub_one_industry_models_datas
+            },
+            sub_two_industry_models_datas: function() {
+                this.$data.sub_industry_models_2 = this.sub_two_industry_models_datas
+            },
+            sub_there_industry_models_datas: function() {
+                this.$data.sub_industry_models_3 = this.sub_there_industry_models_datas
+            },
+            customer_info_datas: function() {
+                for (let keys of this.customer_info_datas.list) {
+                    this.$data.customer_datas.push(keys)
+                }
+                if (!!this.customer_info_datas.isLastPage) {
+                    return false
+                }
+                this.$data.customer_indexpage += 1
+                this.$store.dispatch('getCustomerInfo', this.$data.customer_indexpage)
+            },
             term_list_datas: function() {
                 console.log("this.term_list_datas:", this.term_list_datas)
                 this.$data.totalPage = this.term_list_datas.pages
                 let datas = {}
+                this.$data.tableData = []
                 for (let keys of this.term_list_datas.list) {
                     datas = {}
                     datas.id = keys.id
@@ -171,11 +282,52 @@
         },
         mounted() {
             this.$store.dispatch('getTermList', this.$data.pageIndex)
+            this.$store.dispatch('getCustomerInfo', 1)
+            this.$store.dispatch('getIndustryInfo', '')
         },
         methods: {
             handleClick(row) {
                 console.log(row)
                 window.location.href = `/#/blockarticle/${row.baseId}`
+            },
+            submitdatas(event) {
+                let datas = {}
+                let jsonDatas = {}
+                datas.arguments = ''
+                if (!!this.$data.form.search_text) {
+                    jsonDatas = JSON.parse(this.$data.form.search_text)
+                    datas.arguments += `organId=${jsonDatas.organId}`
+                }
+                if (!!this.$data.form.industry1) {
+                    jsonDatas = JSON.parse(this.$data.form.industry1)
+                    datas.arguments += `&industry1=${jsonDatas.code}`
+                }
+                if (!!this.$data.form.industry2) {
+                    jsonDatas = JSON.parse(this.$data.form.industry2)
+                    datas.arguments += `&industry2=${jsonDatas.code}`
+                }
+                if (!!this.$data.form.industry3) {
+                    jsonDatas = JSON.parse(this.$data.form.industry3)
+                    datas.arguments += `&industry3=${jsonDatas.code}`
+                }
+                if (!!this.$data.form.industry4) {
+                    jsonDatas = JSON.parse(this.$data.form.industry4)
+                    datas.arguments += `&industry4=${jsonDatas.code}`
+                }
+                datas.pageIndex = this.$data.pageIndex
+                this.$store.dispatch('getQueryTermList', datas)
+            },
+            getOneLevelDatas(event) {
+                let datas = JSON.parse(this.$data.form.industry1)
+                this.$store.dispatch('getOneIndustryInfo', datas.code)
+            },
+            getTwoLevelDatas(event) {
+                let datas = JSON.parse(this.$data.form.industry2)
+                this.$store.dispatch('getTwoIndustryInfo', datas.code)
+            },
+            getThereLevelDatas(event) {
+                let datas = JSON.parse(this.$data.form.industry3)
+                this.$store.dispatch('getThereIndustryInfo', datas.code)
             },
             handleDetailClick(row) {
                 console.log(row, `/#/termdetails/${row.id}`)

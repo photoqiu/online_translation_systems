@@ -48,17 +48,6 @@
 <template>
 <div class="container_bd">
     <el-row :gutter="20">
-        <el-col :span="12">
-            <div class="grid-content">
-                <el-form ref="form" :model="form" label-width="120px">
-                    <el-form-item label="禁用语名称:">
-                        <el-input placeholder="请输入内容" prefix-icon="el-icon-search" v-model="form.search_text"></el-input>
-                    </el-form-item>
-                </el-form>
-            </div>
-        </el-col>
-    </el-row>
-    <el-row :gutter="20">
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
             <h1 class="h2">禁用语列表</h1>
             <div class="btn-toolbar mb-2 mb-md-0">

@@ -23,12 +23,15 @@ const Constant = {
         fileUpload             : USER_API + 'file/upload',
         fileDetail             : USER_API + 'file/detail',
         termList               : USER_API + 'term/list?pageNum={{pageIndex}}&pageSize={{pageSize}}', /// 获取所有术语库数据
+        termQueryList          : USER_API + 'term/list?{{querydatas}}&pageSize={{pageSize}}&pageNum={{pageIndex}}',
         getItemTermList        : USER_API + 'term/item/list?{{querydatas}}', /// 获取术语项列表
         termSave               : USER_API + 'term/save', // 新增术语
         termBatchSave          : USER_API + 'term/item/batch/save',
         termItemSave           : USER_API + 'term/item/save',
         /////////////////////////////////////////////////////////////
         getProject             : USER_API + 'project/list?pageNum={{pageIndex}}',
+        getProjectReport       : USER_API + 'report/project?projectId={{projectId}}', //项目的报告
+        getFilesReport         : USER_API + 'report/file?fileId={{fileId}}', //项目的报告
         projectDetail          : USER_API + 'project/detail?projectId={{id}}',
         saveProject            : USER_API + 'project/save',
         translateUnit          : USER_API + 'tu/list?partId={{partId}}&pageSize=3000&projectFileId={{projectFileId}}&pageNum={{pageNum}}',
@@ -42,6 +45,7 @@ const Constant = {
         corpusSave             : USER_API + 'corpus/save', // 新增语料
         corpusBatchSave        : USER_API + 'corpus/item/batch/save', // 批量添加语料库 通过文件上传
         corpusItemList         : USER_API + 'corpus/item/list?{{querydatas}}',
+        corpusQueryList        : USER_API + 'corpus/list?{{querydatas}}&pageSize={{pageSize}}&pageNum={{pageIndex}}',
         corpusList             : USER_API + 'corpus/list?pageNum={{pageIndex}}&pageSize={{pageSize}}',
         corpusEdit             : USER_API + 'corpus/item/save',
         getOrganList           : USER_API + 'organ/list?pageNum={{pageIndex}}&pageSize={{pageSize}}',
