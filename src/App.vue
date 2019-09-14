@@ -70,9 +70,6 @@ body > .el-container {
                                 <el-menu-item index="1-1-1" :route="{path: '/createbase', activeClass: 'active'}">新建项目</el-menu-item>
                                 <el-menu-item index="1-2" :route="{path: '/', activeClass: 'active'}">进行中的项目..</el-menu-item>
                                 <el-menu-item index="1-3" :route="{path: '/', activeClass: 'active'}">已完成项目</el-menu-item>
-                                <el-menu-item index="1-4" :route="{path: '/qareport', activeClass: 'active'}">
-                                    QA报告
-                                </el-menu-item>
                             </el-menu-item-group>
                             <el-submenu index="1-7">
                                 <span slot="title">语料库</span>

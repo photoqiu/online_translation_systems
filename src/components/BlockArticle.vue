@@ -38,7 +38,6 @@
                         div {
                             margin:0 !important;
                         }
-
                     }
                 }
             }

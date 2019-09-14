@@ -75,14 +75,6 @@
     <h1>创建项目-基本信息</h1>
     <div class="bd">
         <div class="row">
-            <el-steps :active="1" align-center>
-                <el-step title="创建新项目" description="新建一个项目并上传附件"></el-step>
-                <el-step title="分配区块" description="对上传附件进行区块分配"></el-step>
-                <el-step title="分配任务" description="分配完成后，相关人员开发翻译与审校"></el-step>
-                <el-step title="完成" description="完成项目"></el-step>
-            </el-steps>
-        </div>
-        <div class="row">
             <el-form ref="form" :model="form" label-width="180px">
                 <el-form-item label="项目名称">
                     <el-input v-model="form.projectName"></el-input>

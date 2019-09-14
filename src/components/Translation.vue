@@ -84,7 +84,7 @@
                     <button type="button" class="btn btn-secondary"  @click="dialogTableVisible = true">翻译QA</button>
                     <button type="button" class="btn btn-secondary" @click="fixedClick">修订记录</button>
                 </div>
-                <canvas-datagrid v-bind.prop="grid" class="datagrid"></canvas-datagrid>
+                <grid :grid-data="gridsdata" :columns="columns" showCheckbox columnSet @focus="focus" @updateValue="update"></grid>
             </div>
             <div class="popovers">
                 <div class="card_wapper">
@@ -241,23 +241,10 @@
                     } else if (keys.status === 3) {
                         status = '已审校'
                     }
-                    datas = {'原文': `${keys.source}`, '译文': `${keys.target}`, '状态': `${status}`, '备注': `${keys.remarks}`}
-                    this.$data.grid.data.push(datas)
+                    datas = {'source': `${keys.source}`, 'target': `${keys.target}`, 'status': `${status}`, 'descs': `${keys.remarks}`}
+                    this.$data.gridsdata.push(datas)
+                    this.$data.grid.data.push(keys)
                 }
-                setInterval(function() {
-                    let index = 0
-                    for (let key of _self.$data.grid.data) {
-                        console.log('译文', key['译文'])
-                        if (key['译文'] !== 'null') {
-                            _self.translate_unit_datas.result[index].target = key['译文']
-                            _self.translate_unit_datas.result[index].remarks = key['备注']
-                            _self.translate_unit_datas.result[index].status = 2
-                            key['状态'] = '已翻译'
-                            _self.$store.dispatch('doSaveTranslateUnit', _self.translate_unit_datas.result[index])
-                        }
-                        index += 1
-                    }
-                }, 800)
             },
             save_translate_unit_status: function() {
                 console.log("save_translate_unit_status:", this.save_translate_unit_status)
@@ -271,6 +258,27 @@
                 grid: {
                     data: []
                 },
+                gridsdata: [],
+                columns: [
+                    { title: '原文', key: 'source', width: 980 },
+                    { title: '译文', key: 'target', width: 880 },
+                    { title: '状态', key: 'status', width: 180 },
+                    { title: '备注', key: 'descs', width: 980 },
+                    {
+                        title: '确认保存',
+                        key: 'savestatus',
+                        width: 70,
+                        fixed: true,
+                        renderButton(rowData, index) {
+                            return [{
+                                title: '确认保存',
+                                click() {
+                                    console.log(rowData, index, this)  //eslint-disable-line
+                                },
+                            }]
+                        },
+                    },
+                ],
                 input_memory: '',
                 input_term: '',
                 input_fixed: '',
@@ -322,6 +330,30 @@
         methods : {
             memoryClick() {
                 this.$data.isMemory = !this.$data.isMemory
+            },
+            update(value) {
+                console.log("update:", value) //eslint-disable-line
+                let rowDatas = {}
+                let index = -1
+                for (let keys of value) {
+                    rowDatas = keys.rowData
+                    index = keys.index
+                }
+                let datas = {} 
+                datas.source = rowDatas['source']
+                datas.target = rowDatas['target']
+                datas.remarks = rowDatas['descs']
+                datas.id = this.$data.grid.data[index]['id']
+                datas.projectId = this.$data.grid.data[index]['projectId']
+                datas.projectFileId = this.$data.grid.data[index]['projectFileId']
+                datas.paragraphId = this.$data.grid.data[index]['paragraphId']
+                datas.sequence = this.$data.grid.data[index]['sequence']
+                datas.status = 2
+                this.$data.gridsdata[index]['status'] = '已翻译'
+                this.$store.dispatch('doSaveTranslateUnit', datas)
+            },
+            focus(value) {
+                console.log("focus:", value) //eslint-disable-line
             },
             fixedClick() {
                 this.$data.isFixed = !this.$data.isFixed
