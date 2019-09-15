@@ -28,6 +28,7 @@ const state = {
     banned_list_datas: {},
     banned_item_datas: {},
     get_project_report_datas: {},
+    report_file_datas: {},
     error_datas: {}
 }
 
@@ -58,6 +59,7 @@ const getters = {
     banned_list_datas: state => state.banned_list_datas,
     banned_item_datas: state => state.banned_item_datas,
     get_project_report_datas: state => state.get_project_report_datas,
+    report_file_datas: state => state.report_file_datas,
     error_datas: state => state.error_datas
 }
 
@@ -214,6 +216,14 @@ const actions = {
             (datas) => commit(types.HTTP_STATUS_ERROR, datas)
         );
     },
+    getProjectFilesReport({commit}, datas) {
+        let url = Constant.API.getFilesReport
+        url = url.replace("{{fileId}}", datas.fileId)
+        asyncAPI.doGetDatas(url,
+            (datas) => commit(types.GET_PROJECT_REPORT_FILE_DATAS, datas),
+            (datas) => commit(types.HTTP_STATUS_ERROR, datas)
+        );
+    },
     getQueryCorpusList({commit}, datas) {
         let url = Constant.API.corpusQueryList
         url = url.replace("{{querydatas}}", datas.arguments).replace("{{pageSize}}", 30).replace("{{pageIndex}}", datas.pageIndex)
@@ -299,9 +309,16 @@ const mutations = {
             state.error_datas = {"data": "系统错误"}
         }
     },
+    [types.GET_PROJECT_REPORT_FILE_DATAS] (state, datas) {
+        if (!!datas.data.status) {
+            state.report_file_datas = datas.data.result || []
+        } else {
+            state.error_datas = {"data": "系统错误"}
+        }
+    },
     [types.GET_PROJECT_REPORT_DATAS] (state, datas) {
         if (!!datas.data.status) {
-            state.get_project_report_datas = datas.data.result || []
+            state.get_project_report_datas = datas.data || []
         } else {
             state.error_datas = {"data": "系统错误"}
         }

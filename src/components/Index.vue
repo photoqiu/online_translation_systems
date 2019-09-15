@@ -50,32 +50,7 @@
     <el-row :gutter="20">
         <el-col :span="12">
             <div class="grid-content">
-                <el-form ref="form" :model="form" label-width="80px">
-                    <el-form-item label="项目名称:">
-                        <el-input placeholder="请输入内容" prefix-icon="el-icon-search" v-model="form.search_text"></el-input>
-                    </el-form-item>
-
-                    <el-form-item label="项目经理:">
-                        <el-select v-model="form.region_users" placeholder="请选择项目经理">
-                            <el-option
-                                v-for="(item, $index) in project_datas"
-                                :key="$index"
-                                :data-datas="item.json_datas"
-                                :label="item.nickName"
-                                :value="item.json_datas">
-                            </el-option>
-                        </el-select>
-                    </el-form-item>
-
-                    <el-form-item label="状态:">
-                        <el-select v-model="form.status" placeholder="请选择项目状态">
-                            <el-option label="未进行" value="shanghai"></el-option>
-                            <el-option label="进行中" value="beijing"></el-option>
-                            <el-option label="审核校对" value="beijing"></el-option>
-                            <el-option label="已完成" value="beijing"></el-option>
-                        </el-select>
-                    </el-form-item>
-                </el-form>
+                
             </div>
         </el-col>
     </el-row>
