@@ -231,7 +231,7 @@
                     { title: '状态', key: 'status', width: 180 },
                     { title: '备注', key: 'descs', width: 980 },
                     {
-                        title: '确认翻译',
+                        title: '翻译审校',
                         key: 'sureStatus',
                         width: 170,
                         fixed: true,
@@ -239,14 +239,14 @@
                             return [
                             {
                                 title: '确认翻译',
-                                click() {
-                                    console.log(rowData, index, this)  //eslint-disable-line
+                                click(event) {
+                                    console.log(rowData, index, this, event.target)  //eslint-disable-line
                                 }
                             },
                             {
                                 title: '翻译有误',
-                                click() {
-                                    console.log(rowData, index, this)  //eslint-disable-line
+                                click(event) {
+                                    console.log(rowData, index, this, event.target)  //eslint-disable-line
                                 }
                             }]
                         },
@@ -346,11 +346,14 @@
                 } else {
                     this.$data.options[0] = this.$data.translators
                     this.$data.sxoptions[0] = this.$data.translators
+                    console.log("this.$data.translators:", this.$data.translators)
+                    /*
                     for (let key of this.$data.grid.schema) {
                         if (key.hasOwnProperty("enum")) {
                             key.enum = this.$data.translators
                         }
                     }
+                    */
                 }
             },
             part_sentence_list_datas: function() {

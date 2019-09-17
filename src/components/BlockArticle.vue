@@ -187,24 +187,9 @@
                 columns: [
                     { title: '段落Id', key: 'partId', width: 80 },
                     { title: '原文', key: 'source', width: 980 },
-                    { title: '状态', key: 'status', width: 50 },
-                    { title: '开始时间', key: 'begintime', width: 140 },
-                    { title: '结束时间', key: 'endtime', width: 140 },
                     { title: '初译译员', key: 'unitmaker', width: 160 },
-                    { title: '审校译员', key: 'requiredQuantity', width: 160 },
-                    {
-                        title: '确认保存',
-                        width: 70,
-                        fixed: true,
-                        renderButton(rowData, index) {
-                            return [{
-                                title: '保存',
-                                click() {
-                                    console.log(rowData, index)  //eslint-disable-line
-                                },
-                            }]
-                        },
-                    },
+                    { title: '开始时间', key: 'begintime', width: 140 },
+                    { title: '结束时间', key: 'endtime', width: 140 }
                 ],
                 translators:[],
                 contents:[],
@@ -278,6 +263,7 @@
             },
             part_sentence_list_datas: function() {
                 console.log("this.part_sentence_list_datas : ", this.part_sentence_list_datas)
+                /*
                 if (this.part_sentence_list_datas.length > 0) {
                     this.$data.beginNums[0] = 0
                     let dataindex = 1
@@ -292,7 +278,7 @@
                         this.$data.num[index] = keys.partEnd - keys.partBegin
                         this.$data.valuex[index] = keys.reviewer === null ? '暂无' : keys.reviewer.id
                         this.$data.values[index] = keys.translator.id
-                        this.$data.partId.push(keys.id)
+                        this.$data.partId[index] = keys.paragraphId
                         dataindex += 1
                         index += 1
                     }
@@ -317,6 +303,7 @@
                         modelsIndex += 1
                     }
                 }
+                */
             },
             project_detail_datas: function() {
                 for (let keys of this.project_detail_datas.sourceFiles) {
@@ -326,13 +313,15 @@
                 }
             },
             assign_part_list_datas: function() {
-                console.log("this.assign_part_list_datas", this.assign_part_list_datas)
+                console.log("this.assign_part_list_datas : ", this.assign_part_list_datas)
+                console.log("this.assign_part_list_datas.result : ", this.assign_part_list_datas.result)
                 this.$data.gridsdata = []
                 this.$data.gridDatas = this.assign_part_list_datas.result
                 let ProjectFileId = 1
+                let models = {}
                 let ProjectId = 1
                 for (let keys of this.assign_part_list_datas.result) {
-                    let models = {'partId': `${keys.paragraphId}`, 'source': `${keys.source}`, 'status': '', 'begintime': '', 'endtime': '', 'unitmaker': '', 'requiredQuantity': ''}
+                    models = {'partId': `${keys.paragraphId}`, 'source': `${keys.source}`, 'begintime': '', 'endtime': '', 'unitmaker': ''}
                     this.$data.contents.push(keys.source)
                     ProjectFileId = keys.projectFileId
                     ProjectId = keys.projectId
@@ -353,7 +342,7 @@
             let pages = `?pageindex=${this.$data.pageIndex}`
             let partInfoArguments = `?projectFileId=${this.$route.params.fid}`
             this.$store.dispatch('getPartInfo', this.$data.fileId)
-            // this.$store.dispatch('getPartSentenceList', partInfoArguments)
+            this.$store.dispatch('getPartSentenceList', partInfoArguments)
             this.$store.dispatch('getTranslatorInfo', pages)
             this.$store.dispatch('getPorjectDetails', datas)
         },

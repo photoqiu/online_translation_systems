@@ -406,6 +406,7 @@ const mutations = {
     },
     [types.GET_PART_SENTENCE_LIST] (state, datas) {
         if (!!datas.data.status) {
+            console.log("part_sentence_list_datas:", datas.data)
             state.part_sentence_list_datas = datas.data.result || []
         } else {
             state.error_datas = {"data": "系统错误"}
