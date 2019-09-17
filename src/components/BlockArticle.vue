@@ -286,7 +286,6 @@
                     let orderIndex = 0
                     this.$data.order = this.part_sentence_list_datas.length
                     for (let keys of this.part_sentence_list_datas) {
-                        console.log("keys:", keys)
                         orderIndex = keys.partEnd - keys.partBegin
                         this.$data.beginNums[dataindex] = keys.partEnd - keys.partBegin
                         this.$data.sTime[index] = [new Date(keys.startTime), new Date(keys.endTime)]
@@ -327,6 +326,7 @@
                 }
             },
             assign_part_list_datas: function() {
+                console.log("this.assign_part_list_datas", this.assign_part_list_datas)
                 this.$data.gridsdata = []
                 this.$data.gridDatas = this.assign_part_list_datas.result
                 let ProjectFileId = 1

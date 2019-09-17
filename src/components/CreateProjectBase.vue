@@ -91,7 +91,7 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item label="机构名称">
-                    <el-select v-model="form.customer_str" filterable placeholder="请选择或输入">
+                    <el-select v-model="form.customer_str" @change="institutionHandle" filterable placeholder="请选择或输入">
                         <el-option
                             v-for="(item, $index) in customer_datas"
                             :key="$index"
@@ -202,20 +202,20 @@
                                         </el-select>
                                     </el-form-item>
                                     <el-form-item label="语料库（可多选）">
-                                        <el-select v-model="value1" multiple placeholder="请选择">
+                                        <el-select v-model="form.fileList[$index].corpusid" multiple placeholder="请选择">
                                             <el-option
-                                                v-for="item in options0"
-                                                :key="item.value"
-                                                :label="item.label"
-                                                :value="item.value">
+                                                v-for="(item, corpusIndex) in options0"
+                                                :key="corpusIndex"
+                                                :label="item.corpusName"
+                                                :value="item.id">
                                             </el-option>
                                         </el-select>
                                     </el-form-item>
                                     <el-form-item label="术语库（可多选）">
                                         <el-select v-model="form.fileList[$index].termid" multiple placeholder="请选择">
                                             <el-option
-                                                v-for="item in get_term_list_datas"
-                                                :key="item.id"
+                                                v-for="(item, termIndex) in options1"
+                                                :key="termIndex"
                                                 :label="item.termName"
                                                 :value="item.id">
                                             </el-option>
@@ -224,10 +224,10 @@
                                     <el-form-item label="禁用语（可多选）">
                                         <el-select v-model="form.fileList[$index].prohibited" multiple placeholder="请选择">
                                             <el-option
-                                                v-for="item in options2"
-                                                :key="item.value"
-                                                :label="item.label"
-                                                :value="item.value">
+                                                v-for="(item, prohibitedIndex) in options2"
+                                                :key="prohibitedIndex"
+                                                :label="item.bannedName"
+                                                :value="item.id">
                                             </el-option>
                                         </el-select>
                                     </el-form-item>
@@ -358,45 +358,9 @@
                     value: '选项5',
                     label: '....'
                 }],
-                options0: [{
-                    value: '选项1',
-                    label: '创建新的语料库'
-                },{
-                    value: '选项2',
-                    label: '联合国儿童基金会'
-                },{
-                    value: '选项3',
-                    label: '联合国人口基金会'
-                },{
-                    value: '选项4',
-                    label: '中国汽车工程学会'
-                }],
-                options1: [{
-                    value: '选项1',
-                    label: '创建新的语料库'
-                },{
-                    value: '选项2',
-                    label: '联合国儿童基金会'
-                },{
-                    value: '选项3',
-                    label: '联合国人口基金会'
-                },{
-                    value: '选项4',
-                    label: '中国汽车工程学会'
-                }],
-                options2: [{
-                    value: '选项1',
-                    label: '创建新的语料库'
-                },{
-                    value: '选项2',
-                    label: '联合国儿童基金会'
-                },{
-                    value: '选项3',
-                    label: '联合国人口基金会'
-                },{
-                    value: '选项4',
-                    label: '中国汽车工程学会'
-                }],
+                options0: [],
+                options1: [],
+                options2: [],
                 customer_indexpage: 1,
                 project_indexpage: 1,
                 term_indexpage: 1,
@@ -407,6 +371,11 @@
                 sub_industry_models_3 : [],
                 sub_industry_models_4 : [],
                 file_datas: [],
+                queryTermbase:'',
+                queryCorpus:'',
+                pageCorpusIndex: 1,
+                pageTermIndex: 1,
+                pageBannedIndex: 1,
                 activeName: 'second'
             }    
         },
@@ -422,7 +391,9 @@
                 sub_there_industry_models_datas: 'sub_there_industry_models_datas',
                 uploaders_file_status: 'uploaders_file_status',
                 corpus_list_datas: 'corpus_list_datas',
+                banned_list_datas: 'banned_list_datas',
                 save_project_status: 'save_project_status',
+                term_list_datas: 'term_list_datas',
                 customer_info_datas: 'customer_info_datas'
             })
         },
@@ -430,11 +401,63 @@
             error_datas: function () {
                 console.log("error_datas:", this.error_datas)
             },
+            term_list_datas: function() {
+                let datas = {}
+                if(this.$data.pageTermIndex === 1) {
+                    this.$data.options1 = []
+                }
+                console.log("this.term_list_datas:", this.term_list_datas)
+                for (let keys of this.term_list_datas.list) {
+                    datas = {}
+                    datas.id = keys.id
+                    datas.termName = keys.termName
+                    this.$data.options1.push(datas)
+                }
+                if (!!this.term_list_datas.isLastPage) {
+                    return false
+                }
+                this.$data.pageTermIndex += 1
+                this.$store.dispatch('getTermList', this.$data.pageTermIndex)
+            },
             save_project_status: function() {
                 window.location.href = "/#/"
             },
+            banned_list_datas: function() {
+                this.$data.totalPage = this.banned_list_datas.bannedList.pages
+                let datas = {}
+                if (this.$data.pageBannedIndex === 1) {
+                    this.$data.options2 = []
+                }
+                for (let keys of this.banned_list_datas.bannedList.list) {
+                    datas = {}
+                    datas.id = keys.id
+                    datas.bannedName = keys.bannedName
+                    this.$data.options2.push(datas)
+                }
+                if (!!this.banned_list_datas.bannedList.isLastPage) {
+                    return false
+                }
+                this.$data.pageBannedIndex += 1
+                this.$store.dispatch('getBannedList', this.$data.pageBannedIndex)
+            },
             corpus_list_datas: function() {
-                console.log("thie.corpus_list_datas : ", this.corpus_list_datas)
+                let datas = {}
+                if(this.$data.pageCorpusIndex === 1) {
+                    this.$data.options0 = []
+                }
+                console.log("this.corpus_list_datas:", this.corpus_list_datas)
+                for (let keys of this.corpus_list_datas.corpusList.list) {
+                    datas = {}
+                    datas.id = keys.id
+                    datas.corpusName = keys.corpusName
+                    datas.organName = keys.organ.organName
+                    this.$data.options0.push(datas)
+                }
+                if (!!this.corpus_list_datas.corpusList.isLastPage) {
+                    return false
+                }
+                this.$data.pageCorpusIndex += 1
+                this.$store.dispatch('getCorpusList', this.$data.pageCorpusIndex)
             },
             uploaders_file_status: function() {
                 let datas = {}
@@ -469,16 +492,6 @@
                 this.$data.project_indexpage += 1
                 this.$store.dispatch('getUsersInfo', this.$data.project_indexpage)
             },
-            term_list_datas: function() {
-                for (let keys of this.term_list_datas.list) {
-                    this.$data.get_term_list_datas.push(keys)
-                }
-                if (!!this.term_list_datas.isLastPage) {
-                    return false
-                }
-                this.$data.term_indexpage += 1
-                this.$store.dispatch('getTermList', this.$data.term_indexpage)
-            },
             customer_info_datas: function() {
                 for (let keys of this.customer_info_datas.list) {
                     keys.labelName = `${keys.customerName}--${keys.organName}`
@@ -506,11 +519,41 @@
             this.$store.dispatch('getLanguage', datas)
             datas = '1'
             this.$store.dispatch('getUsersInfo', datas)
-            this.$store.dispatch('getTermList', datas)
             this.$store.dispatch('getCustomerInfo', datas)
-            this.$store.dispatch('getCorpusList', datas)
+            this.$store.dispatch('getCorpusList', this.$data.pageCorpusIndex)
+            this.$store.dispatch('getTermList', this.$data.pageTermIndex)
+            this.$store.dispatch('getBannedList', this.$data.pageBannedIndex)
         },
         methods: {
+            institutionHandle() {
+                let datas = {}
+                let index = this.$data.currentIndex
+                let organDatas = {}
+                this.$data.pageCorpusIndex = 1
+                if (!!this.$data.form.customer_str) {
+                    organDatas = JSON.parse(this.$data.form.customer_str)
+                    datas.arguments = `organId=${organDatas.organId}`
+                }
+                if (!!this.$data.form.fileList[index].industry1) {
+                    organDatas = JSON.parse(this.$data.form.fileList[index].industry1)
+                    datas.arguments += `&industry1=${organDatas.code}`
+                }
+                if (!!this.$data.form.fileList[index].industry2) {
+                    organDatas = JSON.parse(this.$data.form.fileList[index].industry2)
+                    datas.arguments += `&industry2=${organDatas.code}`
+                }
+                if (!!this.$data.form.fileList[index].industry3) {
+                    organDatas = JSON.parse(this.$data.form.fileList[index].industry3)
+                    datas.arguments += `&industry3=${organDatas.code}`
+                }
+                if (!!this.$data.form.fileList[index].industry4) {
+                    organDatas = JSON.parse(this.$data.form.fileList[index].industry4)
+                    datas.arguments += `&industry4=${organDatas.code}`
+                }
+                datas.pageIndex = this.$data.pageCorpusIndex
+                this.$store.dispatch('getQueryCorpusList', datas)
+                this.$store.dispatch('getQueryTermList', datas)
+            },
             SelectMenus(event) {
                 let elements = event.target
                 let index = parseInt(elements.getAttribute("data-index"), 10)

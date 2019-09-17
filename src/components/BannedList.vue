@@ -142,7 +142,7 @@
                     this.$data.tableData.push(datas)
                 }
                 console.log("this.tableData : ", this.$data.tableData)
-                if (!!this.banned_list_datas.corpusList.isLastPage) {
+                if (!!this.banned_list_datas.bannedList.isLastPage) {
                     return false
                 }
                 this.$data.pageIndex += 1
