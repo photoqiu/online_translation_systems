@@ -174,23 +174,30 @@
             ...mapGetters({
                 error_datas: 'error_datas',
                 save_term_item_status: "save_term_item_status",
-                term_item_datas: 'term_item_datas'
+                search_term_item_datas: "search_term_item_datas",
+                term_item_list_datas: 'term_item_list_datas'
             })
+
         },
         watch: {
             error_datas: function () {
                 console.log("error_datas:", this.error_datas)
             },
+            search_term_item_datas: function() {
+                console.log("this.search_term_item_datas", this.search_term_item_datas)
+                this.$data.loading = false
+            },
             save_term_item_status: function() {
                 this.$data.centerDialogVisible = false
+                this.$data.loading = false
             },
-            term_item_datas: function() {
-                console.log("this.term_item_datas : ", this.term_item_datas)
+            term_item_list_datas: function() {
+                console.log("this.term_item_datas : ", this.term_item_list_datas)
                 let dataNumbers = this.$data.pageSize * this.$data.pageIndex
                 let tabledatas = {}
                 this.$data.tableData = []
-                this.$data.tempDatas = this.term_item_datas.data
-                this.$data.pageTotal = this.term_item_datas.total
+                this.$data.tempDatas = this.term_item_list_datas.data
+                this.$data.pageTotal = this.term_item_list_datas.total
                 for (let data of this.$data.tempDatas) {
                     tabledatas = {}
                     tabledatas.source = data.source
@@ -203,7 +210,7 @@
         mounted() {
             this.$data.loading = true
             let datas = `pageNum=${this.$data.pageIndex}&pageSize=${this.$data.pageSize}&termId=${this.$route.params.id}`
-            this.$store.dispatch('getItemsTermList', datas)
+            this.$store.dispatch('getItemTermListDatas', datas)
         },
         methods: {
             onSearchSubmit() {
@@ -219,7 +226,7 @@
                     return false
                 }
                 let datas = `pageNum=${this.$data.pageIndex}&pageSize=${this.$data.pageSize}&termId=${this.$route.params.id}&queryWord=${this.$data.formInline.queryWord}`
-                this.$store.dispatch('getItemsTermList', datas)
+                this.$store.dispatch('getItemTermListDatas', datas)
             },
             SaveDatas(event) {
                 let datas = {}

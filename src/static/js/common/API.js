@@ -24,7 +24,7 @@ const Constant = {
         fileDetail             : USER_API + 'file/detail',
         termList               : USER_API + 'term/list?pageNum={{pageIndex}}&pageSize={{pageSize}}', /// 获取所有术语库数据
         termQueryList          : USER_API + 'term/list?{{querydatas}}&pageSize={{pageSize}}&pageNum={{pageIndex}}',
-        getItemTermList        : USER_API + 'term/item/list?{{querydatas}}', /// 获取术语项列表
+        termItemTermList       : USER_API + 'term/item/list?{{querydatas}}', /// 获取术语项列表
         termSave               : USER_API + 'term/save', // 新增术语
         termBatchSave          : USER_API + 'term/item/batch/save',
         termItemSave           : USER_API + 'term/item/save',
@@ -53,7 +53,8 @@ const Constant = {
         bannedList             : USER_API + 'banned/list?pageNum={{pageIndex}}&pageSize={{pageSize}}',
         queryBannedList        : USER_API + 'banned/list?pageNum={{pageIndex}}&pageSize={{pageSize}}&{{query}}',
         bannedItemList         : USER_API + 'banned/item/list?{{querydatas}}',
-        bannedSave             : USER_API + 'banned/save'
+        bannedSave             : USER_API + 'banned/save',
+        bannedItemSave         : USER_API + 'banned/item/save'
     }
 };
 export default Constant;

@@ -28,6 +28,7 @@ const state = {
     banned_list_datas: {},
     banned_item_datas: {},
     get_project_report_datas: {},
+    term_item_list_datas: [],
     report_file_datas: {},
     error_datas: {}
 }
@@ -60,6 +61,7 @@ const getters = {
     banned_item_datas: state => state.banned_item_datas,
     get_project_report_datas: state => state.get_project_report_datas,
     report_file_datas: state => state.report_file_datas,
+    term_item_list_datas: state => state.term_item_list_datas,
     error_datas: state => state.error_datas
 }
 
@@ -78,6 +80,22 @@ const actions = {
         url = url.replace("{{querydatas}}", datas)
         asyncAPI.doGetDatas(url,
             (datas) => commit(types.GET_CORPUS_ITEM_LIST, datas),
+            (datas) => commit(types.HTTP_STATUS_ERROR, datas)
+        );
+    },
+    getItemsTermList({commit}, datas) {
+        let url = Constant.API.termItemTermList
+        url = url.replace("{{querydatas}}", datas)
+        asyncAPI.doGetDatas(url,
+            (datas) => commit(types.GET_TERM_ITEM_LIST, datas),
+            (datas) => commit(types.HTTP_STATUS_ERROR, datas)
+        );
+    },
+    getItemTermListDatas({commit}, datas) {
+        let url = Constant.API.termItemTermList
+        url = url.replace("{{querydatas}}", datas)
+        asyncAPI.doGetDatas(url,
+            (datas) => commit(types.GET_TERM_ITEM_LIST, datas),
             (datas) => commit(types.HTTP_STATUS_ERROR, datas)
         );
     },
@@ -312,6 +330,13 @@ const mutations = {
     [types.GET_PROJECT_REPORT_FILE_DATAS] (state, datas) {
         if (!!datas.data.status) {
             state.report_file_datas = datas.data.result || []
+        } else {
+            state.error_datas = {"data": "系统错误"}
+        }
+    },
+    [types.GET_TERM_ITEM_LIST] (state, datas) {
+        if (!!datas.data.status) {
+            state.term_item_list_datas = datas.data.result || []
         } else {
             state.error_datas = {"data": "系统错误"}
         }

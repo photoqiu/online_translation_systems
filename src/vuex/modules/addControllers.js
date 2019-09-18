@@ -61,6 +61,13 @@ const actions = {
             (datas) => commit(types.HTTP_STATUS_ERROR, datas)
         );
     },
+    doSaveItemBanned({commit}, datas) {
+        let url = Constant.API.bannedItemSave
+        asyncAPI.doPostDatas(url, datas,
+            (datas) => commit(types.DO_BANNED_SAVE, datas),
+            (datas) => commit(types.HTTP_STATUS_ERROR, datas)
+        );
+    },
     doPartEqualization({commit}, datas) {
         let url = Constant.API.setPartEqualization
         url = url.replace("{{projectFileId}}", datas.projectFileId)
@@ -128,7 +135,7 @@ const mutations = {
     },
     [types.SAVE_ITEM_TERM_DATAS] (state, datas) {
         if (!!datas.data.status) {
-            state.save_term_item_status = datas.data.result
+            state.save_term_item_status = Math.floor(Math.random() * 10000)
         } else {
             state.error_datas = {"data": "系统错误"}
         }

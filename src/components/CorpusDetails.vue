@@ -203,7 +203,7 @@
             this.$data.loading = true
             this.$data.editorIndex = 0
             let datas = `pageNum=${this.$data.pageIndex}&pageSize=${this.$data.pageSize}&corpusId=${this.$route.params.id}`
-            this.$store.dispatch('getBannedItemsList', datas)
+            this.$store.dispatch('getCorpusItemList', datas)
         },
         methods: {
             onSearchSubmit(event) {
@@ -215,11 +215,11 @@
                         type: 'warning'
                     })
                     let datas = `pageNum=${this.$data.pageIndex}&pageSize=${this.$data.pageSize}&corpusId=${this.$route.params.id}`
-                    this.$store.dispatch('getBannedItemsList', datas)
+                    this.$store.dispatch('getCorpusItemList', datas)
                     return false
                 }
                 let datas = `pageNum=${this.$data.pageIndex}&pageSize=${this.$data.pageSize}&corpusId=${this.$route.params.id}&queryWord=${this.$data.formInline.queryWord}`
-                this.$store.dispatch('getBannedItemsList', datas)
+                this.$store.dispatch('getCorpusItemList', datas)
             },
             SaveDatas(event) {
                 let datas = {}

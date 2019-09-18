@@ -166,6 +166,7 @@
             ...mapGetters({
                 error_datas: 'error_datas',
                 save_corpus_item_status: "save_corpus_item_status",
+                save_banned_status: 'save_banned_status',
                 banned_item_datas: 'banned_item_datas'
             })
         },
@@ -174,6 +175,9 @@
                 console.log("error_datas:", this.error_datas)
             },
             save_corpus_item_status: function() {
+                this.$data.centerDialogVisible = false
+            },
+            save_banned_status: function() {
                 this.$data.centerDialogVisible = false
             },
             banned_item_datas: function() {
@@ -217,12 +221,12 @@
                 this.$data.centerDialogVisible = true
                 datas = this.$data.tempDatas[this.$data.editorIndex]
                 datas.bannedWord = this.$data.textdatas.source
-                console.log("datas:", datas, this.$data.editorIndex)
-                this.$store.dispatch('doSaveItemCoups', datas)
+                this.$store.dispatch('doSaveItemBanned', datas)
             },
             handleClick(index, rows) {
+                console.log("handleClick : ", index, rows)
                 this.$data.editorIndex = index
-                this.$data.textdatas.source = this.$data.tempDatas[this.$data.editorIndex].source
+                this.$data.textdatas.source = rows[this.$data.editorIndex].source
                 this.$data.centerDialogVisible = true
             },
             handleCurrentChange(val) {
