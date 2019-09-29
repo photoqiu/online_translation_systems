@@ -155,11 +155,11 @@
         methods: {
             handleClick(row) {
                 console.log(row)
-                window.location.href = `/#/blockarticle/${row.baseId}`
+                window.location.href = `/atreus/#/blockarticle/${row.baseId}`
             },
             handleDetailClick(row) {
-                console.log(row, `/#/corpusdetails/${row.id}`)
-                window.location.href = `/#/banneddetails/${row.id}`
+                console.log(row, `/atreus/#/corpusdetails/${row.id}`)
+                window.location.href = `/atreus/#/banneddetails/${row.id}`
                 return false
             },
             handleOpen(key, keyPath) {

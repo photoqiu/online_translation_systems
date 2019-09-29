@@ -286,7 +286,7 @@
         methods: {
             handleClick(row) {
                 console.log(row)
-                window.location.href = `/#/blockarticle/${row.baseId}`
+                window.location.href = `/atreus/#/blockarticle/${row.baseId}`
             },
             submitdatas(event) {
                 let datas = {}
@@ -316,8 +316,8 @@
                 this.$store.dispatch('getQueryCorpusList', datas)
             },
             handleDetailClick(row) {
-                console.log(row, `/#/corpusdetails/${row.id}`)
-                window.location.href = `/#/corpusdetails/${row.id}`
+                console.log(row, `/atreus/#/corpusdetails/${row.id}`)
+                window.location.href = `/atreus/#/corpusdetails/${row.id}`
                 return false
             },
             getOneLevelDatas(event) {

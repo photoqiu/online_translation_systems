@@ -134,7 +134,7 @@ devconfig.devServer = {
         '/atreus': {
             target: 'http://139.129.201.64:8020/',
             // target: 'http://192.168.31.246:8020/',
-            pathRewrite: {'^/atreus' : '/atreus'}
+            pathRewrite: {'^/atreus-api' : '/atreus-api'}
         }
     },
     hot: true,

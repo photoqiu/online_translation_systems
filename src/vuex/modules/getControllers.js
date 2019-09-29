@@ -109,7 +109,7 @@ const actions = {
     },
     getDataOrganList({commit}, datas) {
         let url = Constant.API.getOrganList
-        url = url.replace("{{pageIndex}}", datas.pageIndex)
+        url = url.replace("{{pageIndex}}", datas)
         url = url.replace("{{pageSize}}", 30)
         asyncAPI.doGetDatas(url,
             (datas) => commit(types.GET_ORGAN_LIST_DATAS, datas),

@@ -1,7 +1,7 @@
 let DEBUG = process.env.NODE_ENV === 'production' ? false : true;
-let USER_API = 'http://127.0.0.1:9000/atreus/'
+let USER_API = 'http://127.0.0.1:9000/atreus-api/'
 // let USER_API_HD = 'http://127.0.0.1:9000/';
-// let USER_API = "http://139.129.201.64/atreus/"
+// let USER_API = "http://139.129.201.64/atreus-api/"
 // let USER_API = "http://139.129.201.64:8020/atreus/user/v1/list?pageNum=1"
 const Constant = {
     debug : DEBUG,

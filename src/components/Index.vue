@@ -219,15 +219,15 @@
         methods: {
             handleClick(row) {
                 console.log(row)
-                window.location.href = `/#/blockarticle/${row.baseId}`
+                window.location.href = `/atreus/#/blockarticle/${row.baseId}`
             },
             handleReportClick(row) {
                 console.log(row)
-                window.location.href = `/#/qareport/${row.baseId}`
+                window.location.href = `/atreus/#/qareport/${row.baseId}`
             },
             handleDetailClick(row) {
                 console.log(row)
-                window.location.href = `/#/projectdetail/${row.baseId}`
+                window.location.href = `/atreus/#/projectdetail/${row.baseId}`
             },
             handleOpen(key, keyPath) {
                 console.log(key, keyPath)

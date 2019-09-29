@@ -288,7 +288,7 @@
         methods: {
             handleClick(row) {
                 console.log(row)
-                window.location.href = `/#/blockarticle/${row.baseId}`
+                window.location.href = `/atreus/#/blockarticle/${row.baseId}`
             },
             submitdatas(event) {
                 let datas = {}
@@ -330,8 +330,8 @@
                 this.$store.dispatch('getThereIndustryInfo', datas.code)
             },
             handleDetailClick(row) {
-                console.log(row, `/#/termdetails/${row.id}`)
-                window.location.href = `/#/termdetails/${row.id}`
+                console.log(row, `/atreus/#/termdetails/${row.id}`)
+                window.location.href = `/atreus/#/termdetails/${row.id}`
                 return false
             },
             handleOpen(key, keyPath) {

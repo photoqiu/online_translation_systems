@@ -363,9 +363,7 @@
                 
                 if (!!!this.get_organ_list_datas.isLastPage) {
                     this.$data.listPageIndex += 1
-                    let data = {}
-                    data.pageIndex = this.$data.listPageIndex
-                    this.$store.dispatch('getDataOrganList', data)
+                    this.$store.dispatch('getDataOrganList', this.$data.listPageIndex)
                 }
             },
             uploaders_file_status: function() {
