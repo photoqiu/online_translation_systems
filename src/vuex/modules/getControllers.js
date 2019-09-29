@@ -300,8 +300,8 @@ const actions = {
     },
     getProjectList({commit}, datas) {
         let url = Constant.API.getProject
-        url = url.replace("{{pageIndex}}", datas)
-        console.log("url:", url)
+        url = url.replace("{{pageIndex}}", datas.page)
+        url = url.replace("{{querystr}}", datas.datas)
         asyncAPI.doGetDatas(url,
             (datas) => commit(types.GET_PROJECT, datas),
             (datas) => commit(types.HTTP_STATUS_ERROR, datas)

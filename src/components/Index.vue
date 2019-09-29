@@ -48,13 +48,6 @@
 <template>
 <div class="container_bd">
     <el-row :gutter="20">
-        <el-col :span="12">
-            <div class="grid-content">
-                
-            </div>
-        </el-col>
-    </el-row>
-    <el-row :gutter="20">
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
             <h1 class="h2">项目列表</h1>
             <div class="btn-toolbar mb-2 mb-md-0">
@@ -64,6 +57,69 @@
             </div>
         </div>
     </el-row>
+    <el-row :gutter="20">
+        <el-col :span="4">
+            <div class="grid-content">
+                <el-input v-model="form.name" placeholder="请输入项目名字"></el-input>
+            </div>
+        </el-col>
+        <el-col :span="4">
+            <div class="grid-content">
+                <el-select v-model="form.managerId" filterable placeholder="请选择项目经理">
+                    <el-option
+                        v-for="(item, $index) in form.managers"
+                        :key="$index"
+                        :data-datas="item.id"
+                        :label="item.nickName"
+                        :value="item.id">
+                    </el-option>
+                </el-select>
+            </div>
+        </el-col>
+        <el-col :span="4">
+            <div class="grid-content">
+                <el-select v-model="form.customerId" filterable placeholder="请选择客户名称">
+                    <el-option
+                        v-for="(item, $index) in form.customers"
+                        :key="$index"
+                        :data-datas="item.id"
+                        :label="item.customerName"
+                        :value="item.id">
+                    </el-option>
+                </el-select>
+            </div>
+        </el-col>
+        <el-col :span="2">
+            <div class="grid-content">
+                <el-select v-model="form.languageFromStr" filterable placeholder="请选择源语言">
+                    <el-option
+                        v-for="(item, $index) in form.languageFrom"
+                        :key="$index"
+                        :label="item.label"
+                        :value="item.value">
+                    </el-option>
+                </el-select>
+            </div>
+        </el-col>
+        <el-col :span="2">
+            <div class="grid-content">
+                <el-select v-model="form.languageToStr" filterable placeholder="请选择目标语言">
+                    <el-option
+                        v-for="(item, $index) in form.languageTo"
+                        :key="$index"
+                        :label="item.label"
+                        :value="item.value">
+                    </el-option>
+                </el-select>
+            </div>
+        </el-col>
+        <el-col :span="4">
+            <div class="grid-content">
+                <el-button type="primary" @click="searchFromDatas()">搜索</el-button>
+            </div>
+        </el-col>
+    </el-row>
+    <el-divider content-position="left">项目详情</el-divider>
     <el-table
         :data="tableData"
         border
@@ -141,9 +197,15 @@
         data() {
             return {
                 form : {
-                    search_text: "",
-                    region_users: "",
-                    status:""
+                    managers: [],
+                    managersId: '',
+                    customers: [],
+                    customerId: '',
+                    languageFrom: [],
+                    languageFromStr: '',
+                    languageTo: [],
+                    languageToStr: '',
+                    name:""
                 },
                 project_datas: [],
                 tableData: [{
@@ -158,6 +220,7 @@
                     process: "40%"
                 }],
                 pageIndex : 1,
+                customer_indexpage: 1,
                 totalPage:0,
                 project_indexpage : 1
             }
@@ -166,6 +229,8 @@
             ...mapGetters({
                 error_datas: 'error_datas',
                 users_list_datas: 'users_list_datas',
+                get_language_datas: 'get_language_datas',
+                customer_info_datas: 'customer_info_datas',
                 project_list_datas: 'project_list_datas'
             })
         },
@@ -173,11 +238,23 @@
             error_datas: function () {
                 console.log("error_datas:", this.error_datas)
             },
+            customer_info_datas: function() {
+                for (let keys of this.customer_info_datas.list) {
+                    keys.labelName = `${keys.customerName}--${keys.organName}`
+                    this.$data.form.customers.push(keys)
+                }
+                if (!!this.customer_info_datas.isLastPage) {
+                    return false
+                }
+                this.$data.customer_indexpage += 1
+                this.$store.dispatch('getCustomerInfo', this.$data.customer_indexpage)
+            },
             users_list_datas: function() {
                 for (let keys of this.users_list_datas.list) {
                     if(keys.roleId <= 2 && keys.status === 1) {
                         keys.json_datas = JSON.stringify(keys)
                         this.$data.project_datas.push(keys)
+                        this.$data.form.managers.push(keys)
                     }
                 }
                 if (!!this.users_list_datas.isLastPage) {
@@ -185,6 +262,16 @@
                 }
                 this.$data.project_indexpage += 1
                 this.$store.dispatch('getUsersInfo', this.$data.project_indexpage)
+            },
+            get_language_datas: function() {
+                let datas = {}
+                for (let keys of this.get_language_datas) {
+                    datas = {}
+                    datas.value = keys.languageKey
+                    datas.label = keys.languageName
+                    this.$data.form.languageFrom.push(datas)
+                    this.$data.form.languageTo.push(datas)
+                }
             },
             project_list_datas: function() {
                 this.$data.totalPage = this.project_list_datas.navigateLastPage
@@ -212,11 +299,39 @@
         },
         mounted() {
             console.log("1111111111111111111111", this)
-            this.$store.dispatch('getProjectList', this.$data.pageIndex)
+            let data = {}
+            data.page = this.$data.pageIndex
+            data.datas = ''
+            this.$store.dispatch('getProjectList', data)
             let datas = '1'
             this.$store.dispatch('getUsersInfo', datas)
+            this.$store.dispatch('getLanguage', '')
+            this.$store.dispatch('getCustomerInfo', datas)
         },
         methods: {
+            searchFromDatas(event) {
+                this.$data.pageIndex = 1
+                let data = {}
+                data.page = this.$data.pageIndex
+                data.datas = ''
+                if (!!this.$data.form.name) {
+                    data.datas += `&projectName=${this.$data.form.name}`
+                }
+                if (!!this.$data.form.managersId) {
+                    data.datas += `&managersId=${this.$data.form.managersId}`
+                }
+                if (!!this.$data.form.customerId) {
+                    data.datas += `&customerId=${this.$data.form.customerId}`
+                }
+                if (!!this.$data.form.languageFromStr) {
+                    data.datas += `&languageFrom=${this.$data.form.languageFromStr}`
+                }
+                if (!!this.$data.form.languageToStr) {
+                    data.datas += `&languageTo=${this.$data.form.languageToStr}`
+                }
+                console.log("data:", data)
+                this.$store.dispatch('getProjectList', data)
+            },
             handleClick(row) {
                 console.log(row)
                 window.location.href = `/atreus/#/blockarticle/${row.baseId}`
@@ -237,6 +352,26 @@
             },
             handleCurrentChange(val) {
                 console.log(`当前页: ${val}`)
+                this.$data.pageIndex = val
+                let data = {}
+                data.page = val
+                data.datas = ''
+                if (!!this.$data.form.name) {
+                    data.datas += `&projectName=${this.$data.form.name}`
+                }
+                if (!!this.$data.form.managersId) {
+                    data.datas += `&managersId=${this.$data.form.managersId}`
+                }
+                if (!!this.$data.form.customerId) {
+                    data.datas += `&customerId=${this.$data.form.customerId}`
+                }
+                if (!!this.$data.form.languageFromStr) {
+                    data.datas += `&languageFrom=${this.$data.form.languageFromStr}`
+                }
+                if (!!this.$data.form.languageToStr) {
+                    data.datas += `&languageTo=${this.$data.form.languageToStr}`
+                }
+                this.$store.dispatch('getProjectList', data)
             },
             handleClose(key, keyPath) {
                 console.log(key, keyPath)
