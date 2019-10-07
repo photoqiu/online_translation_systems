@@ -69,193 +69,31 @@
     }
 }
 </style>
-
 <template>
 <div class="container_bd">
-    <h1>创建项目-基本信息</h1>
-    <div class="bd">
-        <div class="row">
-            <el-form ref="form" :model="form" label-width="180px">
-                <el-form-item label="项目名称">
-                    <el-input v-model="form.projectName"></el-input>
-                </el-form-item>
-                <el-form-item label="项目经理">
-                    <el-select v-model="form.projectManager_str" placeholder="请选择">
-                        <el-option
-                            v-for="(item, $index) in project_datas"
-                            :key="$index"
-                            :data-datas="item.json_datas"
-                            :label="item.nickName"
-                            :value="item.json_datas">
-                        </el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="机构名称">
-                    <el-select v-model="form.customer_str" @change="institutionHandle" filterable placeholder="请选择或输入">
-                        <el-option
-                            v-for="(item, $index) in customer_datas"
-                            :key="$index"
-                            :data-datas="item.json_datas"
-                            :label="item.labelName"
-                            :value="item.json_datas">
-                        </el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="起止时间：">
-                    <el-date-picker
-                        v-model="form.sTime"
-                        type="datetimerange"
-                        align="right"
-                        unlink-panels
-                        range-separator="至"
-                        start-placeholder="开始日期"
-                        end-placeholder="结束日期"
-                        :picker-options="pickerOptions">
-                    </el-date-picker>
-                </el-form-item>
-                <el-form-item label="语言">
-                    <el-select v-model="form.languageFrom" placeholder="请选择">
-                        <el-option
-                          v-for="(item, $index) in languagedatas"
-                          :key="$index"
-                          :label="item.label"
-                          :value="item.value">
-                        </el-option>
-                    </el-select>
-                    <i class="fas fa-arrows-alt-h" style="font-size:18px;"></i>
-                    <el-select v-model="form.languageTo" placeholder="请选择">
-                        <el-option
-                          v-for="(item, $index) in languagedatas"
-                          :key="$index"
-                          :label="item.label"
-                          :value="item.value">
-                        </el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="字数">
-                        <el-input
-                            placeholder="字数显示"
-                            v-model="form.wordCount"
-                            :disabled="false">
-                        </el-input>
-                </el-form-item>
-                
-                <div class="container-fluid">
-                    <h4>
-                        <span>添加附件以及相关配置：</span>
-                        <a href="javascript:;" class="flex flex-column items-center justify-center color-inherit w-100 pa2 br2 br--top no-underline hover-bg-blue4 hover-white"><i class="fas fa-plus-circle" style="font-size: 28px;" @click="addEvent"></i></a>
-                        <a href="javascript:;" class="flex flex-column items-center justify-center color-inherit w-100 pa2 br2 br--top no-underline hover-bg-blue4 hover-white"><i class="fas fa-minus-circle" @click="substructionEvent" style="font-size: 28px;"></i></a>
-                    </h4>
-                    <div class="row">
-                        <div class="col-sm-4 col-md-4 col-lg-4">
-                            <div class="list-group" @click="SelectMenus">
-                                <button type="button" v-for="(item, $index) in addFileOrder" :key="$index" :class="titleStyle[$index]" :data-index="$index">
-                                    默认附件以及相关配置
-                                </button>
-                            </div>
-                        </div>
-                        <div class="col-sm-8 col-md-8 col-lg-8">
-                            <div v-for="(item, $index) in addFileOrder" :data-index="$index" :key="$index" :class="hiddenStyles[$index]">
-                                <div class="card-body">
-                                    <el-form-item label="一级行业">
-                                        <el-select v-model="form.fileList[$index].industry1" filterable @change="getOneLevelDatas" placeholder="请选择">
-                                            <el-option
-                                              v-for="item in main_industry_models_0"
-                                              :key="item.code"
-                                              :data-id="item.id"
-                                              :label="item.name"
-                                              :value="item.json_data">
-                                            </el-option>
-                                        </el-select>
-                                    </el-form-item>
-                                    <el-form-item label="二级行业">
-                                        <el-select v-model="form.fileList[$index].industry2" filterable @change="getTwoLevelDatas" placeholder="请选择">
-                                            <el-option
-                                              v-for="item in sub_industry_models_1"
-                                              :key="item.code"
-                                              :data-id="item.id"
-                                              :label="item.name"
-                                              :value="item.json_data">
-                                            </el-option>
-                                        </el-select>
-                                    </el-form-item>
-                                    <el-form-item label="三级行业">
-                                        <el-select v-model="form.fileList[$index].industry3" filterable @change="getThereLevelDatas" placeholder="请选择">
-                                            <el-option
-                                              v-for="item in sub_industry_models_2"
-                                              :key="item.code"
-                                              :data-id="item.id"
-                                              :label="item.name"
-                                              :value="item.json_data">
-                                            </el-option>
-                                        </el-select>
-                                    </el-form-item>
-                                    <el-form-item label="四级行业">
-                                        <el-select v-model="form.fileList[$index].industry4" filterable placeholder="请选择">
-                                            <el-option
-                                              v-for="item in sub_industry_models_3"
-                                              :key="item.code"
-                                              :data-id="item.id"
-                                              :label="item.name"
-                                              :value="item.json_data">
-                                            </el-option>
-                                        </el-select>
-                                    </el-form-item>
-                                    <el-form-item label="语料库（可多选）">
-                                        <el-select v-model="form.fileList[$index].corpusid" multiple placeholder="请选择">
-                                            <el-option
-                                                v-for="(item, corpusIndex) in options0"
-                                                :key="corpusIndex"
-                                                :label="item.corpusName"
-                                                :value="item.id">
-                                            </el-option>
-                                        </el-select>
-                                    </el-form-item>
-                                    <el-form-item label="术语库（可多选）">
-                                        <el-select v-model="form.fileList[$index].termid" multiple placeholder="请选择">
-                                            <el-option
-                                                v-for="(item, termIndex) in options1"
-                                                :key="termIndex"
-                                                :label="item.termName"
-                                                :value="item.id">
-                                            </el-option>
-                                        </el-select>
-                                    </el-form-item>
-                                    <el-form-item label="禁用语（可多选）">
-                                        <el-select v-model="form.fileList[$index].prohibited" multiple placeholder="请选择">
-                                            <el-option
-                                                v-for="(item, prohibitedIndex) in options2"
-                                                :key="prohibitedIndex"
-                                                :label="item.bannedName"
-                                                :value="item.id">
-                                            </el-option>
-                                        </el-select>
-                                    </el-form-item>
-                                    <el-form-item label="稿件上传">
-                                        <div class="showUploaderFiles">
-                                            <input type="file" id="input-file" class="custom-file-input upload-file" @change="uploaderFiles" />
-                                            <button type="button" class="btn btn-secondary flowFileUploader">点击上传</button>
-                                        </div>
-                                        <div class="downUpFile alert alert-light alert-dismissible fade show" role="alert" :data-id="form.fileList[$index].file.id" :data-uuid="form.fileList[$index].file.uuid" :data-data="form.fileList[$index].file.data">
-                                            <strong>上传文件：</strong> {{form.fileList[$index].file.file_name}}
-                                            <button type="button" :data-index="$index" class="close" data-dismiss="alert" aria-label="Close" @click="delUpLoaderFiles">
-                                                <span aria-hidden="true" :data-index="$index">&times;</span>
-                                            </button>
-                                        </div>
-                                    </el-form-item>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>创建项目信息</h1>
                 </div>
-                <el-form-item>
-                    <el-button type="primary" @click="onSubmit">立即创建</el-button>
-                    <el-button>取消</el-button>
-                </el-form-item>
-
-            </el-form>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="/">首页</a></li>
+                        <li class="breadcrumb-item active">创建项目信息</li>
+                    </ol>
+                </div>
+            </div>
         </div>
-    </div>
+    </section>
+    <div class="col-md-12">
+        <div class="card card-warning">
+            <div class="card-header">
+                <h3 class="card-title">创建项目信息</h3>
+            </div>
+            
+        </div>
+    </div>   
 </div>
 </template>
 
@@ -413,7 +251,7 @@
                     datas.termName = keys.termName
                     this.$data.options1.push(datas)
                 }
-                if (!!this.term_list_datas.isLastPage) {
+                if (this.$data.pageTermIndex >= this.term_list_datas.pages) {
                     return false
                 }
                 this.$data.pageTermIndex += 1
@@ -434,7 +272,7 @@
                     datas.bannedName = keys.bannedName
                     this.$data.options2.push(datas)
                 }
-                if (!!this.banned_list_datas.bannedList.isLastPage) {
+                if (this.$data.pageBannedIndex >= this.banned_list_datas.bannedList.pages) {
                     return false
                 }
                 this.$data.pageBannedIndex += 1
@@ -453,7 +291,7 @@
                     datas.organName = keys.organ.organName
                     this.$data.options0.push(datas)
                 }
-                if (!!this.corpus_list_datas.corpusList.isLastPage) {
+                if (this.$data.pageCorpusIndex >= this.corpus_list_datas.corpusList.pages) {
                     return false
                 }
                 this.$data.pageCorpusIndex += 1
@@ -486,7 +324,7 @@
                         this.$data.project_datas.push(keys)
                     }
                 }
-                if (!!this.users_list_datas.isLastPage) {
+                if (this.$data.project_indexpage >= this.users_list_datas.pages) {
                     return false
                 }
                 this.$data.project_indexpage += 1
@@ -497,7 +335,7 @@
                     keys.labelName = `${keys.customerName}--${keys.organName}`
                     this.$data.customer_datas.push(keys)
                 }
-                if (!!this.customer_info_datas.isLastPage) {
+                if (this.$data.customer_indexpage >= this.customer_info_datas.pages) {
                     return false
                 }
                 this.$data.customer_indexpage += 1

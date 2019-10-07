@@ -47,16 +47,22 @@
 </style>
 <template>
 <div class="container_bd">
-    <el-row :gutter="20">
-        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-            <h1 class="h2">项目列表</h1>
-            <div class="btn-toolbar mb-2 mb-md-0">
-                <div class="btn-group mr-2">
-                    <router-link class="btn btn-outline-info" role="button" :to="{path:'/createbase'}">新建项目</router-link>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>项目列表</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">首页</a></li>
+                        <li class="breadcrumb-item active">项目列表</li>
+                    </ol>
                 </div>
             </div>
         </div>
-    </el-row>
+        <!-- /.container-fluid -->
+    </section>
     <el-row :gutter="20">
         <el-col :span="4">
             <div class="grid-content">
@@ -243,7 +249,7 @@
                     keys.labelName = `${keys.customerName}--${keys.organName}`
                     this.$data.form.customers.push(keys)
                 }
-                if (!!this.customer_info_datas.isLastPage) {
+                if (this.$data.customer_indexpage >= this.customer_info_datas.pages) {
                     return false
                 }
                 this.$data.customer_indexpage += 1
@@ -257,7 +263,7 @@
                         this.$data.form.managers.push(keys)
                     }
                 }
-                if (!!this.users_list_datas.isLastPage) {
+                if (this.$data.project_indexpage >= this.users_list_datas.pages) {
                     return false
                 }
                 this.$data.project_indexpage += 1
@@ -294,7 +300,6 @@
                     }
                     this.$data.tableData.push(datas)
                 }
-                console.log("project_list_datas : ", this.project_list_datas)
             }
         },
         mounted() {
