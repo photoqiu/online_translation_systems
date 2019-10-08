@@ -2,10 +2,6 @@
 .container_bd {
     height:100%;
     display:block;
-    h1 {
-        font-weight:bold;
-        border-bottom:1px soild #ccc;
-    }
     .bd {
         margin:0;
         padding:0;
@@ -13,37 +9,14 @@
             bottom:-13px;
         }
         .row {
-            .alert {
-                width:100%;
-                height:60px;
-                line-height:38px;
-                text-align:left;
-            }
-            .el-button.is-circle {
-                font-size: 20px;
-            }
-
-            .container-fluid {
-                background-color:#efefef;
-                .el-select {
-                    height: 40px;
-                    line-height: 40px;
-                }
-                .rowset {
-                    height:60px;
-                    line-height:60px;
-                }
-                .col-lg-3 {
-                    .el-form-item {
-                        div {
-                            margin:0 !important;
-                        }
-                    }
-                }
-            }
             .excel-table {
                 width:100%;
-                height:40rem;
+                height:44rem;
+            }
+            .card-header {
+                .card-tools {
+                    width:20rem;
+                }
             }
         }
     }
@@ -81,59 +54,73 @@
                             </el-form-item>
                         </div>
                     </div>
-                    <div class="table-responsive">
-                        <table class="col-lg-12 col-12 col-sm-12 table table-hover table-bordered">
-                            <thead>
-                                <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">选择段落</th>
-                                    <th scope="col">初译员</th>
-                                    <th scope="col">起止时间</th>
-                                    <th scope="col">操作</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr v-for="(item, $index) in order" :key="$index">
-                                    <th scope="row">{{$index + 1}}</th>
-                                    <td>
-                                        <el-input-number size="medium" v-model="num[$index]" :step="1"></el-input-number>
-                                    </td>
-                                    <td>
-                                        <el-select v-model="values[$index]" filterable placeholder="请选择初译员">
-                                            <el-option
-                                                v-for="(items, $indexes) in options"
-                                                :key="$indexes"
-                                                :label="items.name"
-                                                :value="items.id">
-                                            </el-option>
-                                        </el-select>
-                                    </td>
-                                    <td>
-                                        <el-date-picker
-                                            v-model="sTime[$index]"
-                                            type="datetimerange"
-                                            align="right"
-                                            unlink-panels
-                                            range-separator="至"
-                                            start-placeholder="开始日期"
-                                            end-placeholder="结束日期"
-                                            :picker-options="pickerOptions">
-                                        </el-date-picker>
-                                    </td>
-                                    <td>
-                                        <button type="button" :data-index="$index" class="btn btn-link" @click="applydatas">应用</button>
-                                        <button type="button" :data-index="$index" class="btn btn-link" @click="delUserControllers">删除</button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-
                     <div class="row">
-                        <el-form-item>
-                            <el-button type="primary" @click="applyAverageDatas">均分确认</el-button>
-                            <el-button type="primary" @click="onSubmit">创建区块</el-button>
-                        </el-form-item>
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3 class="card-title">配置初译员：</h3>
+                                    <div class="card-tools">
+                                        <div class="row">
+                                            <div class="col-lg-6 col-6 col-sm-12 rowset">
+                                                <button type="button" class="btn btn-block bg-gradient-primary btn-sm" @click="applyAverageDatas">均分确认</button>
+                                            </div>
+                                            <div class="col-lg-6 col-6 col-sm-12 rowset">
+                                                <button type="button" class="btn btn-block bg-gradient-success btn-sm" @click="onSubmit">创建区块</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <el-form ref="form" label-width="180px">
+                                    <div class="card-body table-responsive p-0">
+                                        <table class="table table-hover table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">#</th>
+                                                    <th scope="col">选择段落</th>
+                                                    <th scope="col">初译员</th>
+                                                    <th scope="col">起止时间</th>
+                                                    <th scope="col">操作</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr v-for="(item, $index) in order" :key="$index">
+                                                    <th scope="row">{{$index + 1}}</th>
+                                                    <td>
+                                                        <el-input-number size="medium" v-model="num[$index]" :step="1"></el-input-number>
+                                                    </td>
+                                                    <td>
+                                                        <el-select v-model="values[$index]" filterable placeholder="请选择初译员">
+                                                            <el-option
+                                                                v-for="(items, $indexes) in options"
+                                                                :key="$indexes"
+                                                                :label="items.name"
+                                                                :value="items.id">
+                                                            </el-option>
+                                                        </el-select>
+                                                    </td>
+                                                    <td>
+                                                        <el-date-picker
+                                                            v-model="sTime[$index]"
+                                                            type="datetimerange"
+                                                            align="right"
+                                                            unlink-panels
+                                                            range-separator="至"
+                                                            start-placeholder="开始日期"
+                                                            end-placeholder="结束日期"
+                                                            :picker-options="pickerOptions">
+                                                        </el-date-picker>
+                                                    </td>
+                                                    <td>
+                                                        <button type="button" :data-index="$index" class="btn btn-link" @click="applydatas">应用</button>
+                                                        <button type="button" :data-index="$index" class="btn btn-link" @click="delUserControllers">删除</button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </el-form>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </el-form>
@@ -274,6 +261,22 @@
             },
             part_sentence_list_datas: function() {
                 console.log("this.part_sentence_list_datas : ", this.part_sentence_list_datas)
+                this.$data.order = 0
+                let partType = 0
+                let index = 0
+                for (let items of this.part_sentence_list_datas) {
+                    partType = parseInt(items.partType, 10)
+                    if (partType === 1) {
+                        this.$data.order += 1
+                        this.$data.sTime[index] = [new Date(items.startTime), new Date(items.endTime)]
+                        this.$data.values[index] = items.translator.name || ''
+                        this.$data.num[index] = items.partEnd - items.partBegin
+                        index += 1
+                    }
+                }
+                if (this.$data.order === 0) {
+                    this.$data.order = 1
+                }
                 /*
                 if (this.part_sentence_list_datas.length > 0) {
                     this.$data.beginNums[0] = 0
@@ -450,7 +453,7 @@
                     }
                     if (i === (lens - 1)) {
                         datas.push(keys)
-                        this.$store.dispatch('doSavePart', datas)
+                        this.$store.dispatch('doTranslateSavePart', datas)
                         return false
                     } else {
                         datas.push(keys)

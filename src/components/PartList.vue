@@ -47,16 +47,35 @@
 </style>
 <template>
 <div class="container_bd">
-    <el-row :gutter="10">
-        <el-col :span="12">
-            <h3>区块详情</h3>
-        </el-col>
-    </el-row>
-
-    <el-table
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>项目区块分配详情</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="/">首页</a></li>
+                        <li class="breadcrumb-item"><a href="#">项目列表</a></li>
+                        <li class="breadcrumb-item"><a href="#">项目区块列表</a></li>
+                        <li class="breadcrumb-item active">项目区块列表详情</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+        <!-- /.container-fluid -->
+    </section>
+    <div class="card card-primary card-outline">
+        <div class="card-header">
+            <h3 class="card-title">
+                <i class="fas fa-edit"></i> 项目区块分配详情
+            </h3>
+        </div>
+        <div class="card-body pad table-responsive">
+            <p>项目区块分配详情 <code>查看，初译和审校工作</code></p>
+            <el-table
         :data="tableData"
         border
-        style="width:1430"
         height="550">
         <el-table-column
           fixed
@@ -120,6 +139,8 @@
           </template>
         </el-table-column>
       </el-table>
+        </div>
+    </div>
 </div>
 </template>
 

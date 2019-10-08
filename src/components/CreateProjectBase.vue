@@ -34,36 +34,47 @@
                 text-indent:5em;
             }
         }
-        .row {
+        .form-group-divection {
+            .el-select {
+                float:left;
+                width:46%;
+            }
+            
+            i {
+                float:left;
+                width:30px;
+                margin:0 8px;
+                line-height:30px;
+                text-align:center;
+            }
+
+            .el-select:last-child {
+                float:left;
+                width:46%;
+            }
+        }
+        .form-group-divection:after {
+            content: '';
+            display: block;
+            clear: both;
+        }
+        .form-group {
+            margin:.2rem 0 0 0;
             .show {
                 display:block;
             }
             .hidden {
                 display:none;
             }
-            .el-steps {
-                border-top:1px soild #ccc;
-                width:50%;
-                height:130px;
-                line-height:26px;
-                margin:20px auto 0;
+            .el-input-number {
+                width:98%;
             }
             .el-select {
                 float:left;
-                width:600px;
+                width:98%;
             }
             .upload-demo {
                 float:left;
-            }
-            i {
-                float:left;
-                width:30px;
-                margin:0 8px;
-                line-height:30px;
-            }
-            .el-date-editor {
-                float:left;
-                width:600px;
             }
         }
     }
@@ -71,29 +82,227 @@
 </style>
 <template>
 <div class="container_bd">
-    <section class="content-header">
-        <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1>创建项目信息</h1>
+    <div class="bd row">
+        <div class="col-md-7">
+            <!-- general form elements -->
+            <div class="card card-primary">
+                <div class="card-header">
+                    <h3 class="card-title">创建项目信息</h3>
                 </div>
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="/">首页</a></li>
-                        <li class="breadcrumb-item active">创建项目信息</li>
-                    </ol>
+                <!-- /.card-header -->
+                <!-- form start -->
+                <el-form ref="form" label-width="180px">
+                    <div class="card-body">
+                        <div class="form-group">
+                            <el-form-item label="项目名称：">
+                                <el-input v-model="form.projectName"></el-input>
+                            </el-form-item>
+                        </div>
+                        <div class="form-group">
+                            <el-form-item label="项目经理：">
+                                <el-select v-model="form.projectManager_str" placeholder="请选择">
+                                    <el-option
+                                        v-for="(item, $index) in project_datas"
+                                        :key="$index"
+                                        :data-datas="item.json_datas"
+                                        :label="item.nickName"
+                                        :value="item.json_datas">
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
+                        </div>
+                        <div class="form-group">
+                            <el-form-item label="机构名称：">
+                                <el-select v-model="form.customer_str" @change="institutionHandle" filterable placeholder="请选择或输入">
+                                    <el-option
+                                        v-for="(item, $index) in customer_datas"
+                                        :key="$index"
+                                        :data-datas="item.json_datas"
+                                        :label="item.labelName"
+                                        :value="item.json_datas">
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
+                        </div>
+                        <div class="form-group">
+                            <el-form-item label="起止时间：">
+                                <el-date-picker
+                                    v-model="form.sTime"
+                                    type="datetimerange"
+                                    align="right"
+                                    unlink-panels
+                                    range-separator="至"
+                                    start-placeholder="开始日期"
+                                    end-placeholder="结束日期"
+                                    :picker-options="pickerOptions">
+                                </el-date-picker>
+                            </el-form-item>
+                        </div>
+                        <div class="form-group-divection">
+                            <el-form-item label="语言：">
+                                <el-select v-model="form.languageFrom" placeholder="请选择">
+                                    <el-option
+                                      v-for="(item, $index) in languagedatas"
+                                      :key="$index"
+                                      :label="item.label"
+                                      :value="item.value">
+                                    </el-option>
+                                </el-select>
+                                <i class="fas fa-arrows-alt-h" style="font-size:18px;"></i>
+                                <el-select v-model="form.languageTo" placeholder="请选择">
+                                    <el-option
+                                      v-for="(item, $index) in languagedatas"
+                                      :key="$index"
+                                      :label="item.label"
+                                      :value="item.value">
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
+                        </div>
+                        <div class="form-group">
+                            <el-form-item label="字数：">
+                                <el-input
+                                    placeholder="请输入内容" v-model="form.wordCount" :disabled="true">
+                                </el-input>
+                            </el-form-item>
+                        </div>
+                        <div class="form-group">
+                            <el-form-item label="添加附件：">
+                                <el-input-number v-model="form.addFileNumbers" @change="addFileHandleChange" :min="1" :max="100" label="描述文字"></el-input-number>
+                            </el-form-item>
+                        </div>
+                    </div>
+                    <!-- /.card-body -->
+                    <div class="card-footer">
+                        <button type="submit" @click="onSubmit" class="btn btn-primary float-right">创建新项目</button>
+                    </div>
+                </el-form>
+            </div>
+            <!-- /.card -->
+        </div>
+        <div class="col-md-5" v-for="(item, index) in addNewsNumbers">
+            <!-- DIRECT CHAT PRIMARY -->
+            <div :class="form.fileList[index].classStyle" :key="index">
+                <div class="card-header"  @click="applydatas" :data-index="index">
+                    <h3 class="card-title">
+                        <span data-toggle="tooltip" :data-index="index" class="badge bg-primary">{{item}}</span>
+                        上传附件
+                    </h3>
+                    <div class="card-tools" :data-index="index">
+                        <button type="button" class="btn btn-tool" :data-index="index" data-card-widget="collapse"><i class="fas fa-minus"></i>
+                        </button>
+                        <button type="button" class="btn btn-tool" :data-index="index" data-card-widget="remove"><i class="fas fa-times"></i>
+                        </button>
+                    </div>
                 </div>
+                <el-form ref="form" label-width="180px">
+                    <div class="card-body" style="display: block;">
+                        <div class="form-group" style="margin:2rem 0 0 0;">
+                            <el-form-item label="一级行业">
+                                <el-select v-model="form.fileList[index].industry1" filterable  @change="getOneLevelDatas" placeholder="请选择">
+                                    <el-option
+                                      v-for="item in main_industry_models_0"
+                                      :key="item.id"
+                                      :label="item.name"
+                                      :value="item.json_data">
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
+                        </div>
+                        <div class="form-group">
+                            <el-form-item label="二级行业">
+                                <el-select v-model="form.fileList[index].industry2"  filterable @change="getTwoLevelDatas" placeholder="请选择">
+                                    <el-option
+                                      v-for="item in sub_industry_models_1"
+                                      :key="item.id"
+                                      :label="item.name"
+                                      :value="item.json_data">
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
+                        </div>
+                        <div class="form-group">
+                            <el-form-item label="三级行业">
+                                <el-select v-model="form.fileList[index].industry3"  filterable @change="getThereLevelDatas" placeholder="请选择">
+                                    <el-option
+                                      v-for="item in sub_industry_models_2"
+                                      :key="item.id"
+                                      :label="item.name"
+                                      :value="item.json_data">
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
+                        </div>
+                        <div class="form-group">
+                            <el-form-item label="四级行业">
+                                <el-select v-model="form.fileList[index].industry4"  filterable placeholder="请选择">
+                                    <el-option
+                                      v-for="item in sub_industry_models_3"
+                                      :key="item.id"
+                                      :label="item.name"
+                                      :value="item.json_data">
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
+                        </div>
+                        <div class="form-group">
+                            <el-form-item label="语料库（可多选）">
+                                <el-select multiple v-model="form.fileList[index].corpusid" placeholder="请选择">
+                                    <el-option
+                                        v-for="(item, corpusIndex) in options0"
+                                        :key="corpusIndex"
+                                        :label="item.corpusName"
+                                        :value="item.id">
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
+                        </div>
+                        <div class="form-group">
+                            <el-form-item label="术语库（可多选）">
+                                <el-select multiple v-model="form.fileList[index].termid" placeholder="请选择">
+                                    <el-option
+                                        v-for="(item, termIndex) in options1"
+                                        :key="termIndex"
+                                        :label="item.termName"
+                                        :value="item.id">
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
+                        </div>
+                        <div class="form-group">
+                            <el-form-item label="禁用语（可多选）">
+                                <el-select multiple v-model="form.fileList[index].prohibited" placeholder="请选择">
+                                    <el-option
+                                        v-for="(item, prohibitedIndex) in options2"
+                                        :key="prohibitedIndex"
+                                        :label="item.bannedName"
+                                        :value="item.id">
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
+                        </div>
+                        <div class="form-group">
+                            <el-form-item label="上传文件">
+                                <el-upload
+                                    class="upload-demo"
+                                    :action="fileUploadUrl"
+                                    :on-preview="handlePreview"
+                                    :on-remove="handleRemove"
+                                    :on-success="handleSuccess"
+                                    :limit="1"
+                                    :on-exceed="handleExceed"
+                                    :file-list="file_datas[index]">
+                                  <el-button size="small" type="primary">点击上传</el-button>
+                                  <div slot="tip" class="el-upload__tip">只能上传doc/docx文件</div>
+                                </el-upload>
+                            </el-form-item>
+                        </div>
+                    </div>
+                </el-form>
             </div>
+            <!--/.direct-chat -->
         </div>
-    </section>
-    <div class="col-md-12">
-        <div class="card card-warning">
-            <div class="card-header">
-                <h3 class="card-title">创建项目信息</h3>
-            </div>
-            
-        </div>
-    </div>   
+    </div>
 </div>
 </template>
 
@@ -102,6 +311,7 @@
     import * as localForage from 'localforage'
     import {mapGetters} from 'vuex'
     import 'moment'
+    import Constant from '../static/js/common/API'
 
     export default {
         name: "CreateProjectBase",
@@ -109,6 +319,8 @@
             return {
                 isUsedFaster:false,
                 languagedatas:[],
+                addNewsNumbers: 1,
+                fileUploadUrl:`${Constant.API.fileUpload}`,
                 pickerOptions: {
                     shortcuts: [{
                         text: '最近一周',
@@ -155,18 +367,21 @@
                     wordCount:0,
                     id: 0,
                     projectId: 0,
-                    fileList: [
-                        {
-                            id: 0,
-                            projectId: 0,
-                            file: {},
-                            industry1: '',
-                            industry2: '',
-                            industry3: '',
-                            industry4: '',
-                            prohibited: ''
-                        }
-                    ],
+                    addFileNumbers:1,
+                    fileList: [{
+                        id: 0,
+                        projectId: 0,
+                        termid: [],
+                        corpusid: [],
+                        prohibited: [],
+                        classStyle: 'card card-prirary cardutline direct-chat direct-chat-primary',
+                        file: {},
+                        industry1: '',
+                        industry2: '',
+                        industry3: '',
+                        industry4: '',
+                        prohibited: ''
+                    }],
                     progress:0
                 },
                 currentIndex: 0,
@@ -208,7 +423,7 @@
                 sub_industry_models_2 : [],
                 sub_industry_models_3 : [],
                 sub_industry_models_4 : [],
-                file_datas: [],
+                file_datas: [[]],
                 queryTermbase:'',
                 queryCorpus:'',
                 pageCorpusIndex: 1,
@@ -288,7 +503,6 @@
                     datas = {}
                     datas.id = keys.id
                     datas.corpusName = keys.corpusName
-                    datas.organName = keys.organ.organName
                     this.$data.options0.push(datas)
                 }
                 if (this.$data.pageCorpusIndex >= this.corpus_list_datas.corpusList.pages) {
@@ -306,6 +520,7 @@
                 this.$data.form.fileList[this.$data.currentIndex].file = datas
             },
             main_industry_models_datas: function() {
+                console.log(this.main_industry_models_datas)
                 this.$data.main_industry_models_0 = this.main_industry_models_datas
             },
             sub_one_industry_models_datas: function() {
@@ -363,6 +578,72 @@
             this.$store.dispatch('getBannedList', this.$data.pageBannedIndex)
         },
         methods: {
+            applydatas(event) {
+                let elements = event.target
+                let indexdatas = elements.getAttribute("data-index") || -1
+                if (indexdatas === -1) {
+                    return false
+                }
+                console.log("indexdatas : ", elements, indexdatas)
+                this.$data.currentIndex = indexdatas
+                for (let item of this.$data.form.fileList) {
+                    console.log("item:", item)
+                    item.classStyle = 'card card-prirary cardutline direct-chat direct-chat-primary'
+                }
+                this.$data.form.fileList[indexdatas].classStyle = 'card card-info cardutline direct-chat direct-chat-primary '
+            },
+            addFileHandleChange(value) {
+                let datas = {
+                    id: 0, projectId: 0, classStyle:'card card-prirary cardutline direct-chat direct-chat-primary', 
+                    termid: [], corpusid: [], prohibited: [], file: {}, industry1: '', industry2: '', industry3: '', industry4: ''
+                }
+                let lens = this.$data.form.fileList.length
+                let orderIndex = lens - 1
+                console.log("orderIndex : ", orderIndex, lens, value)
+                
+                if (value >= lens) {
+                    this.$data.form.fileList.push(datas)
+                    this.$data.file_datas.push([])
+                    this.$data.file_datas[lens] = []
+                } else {
+                    this.$data.form.fileList.splice(orderIndex, 1)
+                    this.$data.file_datas.splice(orderIndex, 1)
+                }
+                this.$message({
+                    message: '添加新的附件...成功',
+                    type: 'success'
+                });
+                this.$data.addNewsNumbers = value
+            },
+            handleRemove(file, fileList) {
+                let fileDatas = this.$data.form.fileList[this.$data.currentIndex].file
+                let datas = {}
+                let datasID = -1
+                datas.projectFileId = fileDatas.id
+                datas.projectId = 0
+                this.$store.dispatch('delProjectFiles', datas)
+                this.$data.file_datas[this.$data.currentIndex] = []
+                return false
+            },
+            handlePreview(file) {
+                console.log(file);
+            },
+            handleSuccess(response, file, fileList) {
+                this.$data.form.fileList[this.$data.currentIndex].file = response.data.result
+            },
+            handleExceed(files, fileList) {
+                this.$message.warning(`当前限制选择 1 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
+            },
+            beforeRemove(file, fileList) {
+                let datas = {}
+                let fileDatas = this.$data.form.fileList[this.$data.currentIndex].file
+                let datasID = -1
+                datas.projectFileId = fileDatas.id
+                datas.projectId = 0
+                this.$store.dispatch('delProjectFiles', datas)
+                this.$data.file_datas[this.$data.currentIndex] = []
+                return false
+            },
             institutionHandle() {
                 let datas = {}
                 let index = this.$data.currentIndex
@@ -457,6 +738,9 @@
                 let endTime = moment(this.$data.form.sTime[1], "YYYY-MM-DD HH:mm:ss").format().replace("T", ' ').split("+")[0]
                 let datas = {}
                 datas.fileList = []
+                datas.corpusList = []
+                datas.termList = []
+                datas.bannedList = []
                 this.$data.form.startTime = startTime
                 this.$data.form.endTime = endTime
                 this.$data.form.projectManager = JSON.parse(this.$data.form.projectManager_str)
@@ -470,6 +754,9 @@
                     datas.fileList[i].file = this.$data.form.fileList[i].file
                     datas.fileList[i].id = 0
                     datas.fileList[i].projectId = 0
+                    datas.corpusList[i].id = datas.fileList[i].termid
+                    datas.termList[i].id = datas.fileList[i].corpusid
+                    datas.bannedList[i].id = datas.fileList[i].prohibited
                 }
                 let data_str = JSON.stringify(datas.fileList)
                 this.$data.form.sourceFiles = JSON.parse(data_str)
@@ -491,15 +778,6 @@
                 let elements = event.target
                 let index = parseInt(elements.getAttribute('data-index'), 10)
                 this.$data.form.fileList[this.$data.currentIndex].file = {}
-            },
-            uploaderFiles(event) {
-                let elements = event.target
-                let file_datas = elements.files[0]
-                let data = new FormData()
-                let _self = this
-                let path = ""
-                data.append("file", file_datas)
-                this.$store.dispatch('doUploaderFile', data)
             }
         }
     }

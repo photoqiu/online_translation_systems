@@ -2,10 +2,7 @@
 .container_bd {
     height:100%;
     display:block;
-    h1 {
-        font-weight:bold;
-        border-bottom:1px soild #ccc;
-    }
+    overflow:hidden;
     .bd {
         margin:0;
         padding:0;
@@ -13,38 +10,14 @@
             bottom:-13px;
         }
         .row {
-            .alert {
-                width:100%;
-                height:60px;
-                line-height:38px;
-                text-align:left;
-            }
-            .el-button.is-circle {
-                font-size: 20px;
-            }
-
-            .container-fluid {
-                background-color:#efefef;
-                .el-select {
-                    height: 40px;
-                    line-height: 40px;
-                }
-                .rowset {
-                    height:60px;
-                    line-height:60px;
-                }
-                .col-lg-3 {
-                    .el-form-item {
-                        div {
-                            margin:0 !important;
-                        }
-
-                    }
-                }
-            }
             .excel-table {
                 width:100%;
-                height:40rem;
+                height:44rem;
+            }
+            .card-header {
+                .card-tools {
+                    width:20rem;
+                }
             }
         }
     }
@@ -53,77 +26,102 @@
 
 <template>
 <div class="container_bd">
-    <h1>项目区块列表</h1>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>项目区块列表详情</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="/">首页</a></li>
+                        <li class="breadcrumb-item"><a href="#">项目列表</a></li>
+                        <li class="breadcrumb-item"><a href="#">项目区块列表</a></li>
+                        <li class="breadcrumb-item active">项目区块列表详情</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+        <!-- /.container-fluid -->
+    </section>
     <div class="bd">
         <div class="row">
-            <div class="alert alert-primary" role="alert">
-                <b>文件名称:</b> {{fileName}}
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
             <el-form ref="form" :model="form" label-width="120px">
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-lg-10 col-10 col-sm-12 rowset">
-                            <el-form-item label="新加审校员：">
+                            <el-form-item label="新加审校：">
                                 <el-button type="primary" icon="el-icon-circle-plus-outline" @click="addUsers" circle></el-button>
                             </el-form-item>
                         </div>
                     </div>
-                    <div class="table-responsive">
-                        <table class="col-lg-12 col-12 col-sm-12 table table-hover table-bordered">
-                            <thead>
-                                <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">选择段落</th>
-                                    <th scope="col">审校员</th>
-                                    <th scope="col">起止时间</th>
-                                    <th scope="col">操作</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr v-for="(item, $index) in order" :key="$index">
-                                    <th scope="row">{{$index + 1}}</th>
-                                    <td>
-                                        <el-input-number size="medium" v-model="num[$index]" :step="1"></el-input-number>
-                                    </td>
-                                    <td>
-                                        <el-select v-model="valuex[$index]" filterable placeholder="请选择初译员">
-                                            <el-option
-                                                v-for="(items, $indexes) in options"
-                                                :key="$indexes"
-                                                :label="items.name"
-                                                :value="items.id">
-                                            </el-option>
-                                        </el-select>
-                                    </td>
-                                    <td>
-                                        <el-date-picker
-                                            v-model="sTime[$index]"
-                                            type="datetimerange"
-                                            align="right"
-                                            unlink-panels
-                                            range-separator="至"
-                                            start-placeholder="开始日期"
-                                            end-placeholder="结束日期"
-                                            :picker-options="pickerOptions">
-                                        </el-date-picker>
-                                    </td>
-                                    <td>
-                                        <button type="button" :data-index="$index" class="btn btn-link" @click="applydatas">应用</button>
-                                        <button type="button" :data-index="$index" class="btn btn-link" @click="delUserControllers">删除</button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-
                     <div class="row">
-                        <el-form-item>
-                            <el-button type="primary" @click="applyAverageDatas">均分确认</el-button>
-                            <el-button type="primary" @click="onSubmit">创建区块</el-button>
-                        </el-form-item>
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3 class="card-title">配置审校：</h3>
+                                    <div class="card-tools">
+                                        <div class="row">
+                                            <div class="col-lg-6 col-6 col-sm-12 rowset">
+                                                <button type="button" class="btn btn-block bg-gradient-primary btn-sm" @click="applyAverageDatas">均分确认</button>
+                                            </div>
+                                            <div class="col-lg-6 col-6 col-sm-12 rowset">
+                                                <button type="button" class="btn btn-block bg-gradient-success btn-sm" @click="onSubmit">创建区块</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <el-form ref="form" label-width="180px">
+                                    <div class="card-body table-responsive p-0">
+                                        <table class="table table-hover table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">#</th>
+                                                    <th scope="col">选择段落</th>
+                                                    <th scope="col">审校</th>
+                                                    <th scope="col">起止时间</th>
+                                                    <th scope="col">操作</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr v-for="(item, $index) in order" :key="$index">
+                                                    <th scope="row">{{$index + 1}}</th>
+                                                    <td>
+                                                        <el-input-number size="medium" v-model="num[$index]" :step="1"></el-input-number>
+                                                    </td>
+                                                    <td>
+                                                        <el-select v-model="values[$index]" filterable placeholder="请选择审校">
+                                                            <el-option
+                                                                v-for="(items, $indexes) in options"
+                                                                :key="$indexes"
+                                                                :label="items.name"
+                                                                :value="items.id">
+                                                            </el-option>
+                                                        </el-select>
+                                                    </td>
+                                                    <td>
+                                                        <el-date-picker
+                                                            v-model="sTime[$index]"
+                                                            type="datetimerange"
+                                                            align="right"
+                                                            unlink-panels
+                                                            range-separator="至"
+                                                            start-placeholder="开始日期"
+                                                            end-placeholder="结束日期"
+                                                            :picker-options="pickerOptions">
+                                                        </el-date-picker>
+                                                    </td>
+                                                    <td>
+                                                        <button type="button" :data-index="$index" class="btn btn-link" @click="applydatas">应用</button>
+                                                        <button type="button" :data-index="$index" class="btn btn-link" @click="delUserControllers">删除</button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </el-form>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </el-form>
@@ -140,7 +138,7 @@
     
 
     export default {
-        name: "BlockReviewArticle",
+        name: "BlockArticle",
         data() {
             return {
                 isUsedFaster:false,
@@ -188,24 +186,9 @@
                 columns: [
                     { title: '段落Id', key: 'partId', width: 80 },
                     { title: '原文', key: 'source', width: 980 },
-                    { title: '状态', key: 'status', width: 50 },
-                    { title: '开始时间', key: 'begintime', width: 140 },
-                    { title: '结束时间', key: 'endtime', width: 140 },
                     { title: '初译译员', key: 'unitmaker', width: 160 },
-                    { title: '审校译员', key: 'requiredQuantity', width: 160 },
-                    {
-                        title: '确认保存',
-                        width: 70,
-                        fixed: true,
-                        renderButton(rowData, index) {
-                            return [{
-                                title: '保存',
-                                click() {
-                                    console.log(rowData, index)  //eslint-disable-line
-                                },
-                            }]
-                        },
-                    },
+                    { title: '开始时间', key: 'begintime', width: 140 },
+                    { title: '结束时间', key: 'endtime', width: 140 }
                 ],
                 translators:[],
                 contents:[],
@@ -279,24 +262,39 @@
             },
             part_sentence_list_datas: function() {
                 console.log("this.part_sentence_list_datas : ", this.part_sentence_list_datas)
+                this.$data.order = 0
+                let partType = 0
+                let index = 0
+                for (let items of this.part_sentence_list_datas) {
+                    partType = parseInt(items.partType, 10)
+                    if (partType === 2) {
+                        this.$data.order += 1
+                        this.$data.sTime[index] = [new Date(items.startTime), new Date(items.endTime)]
+                        this.$data.values[index] = items.reviewer.name || ''
+                        this.$data.num[index] = items.partEnd - items.partBegin
+                        index += 1
+                    }
+                }
+                if (this.$data.order === 0) {
+                    this.$data.order = 1
+                }
+                /*
                 if (this.part_sentence_list_datas.length > 0) {
                     this.$data.beginNums[0] = 0
                     let dataindex = 1
                     let index = 0
                     let modelsIndex = 0
                     let orderIndex = 0
-                    this.$data.order = 1
+                    this.$data.order = this.part_sentence_list_datas.length
                     for (let keys of this.part_sentence_list_datas) {
                         orderIndex = keys.partEnd - keys.partBegin
                         this.$data.beginNums[dataindex] = keys.partEnd - keys.partBegin
                         this.$data.sTime[index] = [new Date(keys.startTime), new Date(keys.endTime)]
                         this.$data.num[index] = keys.partEnd - keys.partBegin
-                        if (keys.reviewer !== null) {
-                            this.$data.order += 1
-                        }
                         this.$data.valuex[index] = keys.reviewer === null ? '暂无' : keys.reviewer.id
                         this.$data.values[index] = keys.translator.id
-                        this.$data.partId.push(keys.id)
+                        this.$data.partId[index] = keys.paragraphId
+
                         dataindex += 1
                         index += 1
                     }
@@ -321,6 +319,7 @@
                         modelsIndex += 1
                     }
                 }
+                */
             },
             project_detail_datas: function() {
                 for (let keys of this.project_detail_datas.sourceFiles) {
@@ -330,12 +329,15 @@
                 }
             },
             assign_part_list_datas: function() {
+                console.log("this.assign_part_list_datas : ", this.assign_part_list_datas)
+                console.log("this.assign_part_list_datas.result : ", this.assign_part_list_datas.result)
                 this.$data.gridsdata = []
                 this.$data.gridDatas = this.assign_part_list_datas.result
                 let ProjectFileId = 1
+                let models = {}
                 let ProjectId = 1
                 for (let keys of this.assign_part_list_datas.result) {
-                    let models = {'partId': `${keys.paragraphId}`, 'source': `${keys.source}`, 'status': '', 'begintime': '', 'endtime': '', 'unitmaker': '', 'requiredQuantity': ''}
+                    models = {'partId': `${keys.paragraphId}`, 'source': `${keys.source}`, 'begintime': '', 'endtime': '', 'unitmaker': ''}
                     this.$data.contents.push(keys.source)
                     ProjectFileId = keys.projectFileId
                     ProjectId = keys.projectId
@@ -356,7 +358,7 @@
             let pages = `?pageindex=${this.$data.pageIndex}`
             let partInfoArguments = `?projectFileId=${this.$route.params.fid}`
             this.$store.dispatch('getPartInfo', this.$data.fileId)
-            // this.$store.dispatch('getPartSentenceList', partInfoArguments)
+            this.$store.dispatch('getPartSentenceList', partInfoArguments)
             this.$store.dispatch('getTranslatorInfo', pages)
             this.$store.dispatch('getPorjectDetails', datas)
         },
@@ -453,7 +455,7 @@
                     }
                     if (i === (lens - 1)) {
                         datas.push(keys)
-                        this.$store.dispatch('doSavePart', datas)
+                        this.$store.dispatch('partReviewSave', datas)
                         return false
                     } else {
                         datas.push(keys)

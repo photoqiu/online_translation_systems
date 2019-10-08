@@ -31,43 +31,6 @@
                     height:70%;
                 }
             }
-            .popovers {
-                position: absolute;
-                right:0;
-                top:60px;
-                .card_wapper {
-                    width:1172px;
-                    height:100%;
-                    margin: 50px 0 0 0;
-                    .card {
-                        width:1172px;
-                        over-flow:hidden;
-                        .card-header {
-                            line-height:24px;
-                            text-align:left;
-                            .el-input {
-                                width:360px;
-                            }
-                        }
-                        .card-body {
-                            line-height:24px;
-                            height:260px;
-                            over-flow-y:scroll;
-                            table {
-                                tr {
-                                    td {
-                                        text-align:left;
-                                        p {
-                                            margin: 0;
-                                            padding: 0;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
         }
     }
 }
@@ -329,7 +292,7 @@
         },
         methods : {
             memoryClick() {
-                this.$data.isMemory = !this.$data.isMemory
+                // this.$data.isMemory = !this.$data.isMemory
             },
             update(value) {
                 console.log("update:", value) //eslint-disable-line

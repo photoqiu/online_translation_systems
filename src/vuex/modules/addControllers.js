@@ -77,8 +77,15 @@ const actions = {
             (datas) => commit(types.HTTP_STATUS_ERROR, datas)
         );
     },
-    doSavePart({commit}, datas) {
-        let url = Constant.API.partSave
+    doTranslateSavePart({commit}, datas) {
+        let url = Constant.API.partTranslateSave
+        asyncAPI.doPostDatas(url, datas,
+            (datas) => commit(types.DO_PART_SAVE, datas),
+            (datas) => commit(types.HTTP_STATUS_ERROR, datas)
+        );
+    },
+    partReviewSave({commit}, datas) {
+        let url = Constant.API.partReviewSave
         asyncAPI.doPostDatas(url, datas,
             (datas) => commit(types.DO_PART_SAVE, datas),
             (datas) => commit(types.HTTP_STATUS_ERROR, datas)

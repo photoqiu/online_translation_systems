@@ -1,7 +1,7 @@
 let DEBUG = process.env.NODE_ENV === 'production' ? false : true;
-let USER_API = 'http://127.0.0.1:9000/atreus-api/'
+// let USER_API = 'http://127.0.0.1:9000/atreus-api/'
 // let USER_API_HD = 'http://127.0.0.1:9000/';
-// let USER_API = "http://139.129.201.64/atreus-api/"
+let USER_API = "http://139.129.201.64/atreus-api/"
 // let USER_API = "http://139.129.201.64:8020/atreus/user/v1/list?pageNum=1"
 const Constant = {
     debug : DEBUG,
@@ -15,7 +15,8 @@ const Constant = {
         getUsers               : USER_API + 'user/list?pageNum={{pageIndex}}',
         ////////////////////////////////////////////////////////////////////////////////////////
         getFilePartList        : USER_API + 'part/assign/list?projectFileId={{projectFileId}}', //区块分配接口,返回某文件的全部句子
-        partSave               : USER_API + 'part/save', //保存区块分配结果
+        partTranslateSave      : USER_API + 'part/translate/save', //保存区块分配结果
+        partReviewSave         : USER_API + 'part/review/save', //保存区块分配结果
         getPartList            : USER_API + 'part/list{{arguments}}', //区块列表
         setPartEqualization    : USER_API + 'part/assign/even?projectFileId={{projectFileId}}&partNum={{partNum}}',
         getPartDetails         : USER_API + 'part/detail?partId={{partId}}', // 区块详情获取单个区块内容 /
