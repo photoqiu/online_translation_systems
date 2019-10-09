@@ -2,16 +2,9 @@
 .container_bd {
     height:100%;
     display:block;
-    h1 {
-        font-weight:bold;
-        border-bottom:1px soild #ccc;
-    }
     .bd {
         margin:0;
         padding:0;
-        .el-color-picker {
-            bottom:-13px;
-        }
         .row {
             table {
                 line-height: 20px;
@@ -19,106 +12,106 @@
                     line-height: 20px;
                 }
             }
-            .alert {
-                width:100%;
-                height:60px;
-                line-height:38px;
-                text-align:left;
-            }
-            .el-button.is-circle {
-                font-size: 20px;
-            }
-            .containor-rows {
-                width:70rem;
-                margin:0 auto;
-                .el-select {
-                    height: 40px;
-                    line-height: 40px;
-                }
-                .rowset {
-                    height:60px;
-                    line-height:60px;
-                }
-                .col-lg-3 {
-                    .el-form-item {
-                        div {
-                            margin:0 !important;
-                        }
-
-                    }
-                }
-            }
-            .datagrid {
-                width:100%;
-                height:40rem;
-            }
         }
     }
 }
 </style>
 <template>
 <div class="container_bd">
-    <h1>修改语料库--详情</h1>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>语料库详情</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><router-link :to="{path:'/'}">首页</router-link></li>
+                        <li class="breadcrumb-item"><router-link :to="{path:'/corpuslist'}">语料库列表</router-link></li>
+                        <li class="breadcrumb-item active">语料库详情</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
     <div class="bd">
         <div class="row">
-            <div class="col-md-2"></div>
-            <div class="col-md-8">
-                <el-form :inline="true" :model="formInline" class="demo-form-inline">
-                    <el-form-item label="搜索关键字">
-                        <el-input v-model="formInline.queryWord" placeholder="请输入关键字"></el-input>
-                    </el-form-item>
-                    <el-form-item>
-                        <el-button type="primary" @click="onSearchSubmit">查询</el-button>
-                    </el-form-item>
-                </el-form>
+            <div class="col-md-12">
+                <div class="card card-default">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="fas fa-search"></i>
+                            语料库搜索条件
+                        </h3>
+                    </div>
+                    <el-form ref="form" :model="form" label-width="120px">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-10">
+                                    <el-form-item label="搜索关键字">
+                                        <el-input v-model="formInline.queryWord" placeholder="请输入关键字"></el-input>
+                                    </el-form-item>
+                                </div>
+                                <div class="col-md-2">
+                                    <el-form-item>
+                                        <el-button type="primary" @click="onSearchSubmit">查询</el-button>
+                                    </el-form-item>
+                                </div>
+                            </div>
+                        </div>
+                    </el-form>
+                </div>
             </div>
-            <div class="col-md-2"></div>
-        </div>
-        <div class="row">
-            <div class="col-md-2"></div>
-            <div class="col-md-8">
-                <el-table
-                :data="tableData"
-                v-loading="loading"
-                border
-                style="width: 100%"
-                height="650">
-                <el-table-column
-                    fixed
-                    prop="source"
-                    label="原文"
-                    width="450">
-                </el-table-column>
-                <el-table-column
-                    prop="target"
-                    label="译文"
-                    width="450">
-                </el-table-column>
-                <el-table-column
-                    label="操作"
-                    width="100">
-                    <template slot-scope="scope">
-                        <el-button @click.native.prevent="handleClick(scope.$index, tableData)" type="text" size="small">编辑</el-button>
-                    </template>
-                </el-table-column>
-                </el-table>
-            </div>
-            <div class="col-md-2"></div>
-        </div>
-        <div class="row">
-            <div class="col-md-8"></div>
-            <div class="col-md-4">
-                <el-pagination
-                    background
-                    layout="prev, pager, next"
-                    :page-size="pageSize"
-                    @current-change="handleCurrentChange"
-                    :total="pageTotal">
-                </el-pagination>
-            </div>
-            <div class="col-md-8"></div>
-            <div class="col-md-4">
-                <button type="button" class="btn btn-success btn-lg btn-block" @click="SaveDatas">保存</button>
+            <div class="col-md-12">
+                <div class="card card-default color-palette-box">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="fas fa-table"></i>
+                            语料库-详情
+                        </h3>
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-success btn-sm btn-block" @click="SaveDatas">保存</button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <el-table
+                            :data="tableData"
+                            v-loading="loading"
+                            border
+                            style="width: 100%"
+                            height="650">
+                            <el-table-column
+                                fixed
+                                prop="source"
+                                label="原文"
+                                width="450">
+                            </el-table-column>
+                            <el-table-column
+                                prop="target"
+                                label="译文"
+                                width="450">
+                            </el-table-column>
+                            <el-table-column
+                                label="操作"
+                                width="100">
+                                <template slot-scope="scope">
+                                    <el-button @click.native.prevent="handleClick(scope.$index, tableData)" type="text" size="small">编辑</el-button>
+                                </template>
+                            </el-table-column>
+                        </el-table>
+                    </div>
+                    <div class="card-footer clearfix">
+                        <div class="float-right">
+                            <el-pagination
+                                background
+                                layout="prev, pager, next"
+                                :page-size="pageSize"
+                                @current-change="handleCurrentChange"
+                                :total="pageTotal">
+                            </el-pagination>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

@@ -28,7 +28,7 @@
                 height:100%;
                 .datagrid {
                     width:100%;
-                    height:70%;
+                    height:100%;
                 }
             }
         }
@@ -37,138 +37,31 @@
 </style>
 <template>
 <div class="container_bd">
-    <div class="bd">
-        <div class="row">
-            <div class="table_wapper">
-                <h3>翻译操作区</h3>
-                <div class="btn-group" role="group" aria-label="Basic example">
-                    <button type="button" class="btn btn-secondary" @click="memoryClick">记忆库</button>
-                    <button type="button" class="btn btn-secondary" @click="termClick">术语库</button>
-                    <button type="button" class="btn btn-secondary"  @click="dialogTableVisible = true">翻译QA</button>
-                    <button type="button" class="btn btn-secondary" @click="fixedClick">修订记录</button>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>初译操作区详情</h1>
                 </div>
-                <grid :grid-data="gridsdata" :columns="columns" showCheckbox columnSet @focus="focus" @updateValue="update"></grid>
-            </div>
-            <div class="popovers">
-                <div class="card_wapper">
-                    <div class="card bg-light mb-3" v-show="isMemory">
-                        <div class="card-header">记忆库
-                            <el-input
-                                placeholder="请输入内容"
-                                prefix-icon="el-icon-search"
-                                clearable
-                                v-model="input_memory">
-                            </el-input>
-                            <button type="button" class="close" data-dismiss="alert" @click="memoryClick" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="card-body">
-                            <table class="table table-hover table-bordered table-sm">
-                                <tbody>
-                                    <tr>
-                                        <th scope="row">1</th>
-                                        <td>衷心祝愿让我们共同的事业获得成功共同努力，共创美好未来！</td>
-                                        <td>50%</td>
-                                        <td>I sincerely hope that our common cause will be successful, and I wish us a bright future!</td>
-                                        <td>
-                                            <p>来自：译者A</p>
-                                            <p>时间：2018.12.31</p>
-                                            <p>项目：世界报告</p>
-                                        </td>
-                                    </tr> 
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <div class="card bg-light mb-3" v-show="isTerm">
-                        <div class="card-header">术语库
-                        <el-input
-                            placeholder="请输入内容"
-                            prefix-icon="el-icon-search"
-                            clearable
-                            v-model="input_term">
-                        </el-input>
-                        <button type="button" class="btn btn-link" @click="dialogFormVisible = true">添加到术语库</button>
-                        <button type="button" class="close" data-dismiss="alert" @click="termClick" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="card-body">
-                            <table class="table table-hover table-bordered table-sm">
-                                <tbody>
-                                    <tr>
-                                        <th scope="row">1</th>
-                                        <td>共同努力</td>
-                                        <td>TB</td>
-                                        <td>work together</td>
-                                        <td>
-                                            <p>来自：Rumin</p>
-                                            <p>时间：2019.1.31</p>
-                                            <p>项目：北京报告</p>
-                                        </td>
-                                    </tr> 
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <div class="card bg-light mb-3" v-show="isFixed">
-                        <div class="card-header">修订记录
-                            <el-input
-                                placeholder="请输入内容"
-                                prefix-icon="el-icon-search"
-                                clearable
-                                v-model="input_fixed">
-                            </el-input>
-                            <button type="button" class="close" data-dismiss="alert" @click="fixedClick" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="card-body">
-                            <table class="table table-hover table-bordered table-sm">
-                                <tbody>
-                                    <tr>
-                                        <th scope="row">1</th>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                    </tr> 
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="/">首页</a></li>
+                        <li class="breadcrumb-item"><a href="#">项目列表</a></li>
+                        <li class="breadcrumb-item"><a href="#">项目区块列表</a></li>
+                        <li class="breadcrumb-item active">初译操作区详情</li>
+                    </ol>
                 </div>
             </div>
         </div>
+        <!-- /.container-fluid -->
+    </section>
+    <div class="bd">
+        <div class="row">
+            <div class="table_wapper">
+                <grid :grid-data="gridsdata" :columns="columns" showCheckbox columnSet @focus="focus" @updateValue="update"></grid>
+            </div>
+        </div>
     </div>
-    <el-dialog title="添加术语库" :visible.sync="dialogFormVisible">
-        <el-form :model="form">
-            <el-form-item label="原文" :label-width="formLabelWidth">
-                <el-input v-model="form.orgname" autocomplete="off"></el-input>
-            </el-form-item>
-            <el-form-item label="译文" :label-width="formLabelWidth">
-                <el-input v-model="form.name" autocomplete="off"></el-input>
-            </el-form-item>
-            <el-form-item label="来源" :label-width="formLabelWidth">
-                <el-select v-model="form.region" placeholder="请选择文章来源">
-                    <el-option label="文章来源1" value="shanghai"></el-option>
-                    <el-option label="文章来源2" value="beijing"></el-option>
-                </el-select>
-            </el-form-item>
-          </el-form>
-          <div slot="footer" class="dialog-footer">
-            <el-button @click="dialogFormVisible = false">取 消</el-button>
-            <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
-          </div>
-    </el-dialog>
-    <el-dialog title="翻译QA" :visible.sync="dialogTableVisible">
-        <el-table :data="gridData">
-            <el-table-column property="errornumbers" label="句段" width="150"></el-table-column>
-            <el-table-column property="errorname" label="错误类型" width="200"></el-table-column>
-            <el-table-column property="errordesc" label="错误描述"></el-table-column>
-        </el-table>
-    </el-dialog>
 </div>
 </template>
 <script type="text/babel">    

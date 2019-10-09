@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import UserGuide from './components/UserGuide.vue'
 import Index from './components/Index.vue'
 import Statistics from './components/Statistics.vue'
 import ProjectDetail from './components/ProjectDetail.vue'
@@ -16,7 +15,6 @@ import CreateTerm from './components/CreateTerm.vue'
 import CreateCorpus from './components/CreateCorpus.vue'
 import EditorTerm from './components/EditorTerm.vue'
 import TermList from './components/TermList.vue'
-import UploaderTerm from './components/UploaderTerm.vue'
 import QAReport from './components/QAReport.vue'
 import PartList from'./components/PartList.vue'
 import CorpusList from './components/CorpusList.vue'
@@ -63,10 +61,6 @@ const router = new VueRouter({
             path: '/corpuslist',
             name: 'CorpusList',
             component: CorpusList
-        }, {
-            path: '/userguide',
-            name: 'userguide',
-            component: UserGuide
         }, {
             path: '/',
             name: 'index',
@@ -131,10 +125,6 @@ const router = new VueRouter({
             path: '/termlist',
             name: 'termlist',
             component: TermList
-        }, {
-            path: '/uploaderterm',
-            name: 'uploaderterm',
-            component: UploaderTerm
         }, {
             path: '/qareport/:id',
             name: 'qareport',

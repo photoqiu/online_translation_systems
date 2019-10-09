@@ -172,13 +172,11 @@
                             </el-form-item>
                         </div>
                     </div>
-                    <!-- /.card-body -->
                     <div class="card-footer">
                         <button type="submit" @click="onSubmit" class="btn btn-primary float-right">创建新项目</button>
                     </div>
                 </el-form>
             </div>
-            <!-- /.card -->
         </div>
         <div class="col-md-5" v-for="(item, index) in addNewsNumbers">
             <!-- DIRECT CHAT PRIMARY -->

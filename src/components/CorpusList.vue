@@ -47,130 +47,173 @@
 </style>
 <template>
 <div class="container_bd">
-    <el-row :gutter="20">
-        <el-col :span="12">
-            <div class="grid-content">
-                <el-form ref="form" :model="form" label-width="80px">
-                    <el-form-item label="机构名称:">
-                        <el-select v-model="form.search_text" placeholder="请选择机构名称">
-                            <el-option
-                                v-for="(item, $index) in customer_datas"
-                                :key="$index"
-                                :data-datas="item.json_datas"
-                                :label="item.organName"
-                                :value="item.json_datas">
-                            </el-option>
-                        </el-select>
-                    </el-form-item>
-
-                    <el-form-item label="一级行业">
-                        <el-select v-model="form.industry1" filterable @change="getOneLevelDatas" placeholder="请选择">
-                            <el-option
-                              v-for="item in main_industry_models_0"
-                              :key="item.code"
-                              :data-id="item.id"
-                              :label="item.name"
-                              :value="item.json_data">
-                            </el-option>
-                        </el-select>
-                    </el-form-item>
-                    <el-form-item label="二级行业">
-                        <el-select v-model="form.industry2" filterable @change="getTwoLevelDatas" placeholder="请选择">
-                            <el-option
-                              v-for="item in sub_industry_models_1"
-                              :key="item.code"
-                              :data-id="item.id"
-                              :label="item.name"
-                              :value="item.json_data">
-                            </el-option>
-                        </el-select>
-                    </el-form-item>
-                    <el-form-item label="三级行业">
-                        <el-select v-model="form.industry3" filterable @change="getThereLevelDatas" placeholder="请选择">
-                            <el-option
-                              v-for="item in sub_industry_models_2"
-                              :key="item.code"
-                              :data-id="item.id"
-                              :label="item.name"
-                              :value="item.json_data">
-                            </el-option>
-                        </el-select>
-                    </el-form-item>
-                    <el-form-item label="四级行业">
-                        <el-select v-model="form.industry4" filterable placeholder="请选择">
-                            <el-option
-                              v-for="item in sub_industry_models_3"
-                              :key="item.code"
-                              :data-id="item.id"
-                              :label="item.name"
-                              :value="item.json_data">
-                            </el-option>
-                        </el-select>
-                    </el-form-item>
-                    <el-button type="primary" @click="submitdatas">查询</el-button>
-                </el-form>
-
-            </div>
-        </el-col>
-    </el-row>
-    <el-row :gutter="20">
-        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-            <h1 class="h2">语料库列表</h1>
-            <div class="btn-toolbar mb-2 mb-md-0">
-                <div class="btn-group mr-2">
-                    <router-link class="btn btn-outline-info" role="button" :to="{path:'/createbase'}">新建项目</router-link>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>语料库列表</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="/">首页</a></li>
+                        <li class="breadcrumb-item active">语料库列表</li>
+                    </ol>
                 </div>
             </div>
         </div>
-    </el-row>
-    <el-table
-        :data="tableData"
-        border
-        style="width:1430"
-        height="550">
-        <el-table-column
-          fixed
-          prop="corpusName"
-          label="语料库名称"
-          width="420">
-        </el-table-column>
-        <el-table-column
-          prop="language"
-          label="语言"
-          width="120">
-        </el-table-column>
-        <el-table-column
-          prop="levelName"
-          label="语言级别"
-          width="90">
-        </el-table-column>
-        <el-table-column
-          prop="organName"
-          label="从属行业名称"
-          width="220">
-        </el-table-column>
-        <el-table-column
-          prop="industry"
-          label="行业分类"
-          width="440">
-        </el-table-column>
-        <el-table-column
-          fixed="right"
-          label="操作"
-          width="220">
-          <template slot-scope="scope">
-            <el-button @click="handleDetailClick(scope.row)" type="text" size="small">修改/查看</el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-
-    <el-pagination
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        background
-        layout="prev, pager, next"
-        :total="totalPage">
-    </el-pagination>
+    </section>
+    <div class="bd">
+        <div class="row">
+            <div class="card card-default">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="fas fa-search"></i>
+                        语料库搜索条件
+                    </h3>
+                    <div class="card-tools">
+                        <router-link class="btn btn-outline-info" role="button" :to="{path:'/createbase'}">新建项目</router-link>
+                    </div>
+                </div>
+                <el-form ref="form" :model="form" label-width="80px">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm">
+                                <el-form-item label="机构名称:">
+                                    <el-select v-model="form.search_text" placeholder="请选择机构名称">
+                                        <el-option
+                                            v-for="(item, $index) in customer_datas"
+                                            :key="$index"
+                                            :data-datas="item.json_datas"
+                                            :label="item.organName"
+                                            :value="item.json_datas">
+                                        </el-option>
+                                    </el-select>
+                                </el-form-item>
+                            </div>
+                            <div class="col-sm">
+                                <el-form-item label="一级行业">
+                                    <el-select v-model="form.industry1" filterable @change="getOneLevelDatas" placeholder="请选择">
+                                        <el-option
+                                          v-for="item in main_industry_models_0"
+                                          :key="item.code"
+                                          :data-id="item.id"
+                                          :label="item.name"
+                                          :value="item.json_data">
+                                        </el-option>
+                                    </el-select>
+                                </el-form-item>
+                            </div>
+                            <div class="col-sm">
+                                <el-form-item label="二级行业">
+                                    <el-select v-model="form.industry2" filterable @change="getTwoLevelDatas" placeholder="请选择">
+                                        <el-option
+                                          v-for="item in sub_industry_models_1"
+                                          :key="item.code"
+                                          :data-id="item.id"
+                                          :label="item.name"
+                                          :value="item.json_data">
+                                        </el-option>
+                                    </el-select>
+                                </el-form-item>
+                            </div>
+                            <div class="col-sm">
+                                <el-form-item label="三级行业">
+                                    <el-select v-model="form.industry3" filterable @change="getThereLevelDatas" placeholder="请选择">
+                                        <el-option
+                                          v-for="item in sub_industry_models_2"
+                                          :key="item.code"
+                                          :data-id="item.id"
+                                          :label="item.name"
+                                          :value="item.json_data">
+                                        </el-option>
+                                    </el-select>
+                                </el-form-item>
+                            </div>
+                            <div class="col-sm">
+                                <el-form-item label="四级行业">
+                                    <el-select v-model="form.industry4" filterable placeholder="请选择">
+                                        <el-option
+                                          v-for="item in sub_industry_models_3"
+                                          :key="item.code"
+                                          :data-id="item.id"
+                                          :label="item.name"
+                                          :value="item.json_data">
+                                        </el-option>
+                                    </el-select>
+                                </el-form-item>
+                            </div>
+                            <div class="col-sm">
+                                <el-button type="primary" @click="submitdatas">查询</el-button>
+                            </div>
+                        </div>    
+                    </div>
+                </el-form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="card card-default color-palette-box">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="fas fa-table"></i>
+                        语料库列表
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <el-table
+                        :data="tableData"
+                        border
+                        style="width:1430"
+                        height="550">
+                        <el-table-column
+                          fixed
+                          prop="corpusName"
+                          label="语料库名称"
+                          width="420">
+                        </el-table-column>
+                        <el-table-column
+                          prop="language"
+                          label="语言"
+                          width="120">
+                        </el-table-column>
+                        <el-table-column
+                          prop="levelName"
+                          label="语言级别"
+                          width="90">
+                        </el-table-column>
+                        <el-table-column
+                          prop="organName"
+                          label="从属行业名称"
+                          width="220">
+                        </el-table-column>
+                        <el-table-column
+                          prop="industry"
+                          label="行业分类"
+                          width="440">
+                        </el-table-column>
+                        <el-table-column
+                          fixed="right"
+                          label="操作"
+                          width="220">
+                          <template slot-scope="scope">
+                            <el-button @click="handleDetailClick(scope.row)" type="text" size="small">修改/查看</el-button>
+                          </template>
+                        </el-table-column>
+                      </el-table>
+                </div>
+                <div class="card-footer clearfix">
+                    <div class="float-right">
+                        <el-pagination
+                            @size-change="handleSizeChange"
+                            @current-change="handleCurrentChange"
+                            background
+                            layout="prev, pager, next"
+                            :total="totalPage">
+                        </el-pagination>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 </template>
 

@@ -2,9 +2,9 @@
 .container_bd {
     height:100%;
     display:block;
-    h1 {
-        font-weight:bold;
-        border-bottom:1px soild #ccc;
+    h3 {
+        height:30px;
+        line-height:30px;
     }
     .bd {
         margin:0;
@@ -34,13 +34,6 @@
             text-align: left;
         }
         .row {
-            .el-steps {
-                border-top:1px soild #ccc;
-                width:50%;
-                height:130px;
-                line-height:26px;
-                margin:20px auto 0;
-            }
             .el-select {
                 float:left;
                 width:600px;
@@ -62,125 +55,170 @@
 
 <template>
 <div class="container_bd">
-    <h1>新建语料库</h1>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>新建语料库</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="/">首页</a></li>
+                        <li class="breadcrumb-item active">新建语料库</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
     <div class="bd">
         <div class="row">
-            <el-form ref="form" :model="form" label-width="180px">
-                <el-form-item label="语料名称">
-                    <el-input v-model="form.corpusName"></el-input>
-                </el-form-item>
-                <el-form-item label="机构名称">
-                    <el-select v-model="form.organ" filterable placeholder="请选择或输入">
-                        <el-option
-                            v-for="(item, $index) in customer_datas"
-                            :key="$index"
-                            :data-datas="item.json_datas"
-                            :label="item.organName"
-                            :value="item.json_datas">
-                        </el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="语言">
-                    <el-select v-model="form.languageFrom" placeholder="请选择">
-                        <el-option
-                          v-for="(item, $index) in languagedatas"
-                          :key="$index"
-                          :label="item.label"
-                          :value="item.value">
-                        </el-option>
-                    </el-select>
-                    <i class="fas fa-arrows-alt-h" style="font-size:18px;"></i>
-                    <el-select v-model="form.languageTo" placeholder="请选择">
-                        <el-option
-                          v-for="(item, $index) in languagedatas"
-                          :key="$index"
-                          :label="item.label"
-                          :value="item.value">
-                        </el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="语料类型">
-                    <el-select v-model="form.type" placeholder="请选择">
-                        <el-option
-                          v-for="item in author"
-                          :key="item.value"
-                          :label="item.label"
-                          :value="item.value">
-                        </el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="语言级别">
-                    <el-select v-model="form.corpusLevel" placeholder="请选择">
-                        <el-option
-                          v-for="item in levels"
-                          :key="item.value"
-                          :label="item.label"
-                          :value="item.value">
-                        </el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="一级行业">
-                    <el-select v-model="form.industry1" filterable @change="getOneLevelDatas" placeholder="请选择">
-                        <el-option
-                          v-for="item in main_industry_models_0"
-                          :key="item.code"
-                          :data-id="item.id"
-                          :label="item.name"
-                          :value="item.json_data">
-                        </el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="二级行业">
-                    <el-select v-model="form.industry2" filterable @change="getTwoLevelDatas" placeholder="请选择">
-                        <el-option
-                          v-for="item in sub_industry_models_1"
-                          :key="item.code"
-                          :data-id="item.id"
-                          :label="item.name"
-                          :value="item.json_data">
-                        </el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="三级行业">
-                    <el-select v-model="form.industry3" filterable @change="getThereLevelDatas" placeholder="请选择">
-                        <el-option
-                          v-for="item in sub_industry_models_2"
-                          :key="item.code"
-                          :data-id="item.id"
-                          :label="item.name"
-                          :value="item.json_data">
-                        </el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="四级行业">
-                    <el-select v-model="form.industry4" filterable placeholder="请选择">
-                        <el-option
-                          v-for="item in sub_industry_models_3"
-                          :key="item.code"
-                          :data-id="item.id"
-                          :label="item.name"
-                          :value="item.json_data">
-                        </el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="稿件上传">
-                    <div class="showUploaderFiles">
-                        <input type="file" id="input-file" class="custom-file-input upload-file" @change="uploaderFiles" />
-                        <button type="button" class="btn btn-secondary flowFileUploader">点击上传</button>
+            <div class="card card-default color-palette-box">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="fas fa-tag"></i>
+                        新建语料库
+                    </h3>
+                </div>
+                <el-form ref="form" :model="form" label-width="180px">
+                    <div class="card-body">
+                        <div class="form-group">
+                            <el-form-item label="语料名称">
+                                <el-input v-model="form.corpusName"></el-input>
+                            </el-form-item>
+                        </div>
+                        <div class="form-group">
+                            <el-form-item label="机构名称">
+                                <el-select v-model="form.organ" filterable placeholder="请选择或输入">
+                                    <el-option
+                                        v-for="(item, $index) in customer_datas"
+                                        :key="$index"
+                                        :data-datas="item.json_datas"
+                                        :label="item.organName"
+                                        :value="item.json_datas">
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
+                        </div>
+                        <div class="form-group">
+                            <el-form-item label="语言">
+                                <el-select v-model="form.languageFrom" placeholder="请选择">
+                                    <el-option
+                                        v-for="(item, $index) in languagedatas"
+                                        :key="$index"
+                                        :label="item.label"
+                                        :value="item.value">
+                                    </el-option>
+                                </el-select>
+                                <i class="fas fa-arrows-alt-h" style="font-size:18px;"></i>
+                                <el-select v-model="form.languageTo" placeholder="请选择">
+                                    <el-option
+                                        v-for="(item, $index) in languagedatas"
+                                        :key="$index"
+                                        :label="item.label"
+                                        :value="item.value">
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
+                        </div>
+                        <div class="form-group">
+                            <el-form-item label="语料类型">
+                                <el-select v-model="form.type" placeholder="请选择">
+                                    <el-option
+                                        v-for="item in author"
+                                        :key="item.value"
+                                        :label="item.label"
+                                        :value="item.value">
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
+                        </div>
+                        <div class="form-group">
+                            <el-form-item label="语言级别">
+                                <el-select v-model="form.corpusLevel" placeholder="请选择">
+                                    <el-option
+                                        v-for="item in levels"
+                                        :key="item.value"
+                                        :label="item.label"
+                                        :value="item.value">
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
+                        </div>
+                        <div class="form-group">
+                            <el-form-item label="一级行业">
+                                <el-select v-model="form.industry1" filterable @change="getOneLevelDatas" placeholder="请选择">
+                                    <el-option
+                                      v-for="item in main_industry_models_0"
+                                      :key="item.code"
+                                      :data-id="item.id"
+                                      :label="item.name"
+                                      :value="item.json_data">
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
+                        </div>
+                        <div class="form-group">
+                            <el-form-item label="二级行业">
+                                <el-select v-model="form.industry2" filterable @change="getTwoLevelDatas" placeholder="请选择">
+                                    <el-option
+                                      v-for="item in sub_industry_models_1"
+                                      :key="item.code"
+                                      :data-id="item.id"
+                                      :label="item.name"
+                                      :value="item.json_data">
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
+                        </div>
+                        <div class="form-group">
+                            <el-form-item label="三级行业">
+                                <el-select v-model="form.industry3" filterable @change="getThereLevelDatas" placeholder="请选择">
+                                    <el-option
+                                      v-for="item in sub_industry_models_2"
+                                      :key="item.code"
+                                      :data-id="item.id"
+                                      :label="item.name"
+                                      :value="item.json_data">
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
+                        </div>
+                        <div class="form-group">
+                            <el-form-item label="四级行业">
+                                <el-select v-model="form.industry4" filterable placeholder="请选择">
+                                    <el-option
+                                      v-for="item in sub_industry_models_3"
+                                      :key="item.code"
+                                      :data-id="item.id"
+                                      :label="item.name"
+                                      :value="item.json_data">
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
+                        </div>
+                        <div class="form-group">
+                            <el-form-item label="稿件上传">
+                                <div class="showUploaderFiles">
+                                    <input type="file" id="input-file" class="custom-file-input upload-file" @change="uploaderFiles" />
+                                    <button type="button" class="btn btn-secondary flowFileUploader">点击上传</button>
+                                </div>
+                                <div class="downUpFile alert alert-light alert-dismissible fade show" role="alert" v-for="(item, $index) in file_datas" :data-id="item.id" :data-uuid="item.uuid" :data-data="item.data">
+                                    <strong>上传文件：</strong> {{item.file_name}}
+                                    <button type="button" :data-index="$index" class="close" data-dismiss="alert" aria-label="Close" @click="delUpLoaderFiles">
+                                        <span aria-hidden="true" :data-index="$index">&times;</span>
+                                    </button>
+                                </div>
+                            </el-form-item>
+                        </div>
                     </div>
-                    <div class="downUpFile alert alert-light alert-dismissible fade show" role="alert" v-for="(item, $index) in file_datas" :data-id="item.id" :data-uuid="item.uuid" :data-data="item.data">
-                        <strong>上传文件：</strong> {{item.file_name}}
-                        <button type="button" :data-index="$index" class="close" data-dismiss="alert" aria-label="Close" @click="delUpLoaderFiles">
-                            <span aria-hidden="true" :data-index="$index">&times;</span>
-                        </button>
+                    <div class="card-footer">
+                        <div class="form-group">
+                            <button type="submit" @click="clearDatas" class="btn btn-default">清空</button>
+                            <button type="submit" @click="onSubmit" class="btn btn-primary float-right">创建新语料</button>
+                        </div>
                     </div>
-                </el-form-item>
-
-                <el-form-item>
-                    <el-button type="primary" @click="onSubmit">立即创建</el-button>
-                    <el-button>取消</el-button>
-                </el-form-item>
-            </el-form>
+                </el-form>
+            </div>
         </div>
     </div>
 </div>
@@ -392,6 +430,24 @@
             this.$store.dispatch('getDataOrganList', 1)
         },
         methods: {
+            clearDatas(event) {
+                let datas = {
+                    id:0,
+                    corpusName: '',
+                    languageFrom: '',
+                    languageTo: '',
+                    corpusLevel:'',
+                    industry1:'',
+                    industry2:'',
+                    industry3:'',
+                    industry4:'',
+                    corpusFile: '',
+                    organ: '',
+                    type: ''
+                }
+                this.$data.file_datas = []
+                this.$data.form = datas 
+            },
             uploaderFiles(event) {
                 let elements = event.target
                 let file_datas = elements.files[0]
