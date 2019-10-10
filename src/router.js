@@ -8,7 +8,6 @@ import Translation from './components/Translation.vue'
 import ReviewTranslation from './components/ReviewTranslation.vue'
 import ManuScriptAnalysisReport from './components/ManuScriptAnalysisReport.vue'
 import Distribution from './components/Distribution.vue'
-import EquallyDistributed from './components/EquallyDistributed.vue'
 import BlockArticle from './components/BlockArticle.vue'
 import Term from './components/Term.vue'
 import CreateTerm from './components/CreateTerm.vue'
@@ -105,10 +104,6 @@ const router = new VueRouter({
             path: '/distribution',
             name: 'distribution',
             component: Distribution
-        }, {
-            path: '/equallydistributed',
-            name: 'equallydistributed',
-            component: EquallyDistributed
         }, {
             path: '/term',
             name: 'term',

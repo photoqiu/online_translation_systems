@@ -103,7 +103,7 @@
                 </div>
             </div>
             <div class="col-md-12">
-                <div class="card card-default color-palette-box">
+                <div class="card card-default col-md-12">
                     <div class="card-header">
                         <h3 class="card-title">
                             <i class="fas fa-table"></i>
@@ -118,18 +118,15 @@
                             :data="tableData"
                             v-loading="loading"
                             border
-                            style="width: 100%"
-                            height="650">
+                            style="width:100%">
                             <el-table-column
                                 fixed
                                 prop="source"
-                                label="原文"
-                                width="450">
+                                label="原文">
                             </el-table-column>
                             <el-table-column
                                 prop="target"
-                                label="译文"
-                                width="450">
+                                label="译文">
                             </el-table-column>
                             <el-table-column
                                 label="操作"

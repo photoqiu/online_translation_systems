@@ -36,7 +36,7 @@
         max-height:30px;
     }
     .el-table {
-        width:1430px;
+        min-width:860px;
         line-height:20px;
     }
     .el-pagination {
@@ -55,9 +55,8 @@
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="/">首页</a></li>
-                        <li class="breadcrumb-item"><a href="#">项目列表</a></li>
-                        <li class="breadcrumb-item"><a href="#">项目区块列表</a></li>
+                        <li class="breadcrumb-item"><router-link :to="{path:'/'}">首页</router-link></li>
+                        <li class="breadcrumb-item"><router-link :to="{path:`${updatasUrls}`}">项目区块列表</router-link></li>
                         <li class="breadcrumb-item active">项目区块列表详情</li>
                     </ol>
                 </div>
@@ -74,71 +73,72 @@
         <div class="card-body pad table-responsive">
             <p>项目区块分配详情 <code>查看，初译和审校工作</code></p>
             <el-table
-        :data="tableData"
-        border
-        height="550">
-        <el-table-column
-          fixed
-          prop="projectname"
-          label="项目名称"
-          width="420">
-        </el-table-column>
-        </el-table-column>  
-        <el-table-column
-          prop="partid"
-          label="区块Id"
-          width="220">
-        </el-table-column>
-        <el-table-column
-          prop="language"
-          label="语言"
-          width="120">
-        </el-table-column>
-        <el-table-column
-          prop="date"
-          label="区块起止时间"
-          width="240">
-        </el-table-column>
-        <el-table-column
-          prop="numsdata"
-          label="翻译起始句"
-          width="220">
-        </el-table-column>
-        <el-table-column
-          fixed="fyname"
-          label="翻译人"
-          width="120">
-        </el-table-column>
-        <el-table-column
-          prop="fyprocess"
-          label="翻译进度"
-          width="120">
-        </el-table-column>
-        <el-table-column
-          fixed="sxname"
-          label="审校人"
-          width="120">
-        </el-table-column>
-        <el-table-column
-          prop="sxprocess"
-          label="审校完成进度"
-          width="120">
-        </el-table-column>
-        <el-table-column
-          fixed="pmname"
-          label="项目经理"
-          width="120">
-        </el-table-column>
-        <el-table-column
-          fixed="right"
-          label="操作"
-          width="220">
-          <template slot-scope="scope">
-            <el-button @click="handlePartClick(scope.row)" type="text" size="small">查看翻译</el-button>
-            <el-button @click="handleReviewersClick(scope.row)" type="text" size="small">查看审校</el-button>
-          </template>
-        </el-table-column>
-      </el-table>
+                :data="tableData"
+                border
+                width="100%"
+                height="550">
+                <el-table-column
+                  fixed
+                  prop="projectname"
+                  label="项目名称"
+                  width="420">
+                </el-table-column>
+                </el-table-column>  
+                <el-table-column
+                  prop="partid"
+                  label="区块Id"
+                  width="220">
+                </el-table-column>
+                <el-table-column
+                  prop="language"
+                  label="语言"
+                  width="120">
+                </el-table-column>
+                <el-table-column
+                  prop="date"
+                  label="区块起止时间"
+                  width="240">
+                </el-table-column>
+                <el-table-column
+                  prop="numsdata"
+                  label="翻译起始句"
+                  width="220">
+                </el-table-column>
+                <el-table-column
+                  fixed="fyname"
+                  label="翻译人"
+                  width="120">
+                </el-table-column>
+                <el-table-column
+                  prop="fyprocess"
+                  label="翻译进度"
+                  width="120">
+                </el-table-column>
+                <el-table-column
+                  fixed="sxname"
+                  label="审校人"
+                  width="120">
+                </el-table-column>
+                <el-table-column
+                  prop="sxprocess"
+                  label="审校完成进度"
+                  width="120">
+                </el-table-column>
+                <el-table-column
+                  fixed="pmname"
+                  label="项目经理"
+                  width="120">
+                </el-table-column>
+                <el-table-column
+                  fixed="right"
+                  label="操作"
+                  width="220">
+                  <template slot-scope="scope">
+                    <el-button @click="handlePartClick(scope.row)" type="text" size="small">查看翻译</el-button>
+                    <el-button @click="handleReviewersClick(scope.row)" type="text" size="small">查看审校</el-button>
+                  </template>
+                </el-table-column>
+            </el-table>
         </div>
     </div>
 </div>
@@ -157,6 +157,7 @@
                 pageIndex : 1,
                 totalPage:0,
                 tableData: [],
+                updatasUrls: '',
                 project_indexpage : 1
             }
         },
@@ -238,6 +239,7 @@
         },
         mounted() {
             let fid = this.$route.params.fid || 1
+            this.$data.updatasUrls = `/projectdetail/${this.$route.params.id}`
             let partInfoArguments = `?projectFileId=${fid}`
             this.$store.dispatch('getPartSentenceList', partInfoArguments)
         },

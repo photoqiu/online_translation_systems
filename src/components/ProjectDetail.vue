@@ -66,8 +66,7 @@
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="#">首页</a></li>
-                        <li class="breadcrumb-item"><a href="#">项目列表</a></li>
+                        <li class="breadcrumb-item"><router-link :to="{path:'/'}">首页</router-link></li>
                         <li class="breadcrumb-item active">{{detail_datas.projectName}}</li>
                     </ol>
                 </div>
@@ -91,7 +90,7 @@
                 <el-input-number v-model="addOrders" controls-position="right" @change="addBlockFiles" :min="0" :max="20"></el-input-number>
             </el-form-item>
             <div class="row">
-                <div class="col-11" v-for="(item, $index) of addNewsNumbers" :key="$index" :data-index="$index">
+                <div class="col-12" v-for="(item, $index) of addNewsNumbers" :key="$index" :data-index="$index">
                     <div :class="form.fileList[$index].classStyle" @click="clickChangeTitleIndex" :data-index="$index">
                         <div class="card-header" :data-index="$index">
                             <h3 class="card-title" :data-index="$index">
@@ -192,8 +191,8 @@
     </div>
     <div class="bd">
         <div class="row">
-            <div class="col-11">
-                <div class="card card-primary card-outline">
+            <div class="col-12">
+                <div class="card card-primary card-outline col-12">
                     <div class="card-header">
                         <h3 class="card-title"><i class="fas fa-edit"></i>区块列表</h3>
                     </div>
@@ -213,16 +212,15 @@
                                 <tr v-for="(item, $index) in detail_datas.sourceFiles" :key="$index">
                                     <th scope="row">{{$index + 1}}</th>
                                     <td>{{item.file.fileName}}</td>
-                                    <td><el-progress :text-inside="true" :stroke-width="18" :percentage="detail_datas.process"></el-progress></td>
+                                    <td><el-progress :text-inside="true" :stroke-width="14" :percentage="detail_datas.process"></el-progress></td>
                                     <td>{{detail_datas.projectManager.nickName}}</td>
                                     <td>
                                         <router-link :to="{path:`/blockarticle/${projectId}/${item.id}`}" class="btn btn-link">分配区块(初译)</router-link>
                                         <router-link :to="{path:`/blockreviewarticle/${projectId}/${item.id}`}" class="btn btn-link">分配区块(审校)</router-link>
                                         <router-link :to="{path:`/partlist/${projectId}/${item.id}`}" class="btn btn-link">区块列表</router-link>
-                                        <router-link :to="{path:`/partlist/${projectId}/${item.id}`}" class="btn btn-link">查看文件报告</router-link>
                                         <el-dropdown @command="handleCommand">
                                             <span class="el-dropdown-link">
-                                                下拉菜单<i class="el-icon-arrow-down el-icon--right"></i>
+                                                导出<i class="el-icon-arrow-down el-icon--right"></i>
                                             </span>
                                             <el-dropdown-menu slot="dropdown">
                                                 <el-dropdown-item :command="menus_datas[$index][0]" :data-data="$index">导出原文</el-dropdown-item>
@@ -372,7 +370,7 @@
                             industry2: '',
                             industry3: '',
                             file: {},
-                            classStyle: 'card card-secondary',
+                            classStyle: 'card card-secondary col-12',
                             industry4: ''
                         }
                     ]
@@ -401,14 +399,14 @@
                 }
                 this.$data.currentIndex = index
                 for (let item of this.$data.form.fileList) {
-                    item.classStyle = 'card card-secondary'
+                    item.classStyle = 'card card-secondary col-12'
                 }
-                this.$data.form.fileList[index].classStyle = 'card card-primary card-outline'
+                this.$data.form.fileList[index].classStyle = 'card card-primary card-outline col-12'
             },
             addBlockFiles(value) {
                 let datas = {
                     id: 0, projectId: 0, termid: [], corpusid: [], prohibited: [], file: {}, industry1: '', industry2: '', industry3: '', industry4: '',
-                    classStyle:'card card-secondary'
+                    classStyle:'card card-secondary col-12'
                 }
                 let lens = this.$data.form.fileList.length
                 let orderIndex = lens - 1

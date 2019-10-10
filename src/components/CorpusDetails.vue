@@ -63,7 +63,7 @@
                 </div>
             </div>
             <div class="col-md-12">
-                <div class="card card-default color-palette-box">
+                <div class="card card-default col-md-12">
                     <div class="card-header">
                         <h3 class="card-title">
                             <i class="fas fa-table"></i>
@@ -78,18 +78,15 @@
                             :data="tableData"
                             v-loading="loading"
                             border
-                            style="width: 100%"
-                            height="650">
+                            style="width:100%">
                             <el-table-column
                                 fixed
                                 prop="source"
-                                label="原文"
-                                width="450">
+                                label="原文">
                             </el-table-column>
                             <el-table-column
                                 prop="target"
-                                label="译文"
-                                width="450">
+                                label="译文">
                             </el-table-column>
                             <el-table-column
                                 label="操作"
@@ -154,6 +151,7 @@
                     queryWord:''
                 },
                 tempDatas:[],
+                styleH:100,
                 pageIndex: 1,
                 pageSize: 100,
                 pageTotal: 1,
@@ -195,6 +193,8 @@
         mounted() {
             this.$data.loading = true
             this.$data.editorIndex = 0
+            this.$data.styleH = parseInt(document.body.clientHeight, 10) - (120+50+158)
+            console.log("this.$data.styleH:", this.$data.styleH)
             let datas = `pageNum=${this.$data.pageIndex}&pageSize=${this.$data.pageSize}&corpusId=${this.$route.params.id}`
             this.$store.dispatch('getCorpusItemList', datas)
         },

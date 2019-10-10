@@ -49,6 +49,9 @@ body > .el-container {
 .el-form-item__content div.el-progress:last-child {
     margin: 8px 0 0 0;
 }
+.content-wrapper {
+    overflow-x:hidden;
+}
 </style>
 <template>
     <div class="container-fluid">

@@ -36,12 +36,12 @@
         .row {
             .el-select {
                 float:left;
-                width:600px;
+                width:48%;
             }
             i {
                 float:left;
-                width:30px;
-                margin:0 8px;
+                width:18px;
+                margin:0 12px;
                 line-height:30px;
             }
             .el-date-editor {
@@ -72,7 +72,7 @@
     </section>
     <div class="bd">
         <div class="row">
-            <div class="card card-default color-palette-box">
+            <div class="card card-default col-12">
                 <div class="card-header">
                     <h3 class="card-title">
                         <i class="fas fa-tag"></i>

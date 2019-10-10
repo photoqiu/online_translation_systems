@@ -221,13 +221,9 @@
     import * as localForage from 'localforage'
     import moment from 'moment'
     import {mapGetters} from 'vuex'
-    import canvasDatagrid from 'canvasDatagrid'
 
     export default {
         name: "EquallyDistributed",
-        componets : {
-            canvasDatagrid:canvasDatagrid
-        },
         data() {
             return {
                 grid: {

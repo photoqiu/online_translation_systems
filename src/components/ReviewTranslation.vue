@@ -45,9 +45,8 @@
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="/">首页</a></li>
-                        <li class="breadcrumb-item"><a href="#">项目列表</a></li>
-                        <li class="breadcrumb-item"><a href="#">项目区块列表</a></li>
+                        <li class="breadcrumb-item"><router-link :to="{path:'/'}">首页</router-link></li>
+                        <li class="breadcrumb-item"><router-link :to="{path:`${updatasUrls}`}">项目文件列表</router-link></li>
                         <li class="breadcrumb-item active">审校操作区详情</li>
                     </ol>
                 </div>
@@ -57,7 +56,7 @@
     <div class="bd">
         <div class="row">
             <div class="table_wapper">
-                <grid :grid-data="gridsdata" :columns="columns" showCheckbox columnSet @focus="focus" @updateValue="update"></grid>
+                <grid :grid-data="gridsdata" :columns="columns" :showToolbar="isToolbar" @focus="focus" @updateValue="update"></grid>
             </div>
         </div>
     </div>
@@ -67,19 +66,17 @@
     import $ from 'jQuery'
     import * as localForage from 'localforage'
     import {mapGetters} from 'vuex'
-    import canvasDatagrid from 'canvasDatagrid'
     
     export default {
         name: "ReviewTranslation",
-        componets : {
-            canvasDatagrid:canvasDatagrid
-        },
         data() {
             return {
                 grid: {
                     data: []
                 },
+                updatasUrls: '',
                 gridsdata: [],
+                isToolbar: false,
                 columns: [
                     { title: '原文', key: 'source', width: 980 },
                     { title: '译文', key: 'target', width: 880 },
@@ -95,13 +92,13 @@
                             {
                                 title: '确认翻译',
                                 click(event) {
-                                    console.log(rowData, index, this, event.target)  //eslint-disable-line
+                                    console.log("0----------->eslint-disable-line : ", rowData, index, this, event.target)  //eslint-disable-line
                                 }
                             },
                             {
                                 title: '翻译有误',
                                 click(event) {
-                                    console.log(rowData, index, this, event.target)  //eslint-disable-line
+                                    console.log("1----------->eslint-disable-line : ", rowData, index, this, event.target)  //eslint-disable-line
                                 }
                             }]
                         },
@@ -239,9 +236,9 @@
             data.projectFileId = this.$route.params.fid || 1
             data.partId = this.$route.params.id || 1
             data.pageNum = this.$data.pageNum
-            //this.$store.dispatch('getPartInfo', datas)
             this.$store.dispatch('getTranslateUnitList', data)
             this.$store.dispatch('getTranslatorInfo', pages)
+            this.$data.updatasUrls = `/projectdetail/${this.$route.params.fid}`
         },
         methods : {
             memoryClick() {

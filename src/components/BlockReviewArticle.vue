@@ -34,20 +34,17 @@
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="/">首页</a></li>
-                        <li class="breadcrumb-item"><a href="#">项目列表</a></li>
-                        <li class="breadcrumb-item"><a href="#">项目区块列表</a></li>
+                        <li class="breadcrumb-item"><router-link :to="{path:'/'}">首页</router-link></li>
+                        <li class="breadcrumb-item"><router-link :to="{path:`${updatasUrls}`}">项目区块列表</router-link></li>
                         <li class="breadcrumb-item active">项目区块列表详情</li>
                     </ol>
                 </div>
             </div>
         </div>
-        <!-- /.container-fluid -->
     </section>
     <div class="bd">
         <div class="row">
-            <el-form ref="form" :model="form" label-width="120px">
-                <div class="container-fluid">
+            <div class="container-fluid">
                     <div class="row">
                         <div class="col-lg-10 col-10 col-sm-12 rowset">
                             <el-form-item label="新加审校：">
@@ -57,7 +54,7 @@
                     </div>
                     <div class="row">
                         <div class="col-12">
-                            <div class="card">
+                            <div class="card col-lg-12 col-12">
                                 <div class="card-header">
                                     <h3 class="card-title">配置审校：</h3>
                                     <div class="card-tools">
@@ -123,8 +120,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
-            </el-form>
+            </div>
             <grid :grid-data="gridsdata" :columns="columns" showCheckbox columnSet @focus="focus" @updateValue="update"></grid>
         </div>
     </div>
@@ -153,6 +149,7 @@
                     name:"添加审校",
                     id:2
                 }],
+                updatasUrls: '',
                 pickerOptions: {
                     shortcuts: [{
                         text: '最近一周',
@@ -352,6 +349,7 @@
         },
         mounted() {
             let datas = this.$route.params.id || 1
+            this.$data.updatasUrls = `/projectdetail/${datas}`
             this.$data.fileId = parseInt(this.$route.params.fid, 10) || 1
             this.$data.projectId = this.$route.params.id || 1
             this.$data.fileId = parseInt(this.$route.params.fid, 10) || 1

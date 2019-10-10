@@ -87,12 +87,10 @@
                     <el-form ref="form" :inline="true" :model="form" label-width="120px">
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-sm">
+                                <div class="col-sm-8">
                                     <el-form-item label="搜索禁用语">
                                         <el-input v-model="formInline.queryWord" placeholder="请输入禁用语关键字"></el-input>
                                     </el-form-item>
-                                </div>
-                                <div class="col-sm">
                                     <el-form-item>
                                         <el-button type="primary" @click="onSearchSubmit">查询</el-button>
                                     </el-form-item>
@@ -118,13 +116,12 @@
                             :data="tableData"
                             v-loading="loading"
                             border
-                            style="width: 100%"
+                            style="width:100%"
                             height="650">
                             <el-table-column
                                 fixed
                                 prop="source"
-                                label="原文"
-                                width="450">
+                                label="原文">
                             </el-table-column>
                             <el-table-column
                                 label="操作"

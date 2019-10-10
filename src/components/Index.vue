@@ -1,33 +1,8 @@
 <style lang="less" scoped>
 .container_bd {
-    height:100%;
+    width:100%;
+    min-height:100%;
     display:block;
-    .el-row {
-        margin-bottom: 20px;
-        &:last-child {
-          margin-bottom: 0;
-        }
-    }
-    .el-col {
-        border-radius: 4px;
-    }
-    .bg-purple-dark {
-        background: #99a9bf;
-    }
-    .bg-purple {
-        background: #d3dce6;
-    }
-    .bg-purple-light {
-        background: #e5e9f2;
-    }
-    .grid-content {
-        border-radius: 4px;
-        min-height: 36px;
-    }
-    .row-bg {
-        padding: 10px 0;
-        background-color: #f9fafc;
-    }
     .el-select {
         float:left;
         width:100%;
@@ -53,142 +28,167 @@
                 <div class="col-sm-6">
                     <h1>项目列表</h1>
                 </div>
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="#">首页</a></li>
-                        <li class="breadcrumb-item active">项目列表</li>
-                    </ol>
+            </div>
+        </div>
+    </section>
+    <div class="bd">
+        <div class="row">
+            <div class="card card-default col-12">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="fas fa-search"></i>
+                        项目列表-搜索条件
+                    </h3>
+                    <div class="card-tools">
+                        <router-link class="btn btn-outline-info" role="button" :to="{path:'/createbase'}">项目列表</router-link>
+                    </div>
+                </div>
+                <el-form ref="form" :model="form" label-width="110px">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm">
+                                <el-form-item label="项目名称:">
+                                    <el-input v-model="form.name" placeholder="请输入项目名字"></el-input>
+                                </el-form-item>
+                            </div>
+                            <div class="col-sm">
+                                <el-form-item label="项目经理:">
+                                    <el-select v-model="form.managerId" filterable placeholder="请选择项目经理">
+                                        <el-option
+                                            v-for="(item, $index) in form.managers"
+                                            :key="$index"
+                                            :data-datas="item.id"
+                                            :label="item.nickName"
+                                            :value="item.id">
+                                        </el-option>
+                                    </el-select>
+                                </el-form-item>
+                            </div>
+                            <div class="col-sm">
+                                <el-form-item label="客户名称：">
+                                    <el-select v-model="form.customerId" filterable placeholder="请选择客户名称">
+                                        <el-option
+                                            v-for="(item, $index) in form.customers"
+                                            :key="$index"
+                                            :data-datas="item.id"
+                                            :label="item.customerName"
+                                            :value="item.id">
+                                        </el-option>
+                                    </el-select>
+                                </el-form-item>
+                            </div>
+                            <div class="col-sm">
+                                <el-form-item label="源语言：">
+                                    <el-select v-model="form.languageFromStr" filterable placeholder="请选择源语言">
+                                        <el-option
+                                            v-for="(item, $index) in form.languageFrom"
+                                            :key="$index"
+                                            :label="item.label"
+                                            :value="item.value">
+                                        </el-option>
+                                    </el-select>
+                                </el-form-item>
+                            </div>
+                            <div class="col-sm">
+                                <el-form-item label="目标语言：">
+                                    <el-select v-model="form.languageToStr" filterable placeholder="请选择目标语言">
+                                        <el-option
+                                            v-for="(item, $index) in form.languageTo"
+                                            :key="$index"
+                                            :label="item.label"
+                                            :value="item.value">
+                                        </el-option>
+                                    </el-select>
+                                </el-form-item>
+                            </div>
+                            <div class="col-sm">
+                                <el-button type="primary" @click="searchFromDatas()">搜索</el-button>
+                            </div>
+                        </div>    
+                    </div>
+                </el-form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="card card-default col-12">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="fas fa-table"></i>
+                        项目列表
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <el-table
+                        :data="tableData"
+                        border
+                        style="width: 100%"
+                        height="550">
+                        <el-table-column
+                          fixed
+                          prop="projectname"
+                          label="项目名称"
+                          width="420">
+                        </el-table-column>
+                        <el-table-column
+                          prop="baseId"
+                          label="项目Id"
+                          width="120">
+                        </el-table-column>  
+                        <el-table-column
+                          prop="qkname"
+                          label="区块名称"
+                          width="220">
+                        </el-table-column>
+                        <el-table-column
+                          prop="language"
+                          label="语言"
+                          width="120">
+                        </el-table-column>
+                        <el-table-column
+                          prop="wordnumbers"
+                          label="字数"
+                          width="220">
+                        </el-table-column>
+                        <el-table-column
+                          prop="date"
+                          label="区块起止时间"
+                          width="240">
+                        </el-table-column>
+                        <el-table-column
+                          prop="process"
+                          label="完成进度"
+                          width="120">
+                        </el-table-column>
+                        <el-table-column
+                          fixed="pmname"
+                          label="项目经理"
+                          width="120">
+                        </el-table-column>
+                        <el-table-column
+                          fixed="right"
+                          label="操作"
+                          width="220">
+                          <template slot-scope="scope">
+                            <el-button @click="handleDetailClick(scope.row)" type="text" size="small">项目详情</el-button>
+                            <el-button @click="handleReportClick(scope.row)" type="text" size="small">项目报告</el-button>
+                          </template>
+                        </el-table-column>
+                      </el-table>
+                </div>
+                <div class="card-footer clearfix">
+                    <div class="float-right">
+                        <el-pagination
+                            @size-change="handleSizeChange"
+                            @current-change="handleCurrentChange"
+                            background
+                            layout="prev, pager, next"
+                            :total="totalPage">
+                        </el-pagination>
+                    </div>
                 </div>
             </div>
         </div>
-        <!-- /.container-fluid -->
-    </section>
-    <el-row :gutter="20">
-        <el-col :span="4">
-            <div class="grid-content">
-                <el-input v-model="form.name" placeholder="请输入项目名字"></el-input>
-            </div>
-        </el-col>
-        <el-col :span="4">
-            <div class="grid-content">
-                <el-select v-model="form.managerId" filterable placeholder="请选择项目经理">
-                    <el-option
-                        v-for="(item, $index) in form.managers"
-                        :key="$index"
-                        :data-datas="item.id"
-                        :label="item.nickName"
-                        :value="item.id">
-                    </el-option>
-                </el-select>
-            </div>
-        </el-col>
-        <el-col :span="4">
-            <div class="grid-content">
-                <el-select v-model="form.customerId" filterable placeholder="请选择客户名称">
-                    <el-option
-                        v-for="(item, $index) in form.customers"
-                        :key="$index"
-                        :data-datas="item.id"
-                        :label="item.customerName"
-                        :value="item.id">
-                    </el-option>
-                </el-select>
-            </div>
-        </el-col>
-        <el-col :span="2">
-            <div class="grid-content">
-                <el-select v-model="form.languageFromStr" filterable placeholder="请选择源语言">
-                    <el-option
-                        v-for="(item, $index) in form.languageFrom"
-                        :key="$index"
-                        :label="item.label"
-                        :value="item.value">
-                    </el-option>
-                </el-select>
-            </div>
-        </el-col>
-        <el-col :span="2">
-            <div class="grid-content">
-                <el-select v-model="form.languageToStr" filterable placeholder="请选择目标语言">
-                    <el-option
-                        v-for="(item, $index) in form.languageTo"
-                        :key="$index"
-                        :label="item.label"
-                        :value="item.value">
-                    </el-option>
-                </el-select>
-            </div>
-        </el-col>
-        <el-col :span="4">
-            <div class="grid-content">
-                <el-button type="primary" @click="searchFromDatas()">搜索</el-button>
-            </div>
-        </el-col>
-    </el-row>
-    <el-divider content-position="left">项目详情</el-divider>
-    <el-table
-        :data="tableData"
-        border
-        style="width:1430"
-        height="550">
-        <el-table-column
-          fixed
-          prop="projectname"
-          label="项目名称"
-          width="420">
-        </el-table-column>
-        <el-table-column
-          prop="baseId"
-          label="项目Id"
-          width="120">
-        </el-table-column>  
-        <el-table-column
-          prop="qkname"
-          label="区块名称"
-          width="220">
-        </el-table-column>
-        <el-table-column
-          prop="language"
-          label="语言"
-          width="120">
-        </el-table-column>
-        <el-table-column
-          prop="wordnumbers"
-          label="字数"
-          width="220">
-        </el-table-column>
-        <el-table-column
-          prop="date"
-          label="区块起止时间"
-          width="240">
-        </el-table-column>
-        <el-table-column
-          prop="process"
-          label="完成进度"
-          width="120">
-        </el-table-column>
-        <el-table-column
-          fixed="pmname"
-          label="项目经理"
-          width="120">
-        </el-table-column>
-        <el-table-column
-          fixed="right"
-          label="操作"
-          width="220">
-          <template slot-scope="scope">
-            <el-button @click="handleDetailClick(scope.row)" type="text" size="small">项目详情</el-button>
-            <el-button @click="handleReportClick(scope.row)" type="text" size="small">项目报告</el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-    <el-pagination
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        background
-        layout="prev, pager, next"
-        :total="totalPage">
-    </el-pagination>
+    </div>
 </div>
 </template>
 

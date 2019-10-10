@@ -151,7 +151,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="card card-default color-palette-box">
+            <div class="card card-default col-12">
                 <div class="card-header">
                     <h3 class="card-title">
                         <i class="fas fa-table"></i>
@@ -162,13 +162,12 @@
                     <el-table
                         :data="tableData"
                         border
-                        style="width:1430"
+                        style="width:100%"
                         height="550">
                         <el-table-column
                           fixed
                           prop="bannedName"
-                          label="语料库名称"
-                          width="420">
+                          label="语料库名称">
                         </el-table-column>
                         <el-table-column
                           prop="language"
@@ -177,8 +176,7 @@
                         </el-table-column>
                         <el-table-column
                           prop="organName"
-                          label="从属行业名称"
-                          width="320">
+                          label="从属行业名称">
                         </el-table-column>
                         <el-table-column
                           label="操作"

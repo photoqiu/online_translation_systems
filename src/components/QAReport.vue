@@ -109,13 +109,9 @@
     import $ from 'jQuery'
     import * as localForage from 'localforage'
     import {mapGetters} from 'vuex'
-    import canvasDatagrid from 'canvasDatagrid'
     
     export default {
         name: "QAReport",
-        componets : {
-            canvasDatagrid:canvasDatagrid
-        },
         data() {
             return {
                 tableData: [],

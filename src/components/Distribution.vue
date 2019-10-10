@@ -63,9 +63,6 @@
             </div>
         </div>
     </div>
-    <div class="bd">
-        <canvas-datagrid v-bind.prop="grid" class="datagrid"></canvas-datagrid>
-    </div>
     <div class="ft">
         <div class="row">
             <div class="col">
@@ -92,13 +89,9 @@
     import * as localForage from 'localforage'
     import moment from 'moment'
     import {mapGetters} from 'vuex'
-    import canvasDatagrid from 'canvasDatagrid'
 
     export default {
         name: "Distribution",
-        componets : {
-            canvasDatagrid:canvasDatagrid
-        },
         computed: {
             ...mapGetters({
                 error_datas_flags: 'error_datas_flags',

@@ -34,26 +34,14 @@
             text-align: left;
         }
         .row {
-            .el-steps {
-                border-top:1px soild #ccc;
-                width:50%;
-                height:130px;
-                line-height:26px;
-                margin:20px auto 0;
-            }
             .el-select {
-                float:left;
-                width:600px;
+                width:100%;
             }
             i {
                 float:left;
                 width:30px;
                 margin:0 8px;
                 line-height:30px;
-            }
-            .el-date-editor {
-                float:left;
-                width:600px;
             }
         }
     }
@@ -79,7 +67,7 @@
     </section>
     <div class="bd">
         <div class="row">
-            <div class="card card-default color-palette-box">
+            <div class="card card-default col-12">
                 <div class="card-header">
                     <h3 class="card-title">
                         <i class="fas fa-tag"></i>
