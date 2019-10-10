@@ -12,7 +12,6 @@
   "dependencies": {
     "@babel/polyfill": "^7.4.4",
     "@babel/runtime": "^7.6.3",
-    "canvas-datagrid": "^0.22.12",
     "cookie-cutter": "^0.2.0",
     "echarts": "^4.2.1",
     "element-ui": "^2.8.2",

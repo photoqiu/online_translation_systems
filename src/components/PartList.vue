@@ -245,13 +245,13 @@
         },
         methods: {
             handleClick(row) {
-                window.location.href = `/#/blockarticle/${this.$route.params.id}`
+                window.location.href = `/atreus/#/blockarticle/${this.$route.params.id}`
             },
             handlePartClick(row) {
-                window.location.href = `/#/translation/${row.partid}/${this.$route.params.id}`
+                window.location.href = `/atreus/#/translation/${row.partid}/${this.$route.params.id}`
             },
             handleReviewersClick(row) {
-                window.location.href = `/#/reviewtranslation/${row.partid}/${this.$route.params.id}`
+                window.location.href = `/atreus/#/reviewtranslation/${row.partid}/${this.$route.params.id}`
             },
             handleOpen(key, keyPath) {
                 console.log(key, keyPath)
