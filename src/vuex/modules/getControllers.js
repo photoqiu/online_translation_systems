@@ -150,6 +150,24 @@ const actions = {
             (datas) => commit(types.HTTP_STATUS_ERROR, datas)
         );
     },
+    getDoingPorjectDatas({commit}, datas) {
+        let url = Constant.API.getDoingProject
+        url = url.replace("{{pageIndex}}", datas.page)
+        url = url.replace("{{querystr}}", datas.datas)
+        asyncAPI.doGetDatas(url,
+            (datas) => commit(types.GET_PROJECT, datas),
+            (datas) => commit(types.HTTP_STATUS_ERROR, datas)
+        )
+    },
+    getCompletePorjectDatas({commit}, datas) {
+        let url = Constant.API.getCompleteProject
+        url = url.replace("{{pageIndex}}", datas.page)
+        url = url.replace("{{querystr}}", datas.datas)
+        asyncAPI.doGetDatas(url,
+            (datas) => commit(types.GET_PROJECT, datas),
+            (datas) => commit(types.HTTP_STATUS_ERROR, datas)
+        )
+    },
     getPorjectDetails({commit}, datas) {
         let url = Constant.API.projectDetail
         url = url.replace("{{id}}", datas)

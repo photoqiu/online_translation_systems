@@ -13,6 +13,7 @@ import store from './vuex/store.js'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import Grid from 'vueCanvasGrid'
+import 'fullcalendar/dist/fullcalendar.css'
 import App from './App.vue'
 
 
@@ -47,9 +48,7 @@ Vue.use(VueTimeago, {
     'ja': require('date-fns/locale/ja'),
   }
 })
-
 Vue.use(ElementUI)
-
 sync(store, router)
 localforage.config({
     driver      : localforage.LOCALSTORAGE, // Force WebSQL; same as using setDriver()
@@ -59,7 +58,6 @@ localforage.config({
     storeName   : 'alphanumeric', // Should be alphanumeric, with underscores.
     description : 'photoqiu is localstorage.'
 })
-console.log("enter viewer datas.")
 Vue.component('grid', Grid)
 const app = new Vue({
   router,

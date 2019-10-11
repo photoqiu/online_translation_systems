@@ -39,8 +39,8 @@ const EXCLUDE = /node_modules|bower_components/;
 const SRC_PATH = path.resolve(ROOT_PATH, './src');
 const NODE_MODULES_PATH = path.resolve(ROOT_PATH, './node_modules');
 
-function pathResolve(dir) {
-    return path.join(__dirname, dir);
+function resolve(dir) {
+    return path.resolve(__dirname, dir);
 }
 
 let fontAwesomePath = path.join(
@@ -83,7 +83,7 @@ module.exports = {
                 test: /\.js$/,
                 exclude: EXCLUDE,
                 loader: 'happypack/loader?id=babel',
-                include: [SRC_PATH, pathResolve('./node_modules/webpack-dev-server/client')]
+                include: [SRC_PATH, resolve('./node_modules/webpack-dev-server/client'), resolve('./node_modules/vue-full-calendar/index')]
             },
             {
                 test: /\.vue$/,

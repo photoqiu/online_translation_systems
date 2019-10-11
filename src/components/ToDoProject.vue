@@ -106,18 +106,6 @@
                                 </el-form-item>
                             </div>
                             <div class="col-sm-12 col-6 col-md-4">
-                                <el-form-item label="状态搜索：">
-                                    <el-select v-model="form.status" filterable placeholder="请选择目标语言">
-                                        <el-option
-                                            v-for="(item, $index) in form.liststatus"
-                                            :key="$index"
-                                            :label="item.values"
-                                            :value="item.id">
-                                        </el-option>
-                                    </el-select>
-                                </el-form-item>
-                            </div>
-                            <div class="col-sm-12 col-6 col-md-4">
                                 <el-button type="primary" @click="searchFromDatas()">搜索</el-button>
                             </div>
                         </div>    
@@ -215,7 +203,7 @@
     import {mapGetters} from 'vuex'
 
     export default {
-        name: "Index",
+        name: "ToDoProject",
         data() {
             return {
                 form : {
@@ -227,25 +215,6 @@
                     languageFromStr: '',
                     languageTo: [],
                     languageToStr: '',
-                    status:'',
-                    liststatus:[
-                        {
-                            id:1,
-                            values:'未分配'
-                        },
-                        {
-                            id:2,
-                            values:'进行中'
-                        },
-                        {
-                            id:3,
-                            values:'初译完成'
-                        },
-                        {
-                            id:4,
-                            values:'审校完成'
-                        }
-                    ],
                     name:""
                 },
                 project_datas: [],
@@ -342,7 +311,7 @@
             let data = {}
             data.page = this.$data.pageIndex
             data.datas = ''
-            this.$store.dispatch('getProjectList', data)
+            this.$store.dispatch('getDoingPorjectDatas', data)
             let datas = '1'
             this.$store.dispatch('getUsersInfo', datas)
             this.$store.dispatch('getLanguage', '')
@@ -354,10 +323,6 @@
                 let data = {}
                 data.page = this.$data.pageIndex
                 data.datas = ''
-                console.log("this.$data.form.status:", this.$data.form)
-                if (!!this.$data.form.status) {
-                    data.datas += `&status=${this.$data.form.status}`
-                }
                 if (!!this.$data.form.name) {
                     data.datas += `&projectName=${this.$data.form.name}`
                 }

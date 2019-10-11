@@ -31,6 +31,8 @@ const Constant = {
         termItemSave           : USER_API + 'term/item/save',
         /////////////////////////////////////////////////////////////
         getProject             : USER_API + 'project/list?pageNum={{pageIndex}}{{querystr}}',
+        getDoingProject        : USER_API + 'project/list?pageNum={{pageIndex}}&status=2{{querystr}}',
+        getCompleteProject     : USER_API + 'project/list?pageNum={{pageIndex}}&status=4{{querystr}}',
         getProjectReport       : USER_API + 'report/project?projectId={{projectId}}', //项目的报告
         getFilesReport         : USER_API + 'report/file?fileId={{fileId}}', //项目的报告
         projectDetail          : USER_API + 'project/detail?projectId={{id}}',

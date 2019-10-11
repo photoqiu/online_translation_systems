@@ -55,7 +55,7 @@
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="/">首页</a></li>
+                        <li class="breadcrumb-item"><router-link :to="{path:'/'}">首页</router-link></li>
                         <li class="breadcrumb-item active">术语库列表</li>
                     </ol>
                 </div>
@@ -77,7 +77,7 @@
                 <el-form ref="form" :model="form" label-width="80px">
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-sm">
+                            <div class="col-sm-12 col-6 col-md-4">
                                 <el-form-item label="机构名称:">
                                     <el-select v-model="form.search_text" placeholder="请选择机构名称">
                                         <el-option
@@ -90,7 +90,7 @@
                                     </el-select>
                                 </el-form-item>
                             </div>
-                            <div class="col-sm">
+                            <div class="col-sm-12 col-6 col-md-4">
                                 <el-form-item label="一级行业">
                                     <el-select v-model="form.industry1" filterable @change="getOneLevelDatas" placeholder="请选择">
                                         <el-option
@@ -103,7 +103,7 @@
                                     </el-select>
                                 </el-form-item>
                             </div>
-                            <div class="col-sm">
+                            <div class="col-sm-12 col-6 col-md-4">
                                 <el-form-item label="二级行业">
                                     <el-select v-model="form.industry2" filterable @change="getTwoLevelDatas" placeholder="请选择">
                                         <el-option
@@ -116,7 +116,7 @@
                                     </el-select>
                                 </el-form-item>
                             </div>
-                            <div class="col-sm">
+                            <div class="col-sm-12 col-6 col-md-4">
                                 <el-form-item label="三级行业">
                                     <el-select v-model="form.industry3" filterable @change="getThereLevelDatas" placeholder="请选择">
                                         <el-option
@@ -129,7 +129,7 @@
                                     </el-select>
                                 </el-form-item>
                             </div>
-                            <div class="col-sm">
+                            <div class="col-sm-12 col-6 col-md-4">
                                 <el-form-item label="四级行业">
                                     <el-select v-model="form.industry4" filterable placeholder="请选择">
                                         <el-option
@@ -142,7 +142,7 @@
                                     </el-select>
                                 </el-form-item>
                             </div>
-                            <div class="col-sm">
+                            <div class="col-sm-12 col-6 col-md-4">
                                 <el-button type="primary" @click="submitdatas">查询</el-button>
                             </div>
                         </div>    

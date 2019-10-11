@@ -23,7 +23,11 @@ import CreateBanned from './components/CreateBanned.vue'
 import BlockReviewArticle from './components/BlockReviewArticle.vue'
 import BannedList from './components/BannedList.vue'
 import BannedDetails from './components/BannedDetails.vue'
+import ToDoProject from './components/ToDoProject.vue'
+import CompleteProject from './components/CompleteProject.vue'
+import CalendarDatas from './components/Calendar.vue'
 import NotFound from './components/NotFound.vue'
+
 
 Vue.use(VueRouter)
 //////Collection
@@ -36,6 +40,10 @@ const router = new VueRouter({
             path: '/createcorpus',
             name: 'CreateCorpus',
             component: CreateCorpus
+        }, {
+            path: '/calendar',
+            name: 'CalendarDatas',
+            component: CalendarDatas
         }, {
             path: '/corpusdetails/:id',
             name: 'CorpusDetails',
@@ -64,6 +72,14 @@ const router = new VueRouter({
             path: '/',
             name: 'index',
             component: Index
+        }, {
+            path: '/todolist',
+            name: 'todo',
+            component: ToDoProject
+        }, {
+            path: '/comletelist',
+            name: 'CompleteProject',
+            component: CompleteProject
         }, {
             path: '/statistics',
             name: 'statistics',

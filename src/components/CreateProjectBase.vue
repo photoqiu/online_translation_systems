@@ -83,7 +83,7 @@
 <template>
 <div class="container_bd">
     <div class="bd row">
-        <div class="col-md-7">
+        <div class="col-sm-12 col-lg-8 col-md-12">
             <!-- general form elements -->
             <div class="card card-primary">
                 <div class="card-header">
@@ -178,7 +178,7 @@
                 </el-form>
             </div>
         </div>
-        <div class="col-md-5" v-for="(item, index) in addNewsNumbers">
+        <div class="col-sm-12 col-lg-4 col-md-6" v-for="(item, index) in addNewsNumbers">
             <!-- DIRECT CHAT PRIMARY -->
             <div :class="form.fileList[index].classStyle" :key="index">
                 <div class="card-header"  @click="applydatas" :data-index="index">

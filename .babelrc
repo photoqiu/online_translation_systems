@@ -2,6 +2,7 @@
     "comments": false,
     "compact": "auto",
     "presets": [
+        
         ["@babel/preset-env", {
             "loose": true,
             "targets": {

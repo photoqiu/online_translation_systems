@@ -109,7 +109,7 @@ body > .el-container {
                                         </router-link>
                                     </li>
                                     <li class="nav-item has-treeview">
-                                        <router-link class="nav-link" :to="{path:'/', activeClass: 'active'}">
+                                        <router-link class="nav-link" :to="{path:'/todolist', activeClass: 'active'}">
                                             <i class="nav-icon fas fa-chart-pie"></i>
                                             <p>
                                                 进行中的项目
@@ -117,10 +117,18 @@ body > .el-container {
                                         </router-link>
                                     </li>
                                     <li class="nav-item has-treeview">
-                                        <router-link class="nav-link" :to="{path:'/', activeClass: 'active'}">
+                                        <router-link class="nav-link" :to="{path:'/comletelist', activeClass: 'active'}">
                                             <i class="nav-icon fas fa-chart-pie"></i>
                                             <p>
                                                 已完成项目
+                                            </p>
+                                        </router-link>
+                                    </li>
+                                    <li class="nav-item has-treeview">
+                                        <router-link class="nav-link" :to="{path:'/calendar', activeClass: 'active'}">
+                                            <i class="nav-icon fas fa-chart-pie"></i>
+                                            <p>
+                                                事件日历
                                             </p>
                                         </router-link>
                                     </li>
